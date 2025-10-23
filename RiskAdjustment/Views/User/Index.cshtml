@@ -1,0 +1,53 @@
+﻿@model RiskAdjustment.Data.ViewModels.UserViewModel
+@{
+    ViewBag.Title = "Index";
+}
+@section AddToHead{
+    <script type="text/javascript" src="/Scripts/hcc_usercallbacks.js"></script>
+}
+<div class="row justify-content-center">
+    <div class="col-9">
+        @{
+            if (TempData["Success"] != null)
+            {
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    <p>@TempData["Success"].ToString()</p>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            }
+            else if (TempData["Failure"] != null)
+            {
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <p>@TempData["Failure"].ToString()</p>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            }
+        }
+    </div>
+    <div class="col-9">
+        @Html.Partial("_results")
+    </div>
+    <div class="col-9">
+        <br/>
+        @Html.DevExpress().HyperLink(h =>
+        {
+            h.Name = "NewUserModal";
+            h.Properties.Text = "Add User";
+            h.ControlStyle.Cursor = "pointer";
+            h.Properties.ClientSideEvents.Click = "function(s,e) { newUserModal.Show(); }";
+        }).GetHtml()
+    </div>
+    <div class="row mt-2">
+        <div class="col-9">
+            @Html.Partial("_addUser")
+        </div>
+    </div>
+</div>
+<div class="row mt-2">
+    
+</div>
+

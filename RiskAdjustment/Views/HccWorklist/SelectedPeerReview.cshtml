@@ -1,0 +1,79 @@
+﻿
+@model RiskAdjustment.Data.ViewModels.HCC.HccWorklistViewModel
+@{
+    ViewBag.Title = "Peer Reviews";
+}
+
+@{
+    string username = Model.CurrentUser.LastName + ", " + Model.CurrentUser.FirstName + " (" + Model.CurrentUser.Initials + ")";
+}
+@section AddToHead
+{
+    <script type="text/javascript" src="/Scripts/hcc_worklist_callbacks.js"></script>
+    <script type="text/javascript">
+        var timeout;
+        function scheduleGridUpdate(grid) {
+            window.clearTimeout(timeout);
+            timeout = window.setTimeout(
+                function () { grid.Refresh(); },
+                10000
+            );
+        }
+        function grid_Init(s, e) {
+            scheduleGridUpdate(s);
+        }
+        function grid_BeginCallback(s, e) {
+            window.clearTimeout(timeout);
+        }
+        function grid_EndCallback(s, e) {
+            scheduleGridUpdate(s);
+        }
+    </script>
+}
+
+<!-- We need the fileDate and contract for callbacks -->
+<div id="fileDate" style="visibility: hidden">@Model.FileDate</div>
+<div id="contract" style="display: none">@Model.Contract</div>
+<div class="row justify-content-center">
+    <div class="col-9">
+        @{
+            if (TempData["Success"] != null)
+            {
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    <p>@TempData["Success"].ToString()</p>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            }
+            else if (TempData["Failure"] != null)
+            {
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <p>@TempData["Failure"].ToString()</p>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            }
+        }
+    </div>
+    <div class="col-9" style="background-color: #215b33; color: white">
+        <p>HCC Charges Pending</p>
+    </div>
+</div>
+<div class="row justify-content-center">
+
+    <div class="col-9 border shadow pb-3">
+        @{
+            <p>Logged In User: @username</p>
+            <p>Contract:  <span class="font-weight-bold">@Model.Contract</span></p>
+            <p>File Date:  <span class="font-weight-bold">@Model.FileDate</span></p>
+        }
+        @Html.Partial("partials/_CompletedPeerReview")
+    </div>
+</div>
+
+
+
+
+

@@ -1,0 +1,38 @@
+﻿@using System.Web.UI.WebControls
+ @Html.DevExpress().CallbackPanel(cbp =>
+{
+    cbp.Name = "UnworkedViewCallbackPanel";
+    cbp.CallbackRouteValues = new {Controller = "HccWorklist", Action = "GetContractCountsForDate" };
+    cbp.ClientSideEvents.BeginCallback = "cbp_begincallback";
+    cbp.SetContent(() =>
+    {
+        @Html.DevExpress().FormLayout(f =>
+        {
+            f.Name = "FormLayout";
+            f.ControlStyle.CssClass = "mx-auto";
+            f.Items.Add(i =>
+            {
+                i.ShowCaption = DefaultBoolean.False;
+                i.NestedExtension().DateEdit(de =>
+                {
+                    de.Name = "unworkedContractCountsDate";
+                    de.Properties.ClientSideEvents.DateChanged = "OnUnworkedContractCountsDateCallback";
+                    de.Properties.Caption = "Date  ";
+                    de.Date = Model.CountsDate;
+                    de.Properties.EditFormatString = "MM/dd/yyyy";
+                });
+            });
+        }).Render();
+        @Html.DevExpress().GridView(settings =>
+        {
+            settings.Name = "Gv1";
+            settings.ControlStyle.CssClass = "mx-auto";
+            settings.CommandColumn.Visible = false;
+            settings.Width = Unit.Percentage(50);
+            settings.Columns.Add("ContractName");
+            settings.Columns.Add("Count");
+
+        }).Bind(Model.ContractCounts).Render();
+    });
+}).GetHtml()
+

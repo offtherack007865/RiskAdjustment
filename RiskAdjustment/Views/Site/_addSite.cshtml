@@ -1,0 +1,83 @@
+﻿@using System.Web.UI.WebControls
+@Html.DevExpress().PopupControl(
+    settings =>
+    {
+        settings.Name = "newSiteModal";
+        settings.Width = Unit.Percentage(25);
+        settings.AllowDragging = true;
+        settings.CloseAction = CloseAction.CloseButton;
+        settings.CloseOnEscape = true;
+        settings.PopupAnimationType = AnimationType.None;
+        settings.HeaderText = "Add User";
+        settings.Modal = true;
+        settings.AutoUpdatePosition = true;
+        settings.PopupHorizontalAlign = PopupHorizontalAlign.WindowCenter;
+        settings.PopupVerticalAlign = PopupVerticalAlign.WindowCenter;
+        settings.SetContent(() =>
+        {
+            using (Html.BeginForm("AddSite", "Site", FormMethod.Post))
+            {
+                @Html.DevExpress().FormLayout(f =>
+                {
+                    f.Name = "ModalModeFormLayout";
+                    f.RequiredMarkDisplayMode = RequiredMarkMode.None;
+                    f.Width = Unit.Percentage(100);
+                    f.Height = Unit.Percentage(100);
+                    f.Items.Add(i =>
+                    {
+                        i.Name = "new_SiteNumber";
+                        i.Caption = "Site Number";
+                        i.NestedExtension().TextBox(tb =>
+                        {
+                            tb.Properties.ValidationSettings.RequiredField.IsRequired = true;
+                            tb.Properties.ValidationSettings.RequiredField.ErrorText = "This field is required";
+                        });
+                    });
+                    f.Items.Add(i =>
+                    {
+                        i.Name = "new_Name";
+                        i.Caption = "Site Name";
+                        i.NestedExtension().TextBox(tb =>
+                        {
+                            tb.Properties.ValidationSettings.RequiredField.IsRequired = true;
+                            tb.Properties.ValidationSettings.RequiredField.ErrorText = "This field is required";
+                        });
+                    });
+                    f.Items.Add(i =>
+                    {
+                        i.Name = "new_County";
+                        i.Caption = "County";
+                        i.NestedExtension().TextBox(tb =>
+                        {
+                            tb.Properties.ValidationSettings.RequiredField.IsRequired = true;
+                            tb.Properties.ValidationSettings.RequiredField.ErrorText = "This field is required";
+                        });
+                    });                   
+                    f.Items.Add(i =>
+                    {
+                        i.ShowCaption = DefaultBoolean.False;
+                        i.SetNestedContent(() =>
+                        {
+                            Html.DevExpress().Button(buttonSettings =>
+                            {
+                                buttonSettings.Name = "btnUpdate";
+                                buttonSettings.ControlStyle.CssClass = "button";
+                                buttonSettings.Width = 80;
+                                buttonSettings.Text = "OK";
+                                buttonSettings.UseSubmitBehavior = true;
+                            }).Render();
+                            Html.DevExpress().Button(buttonSettings =>
+                            {
+                                buttonSettings.Name = "btnCancel";
+                                buttonSettings.ControlStyle.CssClass = "button";
+                                buttonSettings.Width = 80;
+                                buttonSettings.Text = "Cancel";
+                                buttonSettings.ClientSideEvents.Click = "function(s, e){ newSiteModal.Hide(); }";
+                            }).Render();
+                        });
+                    });
+                }).Render();
+            }
+        });
+    }).GetHtml()
+

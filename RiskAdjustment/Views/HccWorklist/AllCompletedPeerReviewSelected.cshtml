@@ -1,0 +1,157 @@
+﻿@model RiskAdjustment.Data.ViewModels.HCC.HccWorkEntryViewModel
+@{
+    ViewBag.Title = "Charge Number:  " + Model.Entry.ChargeID;
+}
+@section AddToHead
+{
+    <script type="text/javascript" src="/Scripts/hcc_worklist_callbacks.js"></script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            //Grab model data via JSON so we can read variables.
+            modelJson = @Html.Raw(Json.Encode(Model.Entry));
+            var isReadOnly = @Html.Raw(Json.Encode(Model.Entry.IsReadOnly));
+            var role = @Html.Raw(Json.Encode(Model.CurrentUser.Role));
+
+            if (role === "Manager" || role === "Admin") {
+                var item = col1.GetItemByName("SendToReviewsPending");
+                item.SetVisible(true);
+            }
+
+            if (modelJson["RptCat_Hold"] === true) {
+                var panel = col1.GetItemByName("hold_panel");
+                panel.SetVisible(true);
+            }
+
+            //TODO:  Wire up so all controls are readonly instead of making the Finish button Disappear
+            if (isReadOnly === true) {
+                if (role === "Admin" || role === "Manager") {
+                    $("#finishBtn").show();
+                }
+                else {
+                    $("#finishBtn").hide();
+                }
+            }
+        });
+
+        function ValidateHccAddDiag(s, e) {
+
+            var fieldname = s.name;
+            var dropdown_fieldname = ASPxClientComboBox.GetControlCollection().GetByName(fieldname + "_Reason");
+            var value = s.GetValue();
+            if (value === null) {
+                dropdown_fieldname.SetEnabled(false);
+                dropdown_fieldname.SetIsValid(true);
+                dropdown_fieldname.SetValue(null);
+                handle_hcc_combo_changed();
+                //Call Combobox ValueChanged event
+            }
+            else {
+                dropdown_fieldname.SetEnabled(true);
+                dropdown_fieldname.SetIsValid(false);
+
+            }
+            var isValid = true;
+            var value = s.GetValue();
+
+            for (var i = 1; i <= 12; i++) {
+                if (value !== null) {
+                    var split = value.split(".");
+                    var propertyName;
+                    if (i < 10) {
+                        propertyName = "ICD10ClaimDiagCode0" + i;
+                    }
+                    else {
+                        propertyName = "ICD10ClaimDiagCode" + i;
+                    }
+
+                    var modelValue = modelJson[propertyName];
+                    if (modelValue.toLowerCase() === split[0].toLowerCase()) {
+                        isValid = false;
+                    }
+                }
+                e.isValid = isValid;
+            }
+        }
+
+        function ValidateHccRemDiag(s, e) {
+            var isValid = false;
+            var value = s.GetValue();
+            if (value === null) {
+                isValid = true;
+            }
+            else {
+                for (var i = 1; i <= 12; i++) {
+                    var split = value.split(".");
+                    var propertyName;
+
+                    if (i < 10) {
+                        propertyName = "ICD10ClaimDiagCode0" + i;
+                    }
+                    else {
+                        propertyName = "ICD10ClaimDiagCode" + i;
+                    }
+                    var modelValue = modelJson[propertyName];
+                    if (modelValue.toLowerCase() === split[0].toLowerCase()) {
+                        isValid = true;
+                    }
+                }
+            }
+            e.isValid = isValid
+        }
+    </script>
+}
+
+
+<div class="row justify-content-center">
+    <div class="col-11">
+        @{
+            if (Model.CurrentUser.Email == Model.Entry.LockedBy.Email)
+            {
+                <p style="color:green"><i class="fas fa-lock"></i>&nbsp; &nbsp;Record locked by <span class="font-weight-bold">@Model.CurrentUser.LastName, @Model.CurrentUser.FirstName (you)</span></p>
+                <p>The Review Was @Model.Entry.decision when peer reviewed</p>
+
+                if (Model.Entry.notes != null)
+                {
+                    <p>The Review was disagreed with due to: @Model.Entry.notes</p>
+
+                }
+            }
+            else
+            {
+                <p style="color:red"><i class="fas fa-lock"></i>&nbsp; &nbsp;Record locked by <span class="font-weight-bold">@Model.Entry.LockedBy.LastName, @Model.Entry.LockedBy.FirstName</span>.  Entry is read-only</p>
+                <p>The Review Was @Model.Entry.decision when peer reviewed</p>
+
+                if (Model.Entry.notes != null)
+                {
+                    <p>The Review was disagreed with due to: @Model.Entry.notes</p>
+                }
+            }
+        }
+        <div class="row" style="background-color:#215b33">
+            <div class="col-3 mt-2">
+                <p style="color:white">Worklist Entry for charge# @Model.Entry.ChargeID</p>
+            </div>
+            <div class="col-9 mt-2">
+                @Html.Action("ICD10ComboBoxPartial")
+            </div>
+        </div>
+        <div class="row">
+
+            <div class="col-12 pb-4 border shadow">
+                @Html.Partial("partials/_PeerWorklistForm")
+                <hr />
+                <p>Additional CPTs for Claim ID @Model.Entry.ClaimID</p>
+                @Html.Partial("partials/_inProgressRelatedCpts")
+            </div>
+        </div>
+
+
+    </div>
+</div>
+
+@*@Html.ActionLink("<-- Back", "Main", "HccWorklist", new { Contract = @Model.Entry.Contract, FileDate = @Model.Entry.FileDate.ToString()}, null);
+
+    <p>User:  @Model.CurrentUser.Email</p>
+
+    <p>ChargeId:  @Model.Entry.ChargeID</p>*@

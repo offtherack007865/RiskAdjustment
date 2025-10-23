@@ -1,0 +1,82 @@
+﻿@using System.Web.UI.WebControls
+
+@Html.DevExpress().GridView(settings =>
+{
+
+
+    settings.Name = "PvpReviewsPendingWorkList";
+    settings.KeyFieldName = "ChargeID";
+    settings.CallbackRouteValues = new { Controller = "PvpWorklist", Action = "ReviewsInProgressCallback" };
+    settings.ControlStyle.Border.BorderWidth = 1;
+    settings.SettingsPager.PageSize = 35;
+    settings.SettingsBehavior.EnableRowHotTrack = true;
+    settings.SettingsBehavior.AllowFocusedRow = true;
+
+    settings.PreRender = (sender, e) =>
+    {
+        ASPxGridView grid = (ASPxGridView)sender;
+
+        // Store which list we are coming from
+        TempData["PVPWhichListLastVisited"] = "ReviewsInProgress";
+
+        // Grid FilterExpression.
+        if (TempData["PVPWorkListGoToEntryDetailScreen"] != null && TempData["PVPWorkListGridFilterExpression"] != null)
+        {
+            grid.FilterExpression = TempData["PVPWorkListGridFilterExpression"].ToString();
+        }
+        TempData["PVPWorkListGridFilterExpression"] = null;
+        TempData["PVPWorkListGoToEntryDetailScreen"] = null;
+    };
+
+    // Just before filtering is applied, find out
+    // which columns have a filter on them.
+    settings.SubstituteFilter = (sender, e) =>
+    {
+        ASPxGridView grid = (ASPxGridView)sender;
+
+        // Grid FilterExpression.
+        TempData["PVPWorkListGridFilterExpression"] = grid.FilterExpression;
+    };
+
+    //Filtering
+
+    settings.Settings.ShowHeaderFilterButton = true;
+    settings.Settings.ShowHeaderFilterListBoxSearchUI = true;
+
+
+    settings.Width = Unit.Percentage(100);
+    settings.Columns.Add(c =>
+    {
+        c.Caption = "Action";
+        c.SetDataItemTemplateContent(tc =>
+        {
+            ViewContext.Writer.Write((Html.ActionLink("Select", "ReviewInProgress", new { appointmentId = DataBinder.Eval(tc.DataItem, "AppointmentID") })));
+        });
+    });
+    settings.Columns.Add("AppointmentID");
+    settings.Columns.Add("PatientName");
+    settings.Columns.Add("PatientID");
+    settings.Columns.Add("PVPApptDate");
+    settings.Columns.Add("StartDate");
+    settings.Columns.Add("Reviewer");
+    settings.CustomColumnDisplayText = (s, e) =>
+    {
+        if (e.Column.FieldName == "PVPApptDate")
+        {
+            e.DisplayText = e.Value.ToString().Split(' ')[0];
+        }
+        if (e.Column.FieldName == "StartDate")
+        {
+            e.DisplayText = e.Value.ToString().Split(' ')[0];
+        }
+    };
+
+    // pwm - 20240525 - Priority 
+
+    settings.Columns.Add(c =>
+    {
+        c.Caption = "Priority";
+        c.FieldName = "Priority";
+    });
+
+}).Bind(Model.WorklistEntries).GetHtml()

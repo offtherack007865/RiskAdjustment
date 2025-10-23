@@ -1,0 +1,20 @@
+-- SQL Server Instance: smg-sql01
+USE [VBC_CSS_Athena];
+
+-- 001 - Update Breanne Winters user record
+--       so that she is an active user.
+
+SELECT COUNT(*)
+FROM [dbo].[Users]
+WHERE [Id] = 28;
+-- 1 record 
+
+
+--BEGIN TRAN
+UPDATE [dbo].[Users]
+SET [InactiveDate]  = NULL
+WHERE [Id] = 28;
+
+-- COMMIT TRAN
+-- ROLLBACK
+-----------------------------------------------------------------------------------------------

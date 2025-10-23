@@ -1,0 +1,160 @@
+﻿@model RiskAdjustment.Data.ViewModels.UserViewModel
+@using System.Web.UI.WebControls
+@Html.DevExpress().PopupControl(
+    settings =>
+    {
+        settings.Name = "newUserModal";
+        settings.Width = Unit.Percentage(25);
+        settings.AllowDragging = true;
+        settings.CloseAction = CloseAction.CloseButton;
+        settings.CloseOnEscape = true;
+        settings.PopupAnimationType = AnimationType.None;
+        settings.HeaderText = "Add User";
+        settings.Modal = true;
+        settings.AutoUpdatePosition = true;
+        settings.PopupHorizontalAlign = PopupHorizontalAlign.WindowCenter;
+        settings.PopupVerticalAlign = PopupVerticalAlign.WindowCenter;
+        settings.SetContent(() =>
+        {
+            using (Html.BeginForm("AddUser", "User", FormMethod.Post))
+            {
+                @Html.DevExpress().FormLayout(f =>
+                {
+                    f.Name = "ModalModeFormLayout";
+                    f.RequiredMarkDisplayMode = RequiredMarkMode.None;
+                    f.Width = Unit.Percentage(100);
+                    f.Height = Unit.Percentage(100);
+
+                    f.Items.Add(i =>
+                    {
+                        i.Name = "Initials";
+                        i.Caption = "Initials";
+                        i.NestedExtension().TextBox(tb =>
+                        {
+                            tb.Properties.ValidationSettings.RequiredField.IsRequired = true;
+                            tb.Properties.ValidationSettings.RequiredField.ErrorText = "This field is required";
+                        });
+                    });
+                    f.Items.Add(i =>
+                    {
+                        i.Name = "UserName";
+                        i.Caption = "User name";
+                        i.NestedExtension().TextBox(tb =>
+                        {
+                            tb.Properties.ValidationSettings.RequiredField.IsRequired = true;
+                            tb.Properties.ValidationSettings.RequiredField.ErrorText = "This field is required";
+                        });
+                    });
+                    f.Items.Add(i =>
+                    {
+                        i.Name = "FirstName";
+                        i.Caption = "First Name";
+                        i.NestedExtension().TextBox(tb =>
+                        {
+                            tb.Properties.ValidationSettings.RequiredField.IsRequired = true;
+                            tb.Properties.ValidationSettings.RequiredField.ErrorText = "This field is required";
+                        });
+                    });
+                    f.Items.Add(i =>
+                    {
+                        i.Name = "LastName";
+                        i.Caption = "LastName";
+                        i.NestedExtension().TextBox(tb =>
+                        {
+                            tb.Properties.ValidationSettings.RequiredField.IsRequired = true;
+                            tb.Properties.ValidationSettings.RequiredField.ErrorText = "This field is required";
+                        });
+                    });
+                    f.Items.Add(i =>
+                    {
+                        i.Name = "Email";
+                        i.Caption = "Email";
+                        i.NestedExtension().TextBox(tb =>
+                        {
+                            tb.Properties.ClientSideEvents.Validation = "ValidateUniqueEmail";
+                            tb.Properties.ValidationSettings.EnableCustomValidation = true;
+                            tb.Properties.ValidationSettings.RequiredField.IsRequired = true;
+                            tb.Properties.ValidationSettings.RequiredField.ErrorText = "This field is required";
+                            tb.Properties.ValidationSettings.RegularExpression.ValidationExpression = "\\w+([-+.']\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*";
+                            tb.Properties.ValidationSettings.RegularExpression.ErrorText = "Please enter a valid email address";
+                        });
+                    });
+                    f.Items.Add(i =>
+                    {
+                        i.Name = "ActiveDate";
+                        i.Caption = "Active Date";
+                        i.NestedExtension().DateEdit(de =>
+                        {
+                            de.Name = "ActiveDate";
+                        });
+                    });
+                    f.Items.Add(i =>
+                    {
+                        i.Name = "AthenaId";
+                        i.Caption = "Athena ID";
+                        i.NestedExtension().TextBox(tb =>
+                        {
+                            tb.Properties.ValidationSettings.RequiredField.IsRequired = true;
+                            tb.Properties.ValidationSettings.RequiredField.ErrorText = "This field is required";
+                        });
+                    });
+                    f.Items.Add(i =>
+                    {
+                        i.Name = "Note";
+                        i.Caption = "Note";
+                        i.NestedExtension().TextBox(tb =>
+                        {
+
+                        });
+                    });
+                    f.Items.Add(i =>
+                    {
+                        i.Name = "Contract";
+                        i.Caption = "Contract";
+                        i.NestedExtension().TextBox(tb =>
+                        {
+                            tb.Properties.MaxLength = 3;
+                            tb.ReadOnly = true;
+                            tb.Text = "All";
+                        });
+                    });
+                    f.Items.Add(i =>
+                    {
+                        i.Name = "Role";
+                        i.Caption = "Role";
+                        i.NestedExtension().ComboBox(cb =>
+                        {
+                            cb.Properties.ValueType = typeof(string);
+                            cb.Properties.DataSource = Model.UserRoles.Values;
+                            cb.Properties.ValidationSettings.RequiredField.IsRequired = true;
+                            cb.Properties.ValidationSettings.RequiredField.ErrorText = "This field is required.";
+                        });
+                    });
+                    f.Items.Add(i =>
+                    {
+                        i.ShowCaption = DefaultBoolean.False;
+                        i.SetNestedContent(() =>
+                        {
+                            Html.DevExpress().Button(buttonSettings =>
+                            {
+                                buttonSettings.ControlStyle.ForeColor = System.Drawing.Color.White;
+                                buttonSettings.Name = "btnUpdate";
+                                buttonSettings.Width = 80;
+                                buttonSettings.Text = "OK";
+                                buttonSettings.UseSubmitBehavior = true;
+                            }).Render();
+                            Html.DevExpress().Button(buttonSettings =>
+                            {
+                                buttonSettings.ControlStyle.ForeColor = System.Drawing.Color.White;
+                                buttonSettings.Name = "btnCancel";
+                                buttonSettings.Width = 80;
+                                buttonSettings.Text = "Cancel";
+                                buttonSettings.ClientSideEvents.Click = "function(s, e){ newUserModal.Hide(); }";
+                            }).Render();
+                        });
+                    });
+                }).Bind(Model.SelectedUser).Render();
+            }
+        });
+    }).GetHtml()
+

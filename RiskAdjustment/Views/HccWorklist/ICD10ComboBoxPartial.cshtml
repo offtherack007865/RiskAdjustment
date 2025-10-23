@@ -1,0 +1,45 @@
+﻿@using System.Web.UI.WebControls
+@*This partial is in the main folder to make it easier for the controller to find.*@
+
+@Html.DevExpress().ComboBox(settings =>
+{
+    settings.Name = "icd10entries";
+    settings.Properties.Caption = "ICD-10 Lookup";
+
+    settings.Width = 350;
+    settings.Properties.ClearButton.DisplayMode = ClearButtonDisplayMode.Always;
+    settings.Properties.DropDownWidth = 750;
+    settings.Properties.DropDownStyle = DropDownStyle.DropDownList;
+    settings.CallbackRouteValues = new { Controller = "HccWorklist", Action = "ICD10ComboBoxPartial" };
+    settings.Properties.CallbackPageSize = 30;
+    settings.Properties.ValueField = "Description";
+    settings.Properties.ValueType = typeof(string);
+    settings.Properties.Columns.Add("DiagnosisCode");
+    settings.Properties.Columns.Add(c =>
+    {
+        c.FieldName = "Description";
+        c.Width = Unit.Pixel(350);
+    });
+    //settings.Properties.Columns.Add(c =>
+    //{
+    //    c.Name = "ESRD_Model_V21";
+    //    c.FieldName = "ESRD_Model_V21";
+    //    c.Caption = "Pace/ESRD";
+    //});
+    //settings.Properties.Columns.Add(c =>
+    //{
+    //    c.FieldName = "ESRD_Model_V22";
+    //    c.Caption = "V22";
+    //});
+    //settings.Properties.Columns.Add(c =>
+    //{
+    //    c.FieldName = "ESRD_Model_V24";
+    //    c.Caption = "V24";
+    //});
+    settings.Properties.Columns.Add(c =>
+    {
+        c.FieldName = "ESRD_Model_V28";
+        c.Caption = "V28";
+    });
+
+}).BindList(Model).GetHtml()

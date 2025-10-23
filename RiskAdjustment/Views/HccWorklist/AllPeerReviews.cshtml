@@ -1,0 +1,55 @@
+﻿@model RiskAdjustment.Data.ViewModels.HCC.HccWorklistViewModel
+@{
+    ViewBag.Title = "All Peer Reviews";
+}
+
+@{
+    string username = Model.CurrentUser.LastName + ", " + Model.CurrentUser.FirstName + " (" + Model.CurrentUser.Initials + ")";
+}
+@section AddToHead
+{
+    <script type="text/javascript" src="/Scripts/hcc_worklist_callbacks.js"></script>
+}
+
+<div class="row justify-content-center">
+    <div class="col-9">
+        @{
+            if (TempData["Success"] != null)
+            {
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    <p>@TempData["Success"].ToString()</p>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            }
+            else if (TempData["Failure"] != null)
+            {
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <p>@TempData["Failure"].ToString()</p>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            }
+        }
+    </div>
+    <div class="col-9" style="background-color: #215b33; color: white">
+        <p>HCC Reviews Completed in the Last 90 Days</p>
+    </div>
+</div>
+<div class="row justify-content-center">
+
+    <div class="col-9 border shadow pb-3">
+        @{
+            <p>Logged In User: @username</p>
+        }
+        @Html.Partial("partials/_AllPeerReviews")
+    </div>
+</div>
+
+
+
+
+
+

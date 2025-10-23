@@ -1,0 +1,1726 @@
+﻿@using System.Web.UI.WebControls
+
+@using (Html.BeginForm("Update", "HccWorklist", FormMethod.Post))
+{
+    string Reviewer = Model.Entry.LockedBy.LastName + ", " + Model.Entry.LockedBy.FirstName;
+    @Html.DevExpress().FormLayout(f =>
+{
+    f.Name = "col1";
+    f.ColumnCount = 1;
+    f.Width = Unit.Percentage(100);
+
+    f.RequiredMarkDisplayMode = RequiredMarkMode.None;
+    f.Items.Add(i =>
+    {
+        i.Name = "FileDate";
+        i.FieldName = "FileDate";
+        i.ClientVisible = false;
+    });
+    f.Items.Add(i =>
+    {
+        i.Name = "Contract";
+        i.FieldName = "Contract";
+        i.ClientVisible = false;
+    });
+    f.Items.Add(i =>
+    {
+        i.Name = "ChargePriority";
+        i.FieldName = "ChargePriority";
+        i.ClientVisible = false;
+    });
+    f.Items.Add(i =>
+    {
+        i.Name = "StartTime";
+        i.FieldName = "StartTime";
+        i.ClientVisible = false;
+        i.NestedExtension().TextBox(tb =>
+        {
+            tb.Name = "StartTime";
+            tb.Properties.ClientSideEvents.Init = "SetWorkListEntryStartTime";
+        });
+    });
+    f.Items.Add(i =>
+    {
+        i.Name = "LockId";
+        i.FieldName = "LockId";
+        i.ClientVisible = false;
+        i.NestedExtension().TextBox(tb =>
+        {
+            tb.Name = "LockId";
+            tb.ReadOnly = true;
+        });
+    });
+    f.Items.Add(i =>
+    {
+        i.Name = "InPendingBucket";
+        i.FieldName = "InPendingBucket";
+        i.ClientVisible = false;
+        i.NestedExtension().CheckBox(cb =>
+        {
+            cb.Name = "InPendingBucket";
+        });
+    });
+    f.Items.AddGroupItem(maingrp =>
+    {
+        maingrp.ColumnCount = 3;
+        //maingrp.GridSettings.Breakpoints.Add(new LayoutBreakpoint() { Name = "S", ColumnCount = 1, MaxWidth = 1500 });
+        maingrp.ShowCaption = DefaultBoolean.False;
+        maingrp.GroupBoxDecoration = GroupBoxDecoration.None;
+        maingrp.Items.AddGroupItem(leftgrp =>
+        {
+            leftgrp.ColumnCount = 1;
+            leftgrp.GroupBoxDecoration = GroupBoxDecoration.None;
+            leftgrp.ShowCaption = DefaultBoolean.False;
+            leftgrp.Width = Unit.Percentage(40);
+            leftgrp.Items.AddGroupItem(g =>
+            {
+                g.ColumnCount = 3;
+
+                g.GroupBoxDecoration = GroupBoxDecoration.Box;
+                g.Caption = "Charge Information";
+                g.Items.Add(i =>
+                {
+                    i.Name = "ClaimID";
+                    i.FieldName = "ClaimID";
+                    i.Caption = "Claim No.";
+                    i.NestedExtension().TextBox(tb =>
+                    {
+                        tb.ReadOnly = true;
+
+                    });
+                });
+                g.Items.Add(i =>
+                {
+                    i.Name = "ChargeID";
+                    i.FieldName = "ChargeID"; //TODO:  Find out which field this is.
+                    i.Caption = "Charge No.";
+                    i.NestedExtension().TextBox(tb =>
+                    {
+                        //we send this one readonly as opposed to disabled so we can send the charge no to the controller
+                        //https://supportcenter.devexpress.com/ticket/details/q528713/how-to-get-model-values-for-the-disabled-textboxfor
+                        tb.ReadOnly = true;
+
+                    });
+                });
+                g.Items.Add(i =>
+                {
+                    i.Name = "dos"; //TODO:  find this column
+                    i.FieldName = "TransactionSrvDate";
+                    i.Caption = "DOS";
+                    i.NestedExtension().TextBox(tb =>
+                    {
+                        tb.Enabled = false;
+
+                        //remove the time from the display
+                        tb.PreRender = (s, e) =>
+                        {
+                            MVCxTextBox txt = s as MVCxTextBox;
+                            txt.Text = txt.Text.Split(' ')[0];
+                        };
+                        tb.ControlStyle.ForeColor = System.Drawing.Color.Black;
+                    });
+                });
+                g.Items.Add(i =>
+                {
+                    i.Name = "postdate"; //Date of Service
+                    i.FieldName = "ChargePostDate";
+                    i.Caption = "Post Date";
+                    i.NestedExtension().TextBox(tb =>
+                    {
+                        tb.Enabled = false;
+                        tb.PreRender = (s, e) =>
+                        {
+                            MVCxTextBox txt = s as MVCxTextBox;
+                            txt.Text = txt.Text.Split(' ')[0];
+                        };
+                        tb.ControlStyle.ForeColor = System.Drawing.Color.Black;
+                    });
+                });
+                g.Items.Add(i =>
+                {
+                    i.Name = "accountno";
+                    i.FieldName = "PatientID";
+                    i.Caption = "Account No.";
+                    i.NestedExtension().TextBox(tb =>
+                    {
+                        tb.Enabled = false;
+                        tb.ControlStyle.ForeColor = System.Drawing.Color.Black;
+                        //tb.Width = Unit.Percentage(65);
+                    });
+                });
+                g.Items.Add(i =>
+                {
+                    i.Name = "cpt";
+                    i.FieldName = "ProcCode";
+                    i.Caption = "CPT";
+                    i.NestedExtension().TextBox(tb =>
+                    {
+                        tb.Enabled = false;
+                        tb.ControlStyle.ForeColor = System.Drawing.Color.Black;
+                    });
+                });
+                g.Items.Add(i =>
+                {
+                    i.Name = "filedate";
+                    i.FieldName = "FileDate";
+                    i.Caption = "File Date";
+                    i.NestedExtension().TextBox(tb =>
+                    {
+                        tb.Enabled = false;
+                        tb.PreRender = (s, e) =>
+                        {
+                            MVCxTextBox txt = s as MVCxTextBox;
+                            txt.Text = txt.Text.Split(' ')[0];
+                        };
+                        tb.ControlStyle.ForeColor = System.Drawing.Color.Black;
+                    });
+                });
+                g.Items.Add(i =>
+                {
+                    i.Name = "patfname";
+                    i.FieldName = "PatientFirstName";
+                    i.Caption = "Pat. First Name";
+                    i.NestedExtension().TextBox(tb =>
+                    {
+                        tb.Enabled = false;
+                        tb.ControlStyle.ForeColor = System.Drawing.Color.Black;
+                        //tb.Width = Unit.Percentage(65);
+                    });
+                });
+                g.Items.Add(i =>
+                {
+                    i.Name = "pos";
+                    i.FieldName = "ClmsvcdeptID";
+                    i.Caption = "POS";
+                    i.NestedExtension().TextBox(tb =>
+                    {
+                        tb.Enabled = false;
+                        tb.ControlStyle.ForeColor = System.Drawing.Color.Black;
+                    });
+                });
+                g.Items.Add(i =>
+                {
+                    i.Name = "contract";
+                    i.FieldName = "Contract";
+                    i.Caption = "Contract";
+                    i.NestedExtension().TextBox(tb =>
+                    {
+                        tb.Enabled = false;
+                        tb.ControlStyle.ForeColor = System.Drawing.Color.Black;
+                    });
+                });
+                g.Items.Add(i =>
+                {
+                    i.Name = "patlname";
+                    i.FieldName = "PatientLastName";
+                    i.Caption = "Pat. Last Name";
+                    i.NestedExtension().TextBox(tb =>
+                    {
+                        tb.Enabled = false;
+                        tb.Width = Unit.Percentage(65);
+                        tb.ControlStyle.ForeColor = System.Drawing.Color.Black;
+                    });
+                });
+                g.Items.Add(i =>
+                {
+                    i.Name = "provcode";
+                    i.FieldName = "RndrngProviderID";
+                    i.Caption = "Prov Code";
+                    i.NestedExtension().TextBox(tb =>
+                    {
+                        tb.Enabled = false;
+                        tb.ControlStyle.ForeColor = System.Drawing.Color.Black;
+                    });
+                }); g.Items.Add(i =>
+                {
+                    i.Name = "pripolicyid";
+                    i.FieldName = "PatientPrimaryPolicyIDNumber";
+                    i.Caption = "Chg Pri Policy";
+                    i.NestedExtension().TextBox(tb =>
+                    {
+                        tb.Enabled = false;
+                        tb.ControlStyle.ForeColor = System.Drawing.Color.Black;
+                    });
+                });
+                g.Items.Add(i =>
+                {
+                    i.Name = "previouslyreviewed";
+                    i.FieldName = "PreviouslyReviewed"; //TODO - figure out this column or value
+                    i.Caption = "Previously Reviewed";
+                    i.NestedExtension().CheckBox(cb =>
+                    {
+                        cb.Enabled = false;
+                        cb.ControlStyle.ForeColor = System.Drawing.Color.Black;
+                    });
+                });
+            });
+            //Diagnoses Group
+            leftgrp.Items.AddGroupItem(g =>
+            {
+                g.ColumnCount = 3;
+                g.Caption = "Diagnosis Information";
+                //Readonly Diagnoses Group
+                g.Items.AddGroupItem(g1 =>
+                {
+                    g1.ColumnCount = 1;
+                    g1.Width = Unit.Percentage(30);
+                    g1.Caption = "Diagnoses (Read Only)";
+                    g1.GroupBoxDecoration = GroupBoxDecoration.HeadingLine;
+                    g1.Items.Add(i =>
+                    {
+                        i.Name = "diagcode1";
+                        i.FieldName = "ICD10ClaimDiagCode01";
+                        i.Caption = "Pri. Diag";
+                        i.NestedExtension().TextBox(tb =>
+                        {
+                            tb.Enabled = false;
+                            tb.ControlStyle.ForeColor = System.Drawing.Color.Black;
+                            tb.Width = Unit.Percentage(65);
+                        });
+                    });
+                    g1.Items.Add(i =>
+                    {
+                        i.Name = "diagcode2";
+                        i.FieldName = "ICD10ClaimDiagCode02";
+                        i.Caption = "2nd Diag";
+                        i.NestedExtension().TextBox(tb =>
+                        {
+                            tb.Enabled = false;
+                            tb.ControlStyle.ForeColor = System.Drawing.Color.Black;
+                            tb.Width = Unit.Percentage(65);
+                        });
+                    });
+                    g1.Items.Add(i =>
+                    {
+                        i.Name = "diagcode3";
+                        i.FieldName = "ICD10ClaimDiagCode03";
+                        i.Caption = "3rd Diag";
+                        i.NestedExtension().TextBox(tb =>
+                        {
+                            tb.Enabled = false;
+                            tb.ControlStyle.ForeColor = System.Drawing.Color.Black;
+                            tb.Width = Unit.Percentage(65);
+                        });
+                    });
+                    g1.Items.Add(i =>
+                    {
+                        i.Name = "diagcode4";
+                        i.FieldName = "ICD10ClaimDiagCode04";
+                        i.Caption = "4th Diag";
+                        i.NestedExtension().TextBox(tb =>
+                        {
+                            tb.Enabled = false;
+                            tb.ControlStyle.ForeColor = System.Drawing.Color.Black;
+                            tb.Width = Unit.Percentage(65);
+                        });
+                    });
+                    g1.Items.Add(i =>
+                    {
+                        i.Name = "diagcode5";
+                        i.FieldName = "ICD10ClaimDiagCode05";
+                        i.Caption = "5th Diag";
+                        i.NestedExtension().TextBox(tb =>
+                        {
+                            tb.Enabled = false;
+                            tb.ControlStyle.ForeColor = System.Drawing.Color.Black;
+                            tb.Width = Unit.Percentage(65);
+                        });
+                    });
+                    g1.Items.Add(i =>
+                    {
+                        i.Name = "diagcode6";
+                        i.FieldName = "ICD10ClaimDiagCode06";
+                        i.Caption = "6th Diag";
+                        i.NestedExtension().TextBox(tb =>
+                        {
+                            tb.Enabled = false;
+                            tb.ControlStyle.ForeColor = System.Drawing.Color.Black;
+                            tb.Width = Unit.Percentage(65);
+                        });
+                    });
+                    g1.Items.Add(i =>
+                    {
+                        i.Name = "diagcode7";
+                        i.FieldName = "ICD10ClaimDiagCode07";
+                        i.Caption = "7th Diag";
+                        i.NestedExtension().TextBox(tb =>
+                        {
+                            tb.Enabled = false;
+                            tb.ControlStyle.ForeColor = System.Drawing.Color.Black;
+                            tb.Width = Unit.Percentage(65);
+                        });
+                    });
+                    g1.Items.Add(i =>
+                    {
+                        i.Name = "diagcode8";
+                        i.FieldName = "ICD10ClaimDiagCode08";
+                        i.Caption = "8th Diag";
+                        i.NestedExtension().TextBox(tb =>
+                        {
+                            tb.Enabled = false;
+                            tb.ControlStyle.ForeColor = System.Drawing.Color.Black;
+                            tb.Width = Unit.Percentage(65);
+                        });
+                    });
+                    g1.Items.Add(i =>
+                    {
+                        i.Name = "diagcode9";
+                        i.FieldName = "ICD10ClaimDiagCode09";
+                        i.Caption = "9th Diag";
+                        i.NestedExtension().TextBox(tb =>
+                        {
+                            tb.Enabled = false;
+                            tb.ControlStyle.ForeColor = System.Drawing.Color.Black;
+                            tb.Width = Unit.Percentage(65);
+                        });
+                    });
+                    g1.Items.Add(i =>
+                    {
+                        i.Name = "diagcode10";
+                        i.FieldName = "ICD10ClaimDiagCode10";
+                        i.Caption = "10th Diag";
+                        i.NestedExtension().TextBox(tb =>
+                        {
+                            tb.Enabled = false;
+                            tb.ControlStyle.ForeColor = System.Drawing.Color.Black;
+                            tb.Width = Unit.Percentage(65);
+                        });
+                    });
+                    g1.Items.Add(i =>
+                    {
+                        i.Name = "diagcode11";
+                        i.FieldName = "ICD10ClaimDiagCode11";
+                        i.Caption = "11th Diag";
+                        i.NestedExtension().TextBox(tb =>
+                        {
+                            tb.Enabled = false;
+                            tb.ControlStyle.ForeColor = System.Drawing.Color.Black;
+                            tb.Width = Unit.Percentage(65);
+                        });
+                    });
+                    g1.Items.Add(i =>
+                    {
+                        i.Name = "diagcode12";
+                        i.FieldName = "ICD10ClaimDiagCode12";
+                        i.Caption = "12th Diag";
+                        i.NestedExtension().TextBox(tb =>
+                        {
+                            tb.Enabled = false;
+                            tb.ControlStyle.ForeColor = System.Drawing.Color.Black;
+                            tb.Width = Unit.Percentage(65);
+                        });
+                    });
+                });
+                //HCC Add/Remove Diagnoses Group
+                //HCC Diagnoses Added Group
+                g.Items.AddGroupItem(hccsubadd =>
+                {
+                    hccsubadd.Caption = "HCC Diagnoses Added";
+                    hccsubadd.GroupBoxDecoration = GroupBoxDecoration.HeadingLine;
+                    hccsubadd.CssClass = "hcc_diag_add";
+                    hccsubadd.Items.AddGroupItem(hccaddg1 =>
+                    {
+                        hccaddg1.ColumnCount = 2;
+                        hccaddg1.Width = Unit.Percentage(100);
+                        hccaddg1.CssClass = "hcc_diag_add";
+                        hccaddg1.GroupBoxDecoration = GroupBoxDecoration.None;
+                        hccaddg1.Items.Add(i =>
+                        {
+                            i.Name = "HCC_ADD_DX01";
+                            i.Caption = "DX01";
+                            i.FieldName = "HCC_ADD_DX01";
+                            i.NestedExtension().TextBox(tb =>
+                            {
+                                tb.Width = Unit.Percentage(100);
+                                tb.Properties.ClientSideEvents.LostFocus = "HccDiagLostFocus";
+                                tb.Properties.ClientSideEvents.Validation = "ValidateHccAddDiag";
+                                tb.Properties.ValidationSettings.ErrorDisplayMode = ErrorDisplayMode.Text;
+                                tb.Properties.ValidationSettings.ErrorTextPosition = ErrorTextPosition.Bottom;
+                            });
+                        });
+                        hccaddg1.Items.Add(i =>
+                        {
+                            i.Name = "HCC_ADD_DX01_Reason";
+                            i.FieldName = "HCC_ADD_DX01_Reason";
+                            i.ShowCaption = DefaultBoolean.False;
+                            i.NestedExtension().ComboBox(cb =>
+                            {
+                                cb.Properties.ClientInstanceName = "HCC_ADD_DX01_Reason";
+                                cb.Width = Unit.Pixel(83);
+                                cb.Properties.ClientSideEvents.ValueChanged = "hcc_reason_value_changed";
+                                cb.Properties.ValidationSettings.EnableCustomValidation = true;
+                                cb.Properties.ValidationSettings.ErrorDisplayMode = ErrorDisplayMode.None;
+                                cb.Properties.DataSource = Model.HccAddReasons;
+                                cb.ClientEnabled = false;
+                                cb.Properties.ClientSideEvents.Init = "init_hcc_reason";
+                            });
+                        });
+                    });
+                    hccsubadd.Items.AddGroupItem(hccaddg2 =>
+                    {
+                        hccaddg2.ColumnCount = 2;
+                        hccaddg2.Width = Unit.Percentage(100);
+                        hccaddg2.CssClass = "hcc_diag_add";
+                        hccaddg2.GroupBoxDecoration = GroupBoxDecoration.None;
+                        hccaddg2.Items.Add(i =>
+                        {
+                            i.Name = "HCC_ADD_DX02";
+                            i.Caption = "DX02";
+                            i.FieldName = "HCC_ADD_DX02";
+                            i.NestedExtension().TextBox(tb =>
+                            {
+                                tb.Width = Unit.Percentage(100);
+                                tb.Properties.ClientSideEvents.LostFocus = "HccDiagLostFocus";
+                                tb.Properties.ClientSideEvents.Validation = "ValidateHccAddDiag";
+                                tb.Properties.ValidationSettings.ErrorDisplayMode = ErrorDisplayMode.Text;
+                                tb.Properties.ValidationSettings.ErrorTextPosition = ErrorTextPosition.Bottom;
+                            });
+                        });
+                        hccaddg2.Items.Add(i =>
+                        {
+                            i.Name = "HCC_ADD_DX02_Reason";
+                            i.FieldName = "HCC_ADD_DX02_Reason";
+                            i.ShowCaption = DefaultBoolean.False;
+                            i.NestedExtension().ComboBox(cb =>
+                            {
+                                cb.Properties.ClientSideEvents.ValueChanged = "hcc_reason_value_changed";
+                                cb.Width = Unit.Pixel(83);
+                                cb.Properties.ValidationSettings.EnableCustomValidation = true;
+                                cb.Properties.ValidationSettings.ErrorDisplayMode = ErrorDisplayMode.None;
+                                cb.ControlStyle.CssClass = "HccAddDiag";
+                                cb.Properties.DataSource = Model.HccAddReasons;
+                                cb.ClientEnabled = false;
+                                cb.Properties.ClientSideEvents.Init = "init_hcc_reason";
+                            });
+                        });
+                    });
+                    hccsubadd.Items.AddGroupItem(hccaddg3 =>
+                    {
+                        hccaddg3.ColumnCount = 2;
+                        hccaddg3.Width = Unit.Percentage(100);
+                        hccaddg3.CssClass = "hcc_diag_add";
+                        hccaddg3.GroupBoxDecoration = GroupBoxDecoration.None;
+                        hccaddg3.Items.Add(i =>
+                        {
+                            i.Name = "HCC_ADD_DX03";
+                            i.Caption = "DX03";
+                            i.FieldName = "HCC_ADD_DX03";
+                            i.NestedExtension().TextBox(tb =>
+                            {
+                                tb.Width = Unit.Percentage(100);
+                                tb.Properties.ClientSideEvents.LostFocus = "HccDiagLostFocus";
+                                tb.Properties.ClientSideEvents.Validation = "ValidateHccAddDiag";
+                                tb.Properties.ValidationSettings.ErrorDisplayMode = ErrorDisplayMode.Text;
+                                tb.Properties.ValidationSettings.ErrorTextPosition = ErrorTextPosition.Bottom;
+                            });
+                        });
+                        hccaddg3.Items.Add(i =>
+                        {
+                            i.Name = "HCC_ADD_DX03_Reason";
+                            i.FieldName = "HCC_ADD_DX03_Reason";
+                            i.ShowCaption = DefaultBoolean.False;
+                            i.NestedExtension().ComboBox(cb =>
+                            {
+                                cb.Width = Unit.Pixel(83);
+                                cb.Properties.ClientSideEvents.ValueChanged = "hcc_reason_value_changed";
+                                cb.Properties.ValidationSettings.EnableCustomValidation = true;
+                                cb.Properties.ValidationSettings.ErrorDisplayMode = ErrorDisplayMode.None;
+                                cb.ControlStyle.CssClass = "HccAddDiag";
+                                cb.Properties.DataSource = Model.HccAddReasons;
+                                cb.ClientEnabled = false;
+                                cb.Properties.ClientSideEvents.Init = "init_hcc_reason";
+                            });
+                        });
+                    });
+                    hccsubadd.Items.AddGroupItem(hccaddg4 =>
+                    {
+                        hccaddg4.ColumnCount = 2;
+                        hccaddg4.Width = Unit.Percentage(100);
+                        hccaddg4.CssClass = "hcc_diag_add";
+                        hccaddg4.GroupBoxDecoration = GroupBoxDecoration.None;
+                        hccaddg4.Items.Add(i =>
+                        {
+                            i.Name = "HCC_ADD_DX04";
+                            i.Caption = "DX04";
+                            i.FieldName = "HCC_ADD_DX04";
+                            i.NestedExtension().TextBox(tb =>
+                            {
+                                tb.Width = Unit.Percentage(100);
+                                tb.Properties.ClientSideEvents.LostFocus = "HccDiagLostFocus";
+                                tb.Properties.ClientSideEvents.Validation = "ValidateHccAddDiag";
+                                tb.Properties.ValidationSettings.ErrorDisplayMode = ErrorDisplayMode.Text;
+                                tb.Properties.ValidationSettings.ErrorTextPosition = ErrorTextPosition.Bottom;
+                            });
+
+                        });
+                        hccaddg4.Items.Add(i =>
+                        {
+                            i.Name = "HCC_ADD_DX04_Reason";
+                            i.FieldName = "HCC_ADD_DX04_Reason";
+                            i.ShowCaption = DefaultBoolean.False;
+                            i.NestedExtension().ComboBox(cb =>
+                            {
+                                cb.Width = Unit.Pixel(83);
+                                cb.Properties.ClientSideEvents.ValueChanged = "hcc_reason_value_changed";
+                                cb.Properties.ValidationSettings.EnableCustomValidation = true;
+                                cb.Properties.ValidationSettings.ErrorDisplayMode = ErrorDisplayMode.None;
+                                cb.ControlStyle.CssClass = "HccAddDiag";
+                                cb.Properties.DataSource = Model.HccAddReasons;
+                                cb.ClientEnabled = false;
+                                cb.Properties.ClientSideEvents.Init = "init_hcc_reason";
+                            });
+                        });
+                    });
+                    hccsubadd.Items.AddGroupItem(hccaddg5 =>
+                    {
+                        hccaddg5.ColumnCount = 2;
+                        hccaddg5.Width = Unit.Percentage(100);
+                        hccaddg5.CssClass = "hcc_diag_add";
+                        hccaddg5.GroupBoxDecoration = GroupBoxDecoration.None;
+                        hccaddg5.Items.Add(i =>
+                        {
+                            i.Name = "HCC_ADD_DX05";
+                            i.Caption = "DX05";
+                            i.FieldName = "HCC_ADD_DX05";
+                            i.NestedExtension().TextBox(tb =>
+                            {
+                                tb.Width = Unit.Percentage(100);
+                                tb.Properties.ClientSideEvents.LostFocus = "HccDiagLostFocus";
+                                tb.Properties.ClientSideEvents.Validation = "ValidateHccAddDiag";
+                                tb.Properties.ValidationSettings.ErrorDisplayMode = ErrorDisplayMode.Text;
+                                tb.Properties.ValidationSettings.ErrorTextPosition = ErrorTextPosition.Bottom;
+                            });
+                        });
+                        hccaddg5.Items.Add(i =>
+                        {
+                            i.Name = "HCC_ADD_DX05_Reason";
+                            i.FieldName = "HCC_ADD_DX05_Reason";
+                            i.ShowCaption = DefaultBoolean.False;
+                            i.NestedExtension().ComboBox(cb =>
+                            {
+                                cb.Width = Unit.Pixel(83);
+                                cb.Properties.ClientSideEvents.ValueChanged = "hcc_reason_value_changed";
+                                cb.Properties.ValidationSettings.EnableCustomValidation = true;
+                                cb.Properties.ValidationSettings.ErrorDisplayMode = ErrorDisplayMode.None;
+                                cb.ControlStyle.CssClass = "HccAddDiag";
+                                cb.Properties.DataSource = Model.HccAddReasons;
+                                cb.ClientEnabled = false;
+                                cb.Properties.ClientSideEvents.Init = "init_hcc_reason";
+                            });
+                        });
+                    });
+                    hccsubadd.Items.AddGroupItem(hccaddg6 =>
+                    {
+                        hccaddg6.ColumnCount = 2;
+                        hccaddg6.Width = Unit.Percentage(100);
+                        hccaddg6.CssClass = "hcc_diag_add";
+                        hccaddg6.GroupBoxDecoration = GroupBoxDecoration.None;
+                        hccaddg6.Items.Add(i =>
+                        {
+                            i.Name = "HCC_ADD_DX06";
+                            i.Caption = "DX06";
+                            i.FieldName = "HCC_ADD_DX06";
+                            i.NestedExtension().TextBox(tb =>
+                            {
+                                tb.Width = Unit.Percentage(100);
+                                tb.Properties.ClientSideEvents.LostFocus = "HccDiagLostFocus";
+                                tb.Properties.ClientSideEvents.Validation = "ValidateHccAddDiag";
+                                tb.Properties.ValidationSettings.ErrorDisplayMode = ErrorDisplayMode.Text;
+                                tb.Properties.ValidationSettings.ErrorTextPosition = ErrorTextPosition.Bottom;
+                            });
+                        });
+                        hccaddg6.Items.Add(i =>
+                        {
+                            i.Name = "HCC_ADD_DX06_Reason";
+                            i.FieldName = "HCC_ADD_DX06_Reason";
+                            i.ShowCaption = DefaultBoolean.False;
+                            i.NestedExtension().ComboBox(cb =>
+                            {
+                                cb.Properties.ClientSideEvents.ValueChanged = "hcc_reason_value_changed";
+                                cb.Width = Unit.Pixel(83);
+                                cb.Properties.ValidationSettings.EnableCustomValidation = true;
+                                cb.Properties.ValidationSettings.ErrorDisplayMode = ErrorDisplayMode.None;
+                                cb.ControlStyle.CssClass = "HccAddDiag";
+                                cb.Properties.DataSource = Model.HccAddReasons;
+                                cb.ClientEnabled = false;
+                                cb.Properties.ClientSideEvents.Init = "init_hcc_reason";
+                            });
+                        });
+                    });
+                    hccsubadd.Items.AddGroupItem(hccaddg7 =>
+                    {
+                        hccaddg7.ColumnCount = 2;
+                        hccaddg7.Width = Unit.Percentage(100);
+                        hccaddg7.CssClass = "hcc_diag_add";
+                        hccaddg7.GroupBoxDecoration = GroupBoxDecoration.None;
+                        hccaddg7.Items.Add(i =>
+                        {
+                            i.Name = "HCC_ADD_DX07";
+                            i.Caption = "DX07";
+                            i.FieldName = "HCC_ADD_DX07";
+                            i.NestedExtension().TextBox(tb =>
+                            {
+                                tb.Width = Unit.Percentage(100);
+                                tb.Properties.ClientSideEvents.LostFocus = "HccDiagLostFocus";
+                                tb.Properties.ClientSideEvents.Validation = "ValidateHccAddDiag";
+                                tb.Properties.ValidationSettings.ErrorDisplayMode = ErrorDisplayMode.Text;
+                                tb.Properties.ValidationSettings.ErrorTextPosition = ErrorTextPosition.Bottom;
+                            });
+                        });
+                        hccaddg7.Items.Add(i =>
+                        {
+                            i.Name = "HCC_ADD_DX07_Reason";
+                            i.FieldName = "HCC_ADD_DX07_Reason";
+                            i.ShowCaption = DefaultBoolean.False;
+                            i.NestedExtension().ComboBox(cb =>
+                            {
+                                cb.Properties.ClientSideEvents.ValueChanged = "hcc_reason_value_changed";
+                                cb.Width = Unit.Pixel(83);
+                                cb.Properties.ValidationSettings.EnableCustomValidation = true;
+                                cb.Properties.ValidationSettings.ErrorDisplayMode = ErrorDisplayMode.None;
+                                cb.ControlStyle.CssClass = "HccAddDiag";
+                                cb.Properties.DataSource = Model.HccAddReasons;
+                                cb.ClientEnabled = false;
+                                cb.Properties.ClientSideEvents.Init = "init_hcc_reason";
+                            });
+                        });
+                    });
+                    hccsubadd.Items.AddGroupItem(hccaddg8 =>
+                    {
+                        hccaddg8.ColumnCount = 2;
+                        hccaddg8.Width = Unit.Percentage(100);
+                        hccaddg8.CssClass = "hcc_diag_add";
+                        hccaddg8.GroupBoxDecoration = GroupBoxDecoration.None;
+                        hccaddg8.Items.Add(i =>
+                        {
+                            i.Name = "HCC_ADD_DX08";
+                            i.Caption = "DX08";
+                            i.FieldName = "HCC_ADD_DX08";
+                            i.NestedExtension().TextBox(tb =>
+                            {
+                                tb.Width = Unit.Percentage(100);
+                                tb.Properties.ClientSideEvents.LostFocus = "HccDiagLostFocus";
+                                tb.Properties.ClientSideEvents.Validation = "ValidateHccAddDiag";
+                                tb.Properties.ValidationSettings.ErrorDisplayMode = ErrorDisplayMode.Text;
+                                tb.Properties.ValidationSettings.ErrorTextPosition = ErrorTextPosition.Bottom;
+                            });
+                        });
+                        hccaddg8.Items.Add(i =>
+                        {
+                            i.Name = "HCC_ADD_DX08_Reason";
+                            i.FieldName = "HCC_ADD_DX08_Reason";
+                            i.ShowCaption = DefaultBoolean.False;
+                            i.NestedExtension().ComboBox(cb =>
+                            {
+                                cb.Properties.ClientSideEvents.ValueChanged = "hcc_reason_value_changed";
+                                cb.Width = Unit.Pixel(83);
+                                cb.Properties.ValidationSettings.EnableCustomValidation = true;
+                                cb.Properties.ValidationSettings.ErrorDisplayMode = ErrorDisplayMode.None;
+                                cb.ControlStyle.CssClass = "HccAddDiag";
+                                cb.Properties.DataSource = Model.HccAddReasons;
+                                cb.ClientEnabled = false;
+                                cb.Properties.ClientSideEvents.Init = "init_hcc_reason";
+                            });
+                        });
+                    });
+                    hccsubadd.Items.AddGroupItem(hccaddg9 =>
+                    {
+                        hccaddg9.ColumnCount = 2;
+                        hccaddg9.Width = Unit.Percentage(100);
+                        hccaddg9.CssClass = "hcc_diag_add";
+                        hccaddg9.GroupBoxDecoration = GroupBoxDecoration.None;
+                        hccaddg9.Items.Add(i =>
+                        {
+                            i.Name = "HCC_ADD_DX09";
+                            i.Caption = "DX09";
+                            i.FieldName = "HCC_ADD_DX09";
+                            i.NestedExtension().TextBox(tb =>
+                            {
+                                tb.Width = Unit.Percentage(100);
+                                tb.Properties.ClientSideEvents.LostFocus = "HccDiagLostFocus";
+                                tb.Properties.ClientSideEvents.Validation = "ValidateHccAddDiag";
+                                tb.Properties.ValidationSettings.ErrorDisplayMode = ErrorDisplayMode.Text;
+                                tb.Properties.ValidationSettings.ErrorTextPosition = ErrorTextPosition.Bottom;
+                            });
+                        });
+                        hccaddg9.Items.Add(i =>
+                        {
+                            i.Name = "HCC_ADD_DX09_Reason";
+                            i.FieldName = "HCC_ADD_DX09_Reason";
+                            i.ShowCaption = DefaultBoolean.False;
+                            i.NestedExtension().ComboBox(cb =>
+                            {
+                                cb.Properties.ClientSideEvents.ValueChanged = "hcc_reason_value_changed";
+                                cb.Width = Unit.Pixel(83);
+                                cb.Properties.ValidationSettings.EnableCustomValidation = true;
+                                cb.Properties.ValidationSettings.ErrorDisplayMode = ErrorDisplayMode.None;
+                                cb.ControlStyle.CssClass = "HccAddDiag";
+                                cb.Properties.DataSource = Model.HccAddReasons;
+                                cb.ClientEnabled = false;
+                                cb.Properties.ClientSideEvents.Init = "init_hcc_reason";
+                            });
+                        });
+                    });
+                    hccsubadd.Items.AddGroupItem(hccaddg10 =>
+                    {
+                        hccaddg10.ColumnCount = 2;
+                        hccaddg10.Width = Unit.Percentage(100);
+                        hccaddg10.CssClass = "hcc_diag_add";
+                        hccaddg10.GroupBoxDecoration = GroupBoxDecoration.None;
+                        hccaddg10.Items.Add(i =>
+                        {
+                            i.Name = "HCC_ADD_DX10";
+                            i.Caption = "DX10";
+                            i.FieldName = "HCC_ADD_DX10";
+                            i.NestedExtension().TextBox(tb =>
+                            {
+                                tb.Width = Unit.Percentage(100);
+                                tb.Properties.ClientSideEvents.LostFocus = "HccDiagLostFocus";
+                                tb.Properties.ClientSideEvents.Validation = "ValidateHccAddDiag";
+                                tb.Properties.ValidationSettings.ErrorDisplayMode = ErrorDisplayMode.Text;
+                                tb.Properties.ValidationSettings.ErrorTextPosition = ErrorTextPosition.Bottom;
+                            });
+                        });
+                        hccaddg10.Items.Add(i =>
+                        {
+                            i.Name = "HCC_ADD_DX10_Reason";
+                            i.FieldName = "HCC_ADD_DX10_Reason";
+                            i.ShowCaption = DefaultBoolean.False;
+                            i.NestedExtension().ComboBox(cb =>
+                            {
+                                cb.Properties.ClientSideEvents.ValueChanged = "hcc_reason_value_changed";
+                                cb.Width = Unit.Pixel(83);
+                                cb.Properties.ValidationSettings.EnableCustomValidation = true;
+                                cb.Properties.ValidationSettings.ErrorDisplayMode = ErrorDisplayMode.None;
+                                cb.ControlStyle.CssClass = "HccAddDiag";
+                                cb.Properties.DataSource = Model.HccAddReasons;
+                                cb.ClientEnabled = false;
+                                cb.Properties.ClientSideEvents.Init = "init_hcc_reason";
+                            });
+                        });
+                    });
+                    hccsubadd.Items.AddGroupItem(hccaddg11 =>
+                    {
+                        hccaddg11.ColumnCount = 2;
+                        hccaddg11.Width = Unit.Percentage(100);
+                        hccaddg11.CssClass = "hcc_diag_add";
+                        hccaddg11.GroupBoxDecoration = GroupBoxDecoration.None;
+                        hccaddg11.Items.Add(i =>
+                        {
+                            i.Name = "HCC_ADD_DX11";
+                            i.Caption = "DX11";
+                            i.FieldName = "HCC_ADD_DX11";
+                            i.NestedExtension().TextBox(tb =>
+                            {
+                                tb.Width = Unit.Percentage(100);
+                                tb.Properties.ClientSideEvents.LostFocus = "HccDiagLostFocus";
+                                tb.Properties.ClientSideEvents.Validation = "ValidateHccAddDiag";
+                                tb.Properties.ValidationSettings.ErrorDisplayMode = ErrorDisplayMode.Text;
+                                tb.Properties.ValidationSettings.ErrorTextPosition = ErrorTextPosition.Bottom;
+                            });
+                        });
+                        hccaddg11.Items.Add(i =>
+                        {
+                            i.Name = "HCC_ADD_DX11_Reason";
+                            i.FieldName = "HCC_ADD_DX11_Reason";
+                            i.ShowCaption = DefaultBoolean.False;
+                            i.NestedExtension().ComboBox(cb =>
+                            {
+                                cb.Properties.ClientSideEvents.ValueChanged = "hcc_reason_value_changed";
+                                cb.Width = Unit.Pixel(83);
+                                cb.Properties.ValidationSettings.EnableCustomValidation = true;
+                                cb.Properties.ValidationSettings.ErrorDisplayMode = ErrorDisplayMode.None;
+                                cb.ControlStyle.CssClass = "HccAddDiag";
+                                cb.Properties.DataSource = Model.HccAddReasons;
+                                cb.ClientEnabled = false;
+                                cb.Properties.ClientSideEvents.Init = "init_hcc_reason";
+                            });
+                        });
+                    });
+                    hccsubadd.Items.AddGroupItem(hccaddg12 =>
+                    {
+                        hccaddg12.ColumnCount = 2;
+                        hccaddg12.Width = Unit.Percentage(100);
+                        hccaddg12.CssClass = "hcc_diag_add";
+                        hccaddg12.GroupBoxDecoration = GroupBoxDecoration.None;
+                        hccaddg12.Items.Add(i =>
+                        {
+                            i.Name = "HCC_ADD_DX12";
+                            i.Caption = "DX12";
+                            i.FieldName = "HCC_ADD_DX12";
+                            i.NestedExtension().TextBox(tb =>
+                            {
+                                tb.Width = Unit.Percentage(100);
+                                tb.Properties.ClientSideEvents.LostFocus = "HccDiagLostFocus";
+                                tb.Properties.ClientSideEvents.Validation = "ValidateHccAddDiag";
+                                tb.Properties.ValidationSettings.ErrorDisplayMode = ErrorDisplayMode.Text;
+                                tb.Properties.ValidationSettings.ErrorTextPosition = ErrorTextPosition.Bottom;
+                            });
+                        });
+                        hccaddg12.Items.Add(i =>
+                        {
+                            i.Name = "HCC_ADD_DX12_Reason";
+                            i.FieldName = "HCC_ADD_DX12_Reason";
+                            i.ShowCaption = DefaultBoolean.False;
+                            i.NestedExtension().ComboBox(cb =>
+                            {
+                                cb.Properties.ClientSideEvents.ValueChanged = "hcc_reason_value_changed";
+                                cb.Width = Unit.Pixel(83);
+                                cb.Properties.ValidationSettings.EnableCustomValidation = true;
+                                cb.Properties.ValidationSettings.ErrorDisplayMode = ErrorDisplayMode.None;
+                                cb.ControlStyle.CssClass = "HccAddDiag";
+                                cb.Properties.DataSource = Model.HccAddReasons;
+                                cb.ClientEnabled = false;
+                                cb.Properties.ClientSideEvents.Init = "init_hcc_reason";
+                            });
+                        });
+                    });
+                });
+                //HCC Diagnoses Removed Group
+
+
+                g.Items.AddGroupItem(g3 =>
+                {
+                    g3.Width = Unit.Percentage(30);
+                    g3.GroupBoxDecoration = GroupBoxDecoration.None;
+                    g3.ShowCaption = DefaultBoolean.False;
+                    g3.Items.AddGroupItem(hccsubrem =>
+                    {
+                        hccsubrem.Caption = "HCC Diagnoses Removed";
+                        hccsubrem.GroupBoxDecoration = GroupBoxDecoration.HeadingLine;
+                        hccsubrem.Items.Add(i =>
+                        {
+                            i.Name = "HCC_REM_DX01";
+                            i.Caption = "HCC DX Rem 01";
+                            i.FieldName = "HCC_REM_DX01";
+                            i.NestedExtension().TextBox(tb =>
+                            {
+                                tb.Width = Unit.Percentage(100);
+                                tb.Properties.ClientSideEvents.LostFocus = "HccDiagLostFocus";
+                                tb.Properties.ClientSideEvents.Validation = "ValidateHccRemDiag";
+                                tb.Properties.ValidationSettings.ErrorDisplayMode = ErrorDisplayMode.Text;
+                                tb.Properties.ValidationSettings.ErrorTextPosition = ErrorTextPosition.Bottom;
+                            });
+                        });
+                        hccsubrem.Items.Add(i =>
+                        {
+                            i.Name = "HCC_REM_DX02";
+                            i.Caption = "HCC DX Rem 02";
+                            i.FieldName = "HCC_REM_DX02";
+                            i.NestedExtension().TextBox(tb =>
+                            {
+                                tb.Width = Unit.Percentage(100);
+                                tb.Properties.ClientSideEvents.LostFocus = "HccDiagLostFocus";
+                                tb.Properties.ClientSideEvents.Validation = "ValidateHccRemDiag";
+                                tb.Properties.ValidationSettings.ErrorDisplayMode = ErrorDisplayMode.Text;
+                                tb.Properties.ValidationSettings.ErrorTextPosition = ErrorTextPosition.Bottom;
+                            });
+                        });
+                        hccsubrem.Items.Add(i =>
+                        {
+                            i.Name = "HCC_REM_DX03";
+                            i.Caption = "HCC DX Rem 03";
+                            i.FieldName = "HCC_REM_DX03";
+                            i.NestedExtension().TextBox(tb =>
+                            {
+                                tb.Width = Unit.Percentage(100);
+                                tb.Properties.ClientSideEvents.LostFocus = "HccDiagLostFocus";
+                                tb.Properties.ClientSideEvents.Validation = "ValidateHccRemDiag";
+                                tb.Properties.ValidationSettings.ErrorDisplayMode = ErrorDisplayMode.Text;
+                                tb.Properties.ValidationSettings.ErrorTextPosition = ErrorTextPosition.Bottom;
+                            });
+                        });
+                        hccsubrem.Items.Add(i =>
+                        {
+                            i.Name = "HCC_REM_DX04";
+                            i.Caption = "HCC DX Rem 04";
+                            i.FieldName = "HCC_REM_DX04";
+                            i.NestedExtension().TextBox(tb =>
+                            {
+                                tb.Width = Unit.Percentage(100);
+                                tb.Properties.ClientSideEvents.LostFocus = "HccDiagLostFocus";
+                                tb.Properties.ClientSideEvents.Validation = "ValidateHccRemDiag";
+                                tb.Properties.ValidationSettings.ErrorDisplayMode = ErrorDisplayMode.Text;
+                                tb.Properties.ValidationSettings.ErrorTextPosition = ErrorTextPosition.Bottom;
+                            });
+                        });
+                    });
+                    g3.Items.AddGroupItem(diagrem =>
+                    {
+                        diagrem.ColumnCount = 1;
+                        diagrem.GroupBoxDecoration = GroupBoxDecoration.HeadingLine;
+                        diagrem.Caption = "Non-HCC Diagnoses Removed";
+                        diagrem.Items.Add(i =>
+                        {
+                            i.Name = "NonHCC_REM_DX01";
+                            i.FieldName = "NonHCC_REM_DX01";
+                            i.Caption = "DX Removed 01";
+                            i.Width = Unit.Percentage(100);
+                            i.NestedExtension().TextBox(tb =>
+                            {
+                                tb.Width = Unit.Percentage(100);
+                                tb.Properties.ClientSideEvents.LostFocus = "NonHccDiagLostFocus";
+                            });
+                        });
+                        diagrem.Items.Add(i =>
+                        {
+                            i.Name = "NonHCC_REM_DX02";
+                            i.FieldName = "NonHCC_REM_DX02";
+                            i.Caption = "DX Removed 02";
+                            i.Width = Unit.Percentage(100);
+                            i.NestedExtension().TextBox(tb =>
+                            {
+                                tb.Width = Unit.Percentage(100);
+                                tb.Properties.ClientSideEvents.LostFocus = "NonHccDiagLostFocus";
+                            });
+                        });
+                        diagrem.Items.Add(i =>
+                        {
+                            i.Name = "NonHCC_REM_DX03";
+                            i.FieldName = "NonHCC_REM_DX03";
+                            i.Caption = "DX Removed 03";
+                            i.Width = Unit.Percentage(100);
+                            i.NestedExtension().TextBox(tb =>
+                            {
+                                tb.Width = Unit.Percentage(100);
+                                tb.Properties.ClientSideEvents.LostFocus = "NonHccDiagLostFocus";
+                            });
+                        });
+                        diagrem.Items.Add(i =>
+                        {
+                            i.Name = "NonHCC_REM_DX04";
+                            i.FieldName = "NonHCC_REM_DX04";
+                            i.Caption = "DX Removed 04";
+                            i.Width = Unit.Percentage(100);
+                            i.NestedExtension().TextBox(tb =>
+                            {
+                                tb.Width = Unit.Percentage(100);
+                                tb.Properties.ClientSideEvents.LostFocus = "NonHccDiagLostFocus";
+
+                            });
+                        });
+                    });
+                    g3.Items.AddGroupItem(diagadded =>
+                    {
+                        diagadded.ColumnCount = 1;
+                        diagadded.GroupBoxDecoration = GroupBoxDecoration.HeadingLine;
+                        diagadded.Caption = "Non HCC Diagnoses Added";
+                        diagadded.Items.Add(i =>
+                        {
+                            i.Name = "NonHCC_ADD_DX01";
+                            i.FieldName = "NonHCC_ADD_DX01";
+                            i.Caption = "Non HCC DX01";
+                            i.Width = Unit.Percentage(100);
+                            i.NestedExtension().TextBox(tb =>
+                            {
+                                tb.Width = Unit.Percentage(100);
+                                tb.Properties.ClientSideEvents.LostFocus = "NonHccDiagLostFocus";
+
+                            });
+                        });
+                        diagadded.Items.Add(i =>
+                        {
+                            i.Name = "NonHCC_ADD_DX02";
+                            i.FieldName = "NonHCC_ADD_DX02";
+                            i.Caption = "Non HCC DX02";
+                            i.Width = Unit.Percentage(100);
+                            i.NestedExtension().TextBox(tb =>
+                            {
+                                tb.Width = Unit.Percentage(100);
+                                tb.Properties.ClientSideEvents.LostFocus = "NonHccDiagLostFocus";
+
+                            });
+                        });
+                        diagadded.Items.Add(i =>
+                        {
+                            i.Name = "NonHCC_ADD_DX03";
+                            i.FieldName = "NonHCC_ADD_DX03";
+                            i.Caption = "Non HCC DX03";
+                            i.Width = Unit.Percentage(100);
+                            i.NestedExtension().TextBox(tb =>
+                            {
+                                tb.Width = Unit.Percentage(100);
+                                tb.Properties.ClientSideEvents.LostFocus = "NonHccDiagLostFocus";
+
+                            });
+                        });
+                        diagadded.Items.Add(i =>
+                        {
+                            i.Name = "NonHCC_ADD_DX04";
+                            i.FieldName = "NonHCC_ADD_DX04";
+                            i.Caption = "Non HCC DX04";
+                            i.Width = Unit.Percentage(100);
+                            i.NestedExtension().TextBox(tb =>
+                            {
+                                tb.Width = Unit.Percentage(100);
+                                tb.Properties.ClientSideEvents.LostFocus = "NonHccDiagLostFocus";
+                            });
+                        });
+                    });
+                });
+            });
+        });
+        maingrp.Items.AddGroupItem(middlegrp =>
+        {
+            middlegrp.GroupBoxDecoration = GroupBoxDecoration.None;
+            middlegrp.ShowCaption = DefaultBoolean.False;
+            middlegrp.ColumnCount = 1;
+            middlegrp.Width = Unit.Percentage(30);
+            middlegrp.Items.Add(i =>
+            {
+                i.Name = "ClaimHCC_V2x_Count";
+                i.FieldName = "ClaimHCC_V2x_Count";
+                i.Caption = "Total HCCs Submitted on claim by site".ToUpper();
+                i.CssClass = "mb-3";
+                i.NestedExtension().Label(l =>
+                {
+                    l.ControlStyle.Font.Bold = true;
+                });
+            });
+            middlegrp.Items.AddGroupItem(actions =>
+            {
+                actions.Caption = "Actions Taken/Review Info";
+                actions.Items.Add(i =>
+                {
+                    i.Name = "hccactiondummy";
+                    i.ShowCaption = DefaultBoolean.False;
+                    i.NestedExtension().Label(l =>
+                    {
+                        l.Text = "No HCC Actions Taken";
+                    });
+                });
+                actions.Items.Add(i =>
+                {
+                    i.Name = "RptCat_HCC_Add_Count";
+                    i.FieldName = "RptCat_HCC_Add_Count";
+                    i.ClientVisible = false;
+                    i.Caption = "HCC Diagnoses Added";
+                    i.NestedExtension().TextBox(tb =>
+                    {
+                        tb.Name = "RptCat_HCC_Add_Count";
+                        tb.Width = Unit.Pixel(35);
+                        tb.ReadOnly = true;
+                        tb.Properties.ClientSideEvents.Init = "hcc_action_init";
+                    });
+                });
+                actions.Items.Add(i =>
+                {
+                    i.Name = "RptCat_HCC_Remove_Count";
+                    i.FieldName = "RptCat_HCC_Remove_Count";
+                    i.ClientVisible = false;
+                    i.Caption = "HCC Diagnoses Removed";
+                    i.NestedExtension().TextBox(tb =>
+                    {
+                        tb.Name = "RptCat_HCC_Remove_Count";
+                        tb.Width = Unit.Pixel(35);
+                        tb.ReadOnly = true;
+                        tb.Properties.ClientSideEvents.Init = "hcc_action_init";
+                    });
+                });
+                actions.Items.Add(i =>
+                {
+                    i.Name = "nonhccactiondummy";
+                    i.ShowCaption = DefaultBoolean.False;
+                    i.NestedExtension().Label(l =>
+                    {
+                        l.Text = "No Non-HCC Actions Taken";
+                    });
+                });
+                actions.Items.Add(i =>
+                {
+                    i.Name = "RptCat_NonHCC_Nochange";
+                    i.FieldName = "RptCat_NonHCC_Change";
+                    i.ClientVisible = false;
+                    i.Caption = "Non-HCC Changes";
+                    i.NestedExtension().CheckBox(cb =>
+                    {
+                        cb.Name = "RptCat_NonHCC_Change";
+                        cb.ReadOnly = true;
+                    });
+                });
+                actions.Items.Add(i =>
+                {
+                    i.Name = "RptCat_HCC_Add_New";
+                    i.FieldName = "RptCat_HCC_Add_New";
+                    i.Caption = "HCC Add. New";
+                    i.NestedExtension().TextBox(tb =>
+                    {
+                        tb.Width = Unit.Percentage(20);
+                        tb.ReadOnly = true;
+                    });
+                });
+                actions.Items.Add(i =>
+                {
+                    i.Name = "RptCat_HCC_Add_Specificity";
+                    i.FieldName = "RptCat_HCC_Add_Specificity";
+                    i.Caption = "HCC Add. Specificity";
+                    i.NestedExtension().TextBox(tb =>
+                    {
+                        tb.Width = Unit.Percentage(20);
+                        tb.ReadOnly = true;
+                    });
+                });
+                actions.Items.Add(i =>
+                {
+                    i.Name = "RptCat_ChargeErrorCorrected";
+                    i.FieldName = "RptCat_ChargeErrorCorrected";
+                    i.Caption = "Charge Error Corrected";
+                    i.NestedExtension().CheckBox(cb =>
+                    {
+                        cb.PreRender = (s, e) =>
+                        {
+                            ASPxCheckBox box = (ASPxCheckBox)s;
+                            box.TextAlign = TextAlign.Left;
+                        };
+                    });
+                });
+                actions.Items.Add(i =>
+                {
+                    i.Name = "RptCat_Hold";
+                    i.FieldName = "RptCat_Hold";
+                    i.Caption = "Hold";
+                    i.NestedExtension().CheckBox(cb =>
+                    {
+                        cb.Name = "RptCat_Hold";
+                        cb.Properties.ClientSideEvents.CheckedChanged = "hold_chckbx_change";
+                    });
+                });
+                actions.Items.Add(i =>
+                {
+                    i.Name = "HCCImpacted";
+                    i.FieldName = "HCCImpacted";
+                    i.Caption = "HCC Impacted";
+                    i.NestedExtension().CheckBox(cb =>
+                    {
+                        cb.PreRender = (s, e) =>
+                        {
+                            ASPxCheckBox box = (ASPxCheckBox)s;
+                            box.TextAlign = TextAlign.Left;
+                        };
+                    });
+                });
+                actions.Items.Add(i =>
+                {
+                    i.Name = "ReviewDate";
+                    i.FieldName = "ReviewDate";
+                    i.Caption = "Review Date";
+                    i.NestedExtension().DateEdit(de =>
+                    {
+                        de.Name = "ReviewDate";
+                        //de.Properties.ClientSideEvents.Init = "SetDefaultDate";
+                    });
+                });
+                actions.Items.Add(i =>
+                {
+                    i.Name = "reviewer";
+                    i.FieldName = "Reviewer";
+                    i.Caption = "Reviewer Assigned";
+                    i.NestedExtension().ComboBox(cb =>
+                    {
+                        cb.Properties.TextField = "DisplayName";
+                        cb.Properties.ValueField = "DisplayName";
+                        cb.Properties.ValueType = typeof(string);
+                        cb.Properties.DataSource = Model.ActiveUsers;
+                    });
+                });
+            });
+            middlegrp.Items.AddGroupItem(holdpanel =>
+            {
+            holdpanel.Name = "hold_panel";
+            holdpanel.Caption = "Hold Values";
+            holdpanel.GroupBoxDecoration = GroupBoxDecoration.Box;
+            holdpanel.ClientVisible = false;
+            holdpanel.Items.Add(i =>
+            {
+                i.Name = "Hold_Reason";
+                i.FieldName = "Hold_Reason";
+                i.Caption = "Reason";
+                i.NestedExtension().ComboBox(cb =>
+                {
+                    cb.Properties.ValidationSettings.EnableCustomValidation = true;
+                    cb.Properties.Items.Add("Escalated");
+                    cb.Properties.Items.Add("Pended");
+                });
+            });
+
+            holdpanel.Items.AddGroupItem(notesgrp =>
+            {
+                notesgrp.ColumnCount = 1;
+                notesgrp.GroupBoxDecoration = GroupBoxDecoration.HeadingLine;
+                notesgrp.Caption = "Hold Notes";  //TODO - Find this column
+                notesgrp.Items.Add(i =>
+                {
+                    i.Name = "Hold_Note";
+                    i.FieldName = "Hold_Note";
+                    i.ShowCaption = DefaultBoolean.False;
+                    i.Width = Unit.Percentage(100);
+                    i.NestedExtension().Memo(m =>
+                    {
+                        m.Width = Unit.Percentage(100);
+                        m.Height = Unit.Pixel(120);
+                        m.Properties.MaxLength = 255;
+                    });
+                });
+            });
+
+            holdpanel.Items.AddGroupItem(notesgrp =>
+            {
+                notesgrp.ColumnCount = 1;
+                notesgrp.GroupBoxDecoration = GroupBoxDecoration.HeadingLine;
+                notesgrp.Caption = "Provider Response";  //TODO - Find this column
+                notesgrp.Items.Add(i =>
+                {
+                    i.Name = "Provider_Response";
+                    i.FieldName = "Provider_Response";
+                    i.ShowCaption = DefaultBoolean.False;
+                    i.Width = Unit.Percentage(100);
+                    i.NestedExtension().Memo(m =>
+                    {
+                        m.Width = Unit.Percentage(100);
+                        m.Height = Unit.Pixel(120);
+                        m.Properties.MaxLength = 255;
+                    });
+                });
+            });
+
+            holdpanel.Items.Add(i =>
+            {
+                i.Name = "AddtoIssueListDate";
+                i.FieldName = "AddtoIssueListDate";
+                i.Caption = "Add to Issue List Date";
+                i.NestedExtension().DateEdit(de =>
+                {
+                    de.Properties.ValidationSettings.EnableCustomValidation = true;
+                });
+            });
+            holdpanel.Items.Add(i =>
+            {
+                i.Name = "AddtoIssueListBy";
+                i.FieldName = "AddtoIssueListBy";
+                i.Caption = "Add to Issue List by";
+                i.NestedExtension().ComboBox(cb =>
+                {
+                    cb.Properties.ValidationSettings.EnableCustomValidation = true;
+                    cb.Properties.TextField = "DisplayName";
+                    cb.Properties.ValueField = "DisplayName";
+                    cb.Properties.ValueType = typeof(string);
+                    cb.Properties.DataSource = Model.ActiveUsers;
+                });
+            });
+
+
+            holdpanel.Items.Add(i =>
+            {
+                i.Name = "IssueDXCode01";
+                i.FieldName = "IssueDXCode01";
+                i.Caption = "Issue DX Code 1";
+                i.NestedExtension().TextBox(tb =>
+                {
+
+                });
+            });
+            holdpanel.Items.Add(i =>
+            {
+                i.Name = "IssueCategory01";
+                i.FieldName = "IssueCategory01";
+                i.NestedExtension().ComboBox(cb =>
+                {
+                    cb.Properties.DataSource = Model.IssueCategories;
+                });
+            });
+            holdpanel.Items.Add(i =>
+            {
+                i.Name = "IssueDisposition";
+                i.FieldName = "IssueDisposition";
+                i.Caption = "Issue Disposition";
+                i.NestedExtension().ComboBox(cb =>
+                {
+                    cb.Properties.Items.Add("Charge Released w/ Code");
+                    cb.Properties.Items.Add("Charge Released w/out Code");
+                });
+            });
+            holdpanel.Items.Add(i =>
+            {
+                i.Name = "IssueDXCode02";
+                i.FieldName = "IssueDXCode02";
+                i.Caption = "Issue DX Code 2";
+                i.NestedExtension().TextBox(tb =>
+                {
+
+                });
+            });
+            holdpanel.Items.Add(i =>
+            {
+                i.Name = "IssueCategory02";
+                i.FieldName = "IssueCategory02";
+                i.NestedExtension().ComboBox(cb =>
+                {
+                    cb.Properties.DataSource = Model.IssueCategories;
+                });
+            });
+            holdpanel.Items.Add(i =>
+            {
+                i.Name = "IssueDisposition2";
+                i.FieldName = "IssueDisposition2";
+                i.Caption = "Issue Disposition 2";
+                i.NestedExtension().ComboBox(cb =>
+                {
+                    cb.Properties.Items.Add("Charge Released w/ Code");
+                    cb.Properties.Items.Add("Charge Released w/out Code");
+                });
+            });
+            holdpanel.Items.Add(i =>
+            {
+                i.Name = "IssueDXCode03";
+                i.FieldName = "IssueDXCode03";
+                i.Caption = "Issue DX Code 3";
+                i.NestedExtension().TextBox(tb =>
+                {
+
+                });
+            });
+            holdpanel.Items.Add(i =>
+            {
+                i.Name = "IssueCategory03";
+                i.FieldName = "IssueCategory03";
+                i.NestedExtension().ComboBox(cb =>
+                {
+                    cb.Properties.DataSource = Model.IssueCategories;
+                });
+            });
+            holdpanel.Items.Add(i =>
+            {
+                i.Name = "IssueDisposition3";
+                i.FieldName = "IssueDisposition3";
+                i.Caption = "Issue Disposition 3";
+                i.NestedExtension().ComboBox(cb =>
+                {
+                    cb.Properties.Items.Add("Charge Released w/ Code");
+                    cb.Properties.Items.Add("Charge Released w/out Code");
+                });
+            });
+
+            holdpanel.Items.Add(i =>
+            {
+                i.Name = "IssueDXCode04";
+                i.FieldName = "IssueDXCode04";
+                i.Caption = "Issue DX Code 4";
+                i.NestedExtension().TextBox(tb =>
+                {
+
+                });
+            });
+            holdpanel.Items.Add(i =>
+            {
+                i.Name = "IssueCategory04";
+                i.FieldName = "IssueCategory04";
+                i.NestedExtension().ComboBox(cb =>
+                {
+                    cb.Properties.DataSource = Model.IssueCategories;
+                });
+
+            });
+            holdpanel.Items.Add(i =>
+            {
+                i.Name = "IssueDisposition4";
+                i.FieldName = "IssueDisposition4";
+                i.Caption = "Issue Disposition 4";
+                i.NestedExtension().ComboBox(cb =>
+                {
+                    cb.Properties.Items.Add("Charge Released w/ Code");
+                    cb.Properties.Items.Add("Charge Released w/out Code");
+                });
+            });
+            holdpanel.Items.Add(i =>
+            {
+                i.Name = "IssueDXCode05";
+                i.FieldName = "IssueDXCode05";
+                i.Caption = "Issue DX Code 5";
+                i.NestedExtension().TextBox(tb =>
+                {
+
+                });
+            });
+            holdpanel.Items.Add(i =>
+            {
+                i.Name = "IssueCategory05";
+                i.FieldName = "IssueCategory05";
+                i.NestedExtension().ComboBox(cb =>
+                {
+                    cb.Properties.DataSource = Model.IssueCategories;
+                });
+            });
+            holdpanel.Items.Add(i =>
+            {
+                i.Name = "IssueDisposition5";
+                i.FieldName = "IssueDisposition5";
+                i.Caption = "Issue Disposition 5";
+                i.NestedExtension().ComboBox(cb =>
+                {
+                    cb.Properties.Items.Add("Charge Released w/ Code");
+                    cb.Properties.Items.Add("Charge Released w/out Code");
+                });
+            });
+            holdpanel.Items.Add(i =>
+            {
+                i.Name = "IssueClosedBy";
+                i.FieldName = "IssueClosedBy";
+                i.Caption = "Issue Closed By";
+                i.NestedExtension().ComboBox(cb =>
+                {
+                    cb.Properties.TextField = "DisplayName";
+                    cb.Properties.ValueField = "DisplayName";
+                    cb.Properties.ValueType = typeof(string);
+                    cb.Properties.DataSource = Model.ActiveUsers;
+                });
+            });
+            holdpanel.Items.Add(i =>
+            {
+                i.Name = "IssueClosedDate";
+                i.FieldName = "IssueClosedDate";
+                i.Caption = "Issue Closed Date";
+                i.NestedExtension().DateEdit(de =>
+                {
+                    de.Properties.ValidationSettings.EnableCustomValidation = true;
+                });
+            });
+            holdpanel.Items.Add(i =>
+            {
+            i.Name = "TaskCreation";
+            i.FieldName = "TaskCreation";
+            i.Caption = "Patient Case Creation";
+            i.NestedExtension().ComboBox(cb =>
+            {
+            cb.Properties.DataSource = new List<string>()
+                        {
+                            "Task Sent",
+                            "Task Not Sent"
+                        };
+                    });
+                });
+                holdpanel.Items.Add(i =>
+                {
+                    i.Name = "TaskOutcome";
+                    i.FieldName = "TaskOutcome";
+                    i.Caption = "Patient Case Outcome";
+                    i.NestedExtension().ComboBox(cb =>
+                    {
+                        cb.Properties.Items.Add("Response - Amended");
+                        cb.Properties.Items.Add("Response - No Amendment");
+                        cb.Properties.Items.Add("Response - Disagree");
+                        cb.Properties.Items.Add("No Response");
+                    });
+                });
+                holdpanel.Items.Add(i =>
+                {
+                    i.Name = "PopupLink";
+                    i.ShowCaption = DefaultBoolean.False;
+                    i.NestedExtension().HyperLink(hl =>
+                    {
+                        hl.Properties.ClientSideEvents.Click = "function(s, e) { PopupControl.Show(); }";
+                        hl.Properties.Text = "View Previous Work Notes";
+                        hl.ControlStyle.Cursor = "pointer";
+                    });
+                });
+            });
+        });
+        maingrp.Items.AddGroupItem(rightgrp =>
+        {
+            rightgrp.ColumnCount = 1;
+            rightgrp.Width = Unit.Percentage(30);
+            rightgrp.GroupBoxDecoration = GroupBoxDecoration.None;
+            rightgrp.ShowCaption = DefaultBoolean.False;
+            rightgrp.Items.AddGroupItem(gapsgrp =>
+            {
+                gapsgrp.ColumnCount = 1;
+                gapsgrp.GroupBoxDecoration = GroupBoxDecoration.HeadingLine;
+                gapsgrp.Caption = "HCC Gaps This Year (Unavailable)";
+                gapsgrp.Items.Add(i =>
+                {
+                    i.Name = "hccgapspresentyr";
+                    i.ShowCaption = DefaultBoolean.False;
+                    i.Width = Unit.Percentage(100);
+                    i.NestedExtension().Memo(m =>
+                    {
+                        m.Enabled = false;
+                        m.Width = Unit.Percentage(100);
+                        m.Height = Unit.Pixel(120);
+                        m.ControlStyle.BackColor = System.Drawing.Color.LightGray;
+                        m.ControlStyle.ForeColor = System.Drawing.Color.DarkGray;
+                        m.Text = "This feature is currently disabled and will be available in a future update";
+                    });
+                });
+            });
+            rightgrp.Items.AddGroupItem(notesgrp =>
+            {
+                notesgrp.ColumnCount = 1;
+                notesgrp.GroupBoxDecoration = GroupBoxDecoration.HeadingLine;
+                notesgrp.Caption = "Reviewer Notes";  //TODO - Find this column
+                notesgrp.Items.Add(i =>
+                {
+                    i.Name = "ReviewNote";
+                    i.FieldName = "ReviewNote";
+                    i.ShowCaption = DefaultBoolean.False;
+                    i.Width = Unit.Percentage(100);
+                    i.NestedExtension().Memo(m =>
+                    {
+                        m.Width = Unit.Percentage(100);
+                        m.Height = Unit.Pixel(120);
+                    });
+                });
+            });
+            rightgrp.Items.AddGroupItem(provgroup =>
+            {
+                provgroup.ColumnCount = 1;
+                provgroup.GroupBoxDecoration = GroupBoxDecoration.None;
+                provgroup.ShowCaption = DefaultBoolean.False;
+                provgroup.Items.Add(i =>
+                {
+                    i.Name = "posname";
+                    i.FieldName = "DepartmentBillingName";
+                    i.Width = Unit.Percentage(100);
+                    i.Caption = "POS Name:";
+                    i.CaptionSettings.Location = LayoutItemCaptionLocation.Top;
+                    i.NestedExtension().TextBox(tb =>
+                    {
+                        tb.Enabled = false;
+                        tb.Width = Unit.Percentage(100);
+                    });
+                });
+                provgroup.Items.Add(i =>
+                {
+                    i.Name = "provname";
+                    i.FieldName = "ProviderFullName";
+                    i.Width = Unit.Percentage(100);
+                    i.Caption = "Prov Name";
+                    i.CaptionSettings.Location = LayoutItemCaptionLocation.Top;
+                    i.NestedExtension().TextBox(tb =>
+                    {
+                        tb.Enabled = false;
+                        tb.Width = Unit.Percentage(100);
+                    });
+                });
+            });
+            
+            rightgrp.Items.AddGroupItem(navinahdggroup =>
+            {
+                navinahdggroup.ColumnCount = 1;
+                navinahdggroup.GroupBoxDecoration = GroupBoxDecoration.HeadingLine;
+                navinahdggroup.Caption = "Navina";
+            });
+            rightgrp.Items.AddGroupItem(navinagroup =>
+            {
+                navinagroup.GroupBoxDecoration = GroupBoxDecoration.None;
+                navinagroup.ShowCaption = DefaultBoolean.False;
+                navinagroup.Items.Add(i =>
+                {
+                    i.Name = "IsNavinaReview";
+                    i.FieldName = "IsNavinaReview";
+                    i.Width = Unit.Percentage(100);
+                    i.Caption = "Navina Review?";
+                    i.NestedExtension().CheckBox(cb =>
+                    {
+                        cb.Enabled = true;
+                        cb.Name = "IsNavinaReview";
+                        cb.Properties.ClientSideEvents.CheckedChanged = "IsNavinaReview_chckbx_change";
+                    });
+                });
+            });
+            
+            rightgrp.Items.AddGroupItem(NavinaICDGroup =>
+            {
+                NavinaICDGroup.Name = "NavinaICDGroup";
+                NavinaICDGroup.GroupBoxDecoration = GroupBoxDecoration.None;
+                NavinaICDGroup.ShowCaption = DefaultBoolean.False;
+                NavinaICDGroup.ColumnCount = 1;
+                NavinaICDGroup.Items.Add(i =>
+                {
+                    i.Name = "NavinaICD10Code01";
+                    i.FieldName = "NavinaICD10Code01";
+                    i.Width = Unit.Percentage(50);
+                    i.Caption = "Navina ICD10 Code 01";
+                    i.CaptionSettings.Location = LayoutItemCaptionLocation.Top;
+                    i.NestedExtension().TextBox(tb =>
+                    {
+                        tb.Enabled = true;
+                        tb.Width = Unit.Percentage(100);
+                    });
+                });
+                NavinaICDGroup.Items.Add(i =>
+                {
+                    i.Name = "NavinaICD10Code01ConditionsValidated";
+                    i.FieldName = "NavinaICD10Code01ConditionsValidated";
+                    i.Width = Unit.Percentage(100);
+                    i.Caption = "Navina ICD10 Code 01 Conditions Validated?";
+                    i.NestedExtension().CheckBox(cb =>
+                    {
+                        cb.Enabled = true;
+                        cb.Name = "NavinaICD10Code01ConditionsValidated";
+                    });
+                });
+            });
+
+            
+            rightgrp.Items.AddGroupItem(actionsgrp =>
+            {
+                actionsgrp.GroupBoxDecoration = GroupBoxDecoration.None;
+                actionsgrp.ShowCaption = DefaultBoolean.False;
+                actionsgrp.ColumnCount = 1;
+                actionsgrp.Items.Add(i =>
+                {
+                    i.Name = "SendToReviewsPending";
+                    i.Caption = "Send Back to Reviews Pending";
+                    i.ClientVisible = false;
+                    i.NestedExtension().CheckBox(cb =>
+                    {
+
+                    });
+                });
+                actionsgrp.Items.Add(i =>
+                {
+                    i.Name = "finishBtn";
+                    i.ShowCaption = DefaultBoolean.False;
+                    i.NestedExtension().Button(b =>
+                    {
+                        b.ControlStyle.CssClass = "btn btn-dark";
+                        b.Text = "Finish";
+                        b.ToolTip = "Finish the chart";
+                        b.UseSubmitBehavior = true;
+                    });
+                });
+
+            });
+        });
+    });
+}).Bind(Model.Entry).GetHtml();
+}
+
+@Html.DevExpress().PopupControl(p =>
+{
+    p.Name = "PopupControl";
+    p.Width = Unit.Pixel(1000);
+    p.AllowDragging = true;
+    p.CloseAction = CloseAction.CloseButton;
+    p.CloseOnEscape = true;
+    p.PopupAnimationType = AnimationType.None;
+    p.HeaderText = "Additional Notes";
+    p.Modal = true;
+    p.AutoUpdatePosition = true;
+    p.PopupHorizontalAlign = PopupHorizontalAlign.WindowCenter;
+    p.PopupVerticalAlign = PopupVerticalAlign.WindowCenter;
+    p.SetContent(() =>
+    {
+        Html.DevExpress().GridView(settings =>
+        {
+            settings.Name = "AdditionalNotesgv";
+            settings.Width = Unit.Percentage(100);
+            settings.SettingsText.EmptyDataRow = "No additional notes for this year";
+            settings.Columns.Add("FileDate");
+            settings.Columns.Add("CPT");
+            settings.Columns.Add("Notes");
+        }).Bind(Model.PreviousNotes).Render();
+    });
+}).GetHtml()
+
+
+

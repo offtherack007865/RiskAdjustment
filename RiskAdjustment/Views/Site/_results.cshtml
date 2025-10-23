@@ -1,0 +1,35 @@
+﻿@using System.Web.UI.WebControls
+@Html.DevExpress().GridView(settings =>
+{
+    settings.Name = "SitesList";
+    settings.ControlStyle.Border.BorderWidth = 1;
+    settings.KeyFieldName = "Id";
+    settings.SettingsEditing.Mode = GridViewEditingMode.PopupEditForm;
+    settings.ClientSideEvents.BeginCallback = "OnBeginCallback";
+    settings.SettingsBehavior.AllowFocusedRow = true;
+    settings.CallbackRouteValues = new {Controller = "Site", Action = "EditCallback"};
+    settings.SettingsEditing.UpdateRowRouteValues = new {Controller = "Site", Action = "Update"};
+    settings.SettingsPopup.EditForm.Width = 1200;
+    settings.SettingsPopup.EditForm.SettingsAdaptivity.Mode = PopupControlAdaptivityMode.Off;
+    settings.SettingsPopup.EditForm.HorizontalAlign = PopupHorizontalAlign.WindowCenter;
+    settings.SettingsPopup.EditForm.VerticalAlign = PopupVerticalAlign.WindowCenter;
+    settings.SettingsPopup.EditForm.SettingsAdaptivity.SwitchAtWindowInnerWidth = 768;
+    settings.SettingsPopup.EditForm.Width = Unit.Percentage(100);
+    settings.SettingsPopup.EditForm.MinWidth = 800;
+    settings.SettingsPopup.EditForm.AllowResize = true;
+    settings.EditFormLayoutProperties.SettingsAdaptivity.AdaptivityMode = FormLayoutAdaptivityMode.SingleColumnWindowLimit;
+    settings.EditFormLayoutProperties.SettingsAdaptivity.SwitchToSingleColumnAtWindowInnerWidth = 700;
+    settings.EditFormLayoutProperties.SettingsItems.VerticalAlign = FormLayoutVerticalAlign.Middle;
+    settings.SettingsBehavior.ConfirmDelete = true;
+    settings.SettingsBehavior.AllowSort = false;
+    settings.SettingsPager.PageSize = 25;
+    settings.CommandColumn.Visible = true;
+    settings.CommandColumn.ShowEditButton = true;
+    settings.Width = Unit.Percentage(100);
+    settings.Columns.Add("Id");
+    settings.Columns.Add("SiteNumber");
+    settings.Columns.Add("Name");
+    settings.Columns.Add("County");
+}).Bind(Model.Sites).GetHtml()
+
+    

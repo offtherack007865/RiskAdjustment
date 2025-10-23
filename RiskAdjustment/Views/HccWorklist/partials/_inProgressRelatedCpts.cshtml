@@ -1,0 +1,95 @@
+﻿@using System.Web.UI.WebControls
+@Html.DevExpress().GridView(settings =>
+{
+    settings.Name = "AdditionalCptsGridView";
+    settings.Width = Unit.Percentage(100);
+    settings.CallbackRouteValues = new { Controller = "HccWorklist", Action = "ReviewsInProgressCallback" };
+    settings.ClientSideEvents.BeginCallback = "mainWorklistBeginCallback";
+    settings.SettingsText.EmptyDataRow = "No addditional charges found for this claim";
+    settings.Columns.Add(c =>
+    {
+        c.FieldName = "Reviewer";
+        c.Visible = false;
+    });
+    settings.Columns.Add(c =>
+    {
+        c.Caption = "Action";
+        c.SetDataItemTemplateContent(tc =>
+        {
+            ViewContext.Writer.Write((Html.ActionLink("Select", "ReviewInProgress", new { ChargeID = DataBinder.Eval(tc.DataItem, "ChargeID") })));
+        });
+    });
+    settings.Columns.Add("ClaimID");
+    settings.Columns.Add("ChargeID");
+    settings.Columns.Add("PatientID");
+    settings.Columns.Add(c =>
+    {
+        c.Caption = "DOS";
+        c.FieldName = "TransactionSrvDate";
+    });
+    settings.Columns.Add(c =>
+    {
+        c.Caption = "Patient Name";
+        c.FieldName = "PatientFullName";
+    });
+    settings.Columns.Add(c =>
+    {
+        c.Caption = "CPT";
+        c.FieldName = "ProcCode";
+    });
+    settings.Columns.Add(c =>
+    {
+        c.Caption = "POS";
+        c.FieldName = "ClmsvcdeptID";
+    });
+    settings.Columns.Add(c =>
+    {
+        c.Caption = "ProvCode";
+        c.FieldName = "RndrngProviderID";
+    });
+    settings.Columns.Add(c =>
+    {
+        c.Caption = "Pri Diag";
+        c.FieldName = "ICD10ClaimDiagCode01";
+    });
+    settings.Columns.Add(c =>
+    {
+        c.Caption = "2nd Diag";
+        c.FieldName = "ICD10ClaimDiagCode02";
+    });
+    settings.Columns.Add(c =>
+    {
+        c.Caption = "3rd Diag";
+        c.FieldName = "ICD10ClaimDiagCode03";
+    });
+    settings.Columns.Add(c =>
+    {
+        c.Caption = "4th Diag";
+        c.FieldName = "ICD10ClaimDiagCode04";
+    });
+    //TODO:  I"m not sure if these are the correct fields
+    settings.Columns.Add(c =>
+    {
+        c.Caption = "Ins Class";
+        c.FieldName = "PatientPrimaryInsPkgType";
+    });
+    settings.Columns.Add(c =>
+    {
+        c.Caption = "Chg Pri Policy";
+        c.FieldName = "PatientPrimaryInsPkgID";
+    });
+    settings.Columns.Add(c =>
+    {
+        c.Caption = "Post Date";
+        c.FieldName = "ChargePostDate";
+    });
+    settings.HtmlRowPrepared = (s, e) =>
+    {
+        if (e.RowType != GridViewRowType.Data)
+            return;
+        string reviewer = e.GetValue("Reviewer") as string;
+        if (reviewer != null)
+            e.Row.Style.Add("text-decoration", "line-through");
+    };
+}).Bind(Model.RelatedCharges).GetHtml()
+

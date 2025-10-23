@@ -1,0 +1,21 @@
+﻿
+@{
+    ViewBag.Title = "_managersMenu";
+}
+
+<div class="col-4">
+    <div class="row justify-content-center">
+        <div class="card">
+            <div class="card-header">
+                Manager Menu
+            </div>
+            <div class="card-body">
+                <div class="row mb-3">
+                    <div class="col-12">
+                        @Html.ActionLink("Reviews Completed - 90 Days", "Completed90Days", "PvpWorklist", null, new { @class = "btn btn-dark" })
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

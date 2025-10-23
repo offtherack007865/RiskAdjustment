@@ -1,0 +1,157 @@
+USE [VBC_PVP_Athena]
+
+-- HCC09Code
+ALTER TABLE	[dbo].[Audit_Athena_PVP_Worklist]
+  ADD [HCC09Code] [varchar](7) NULL;
+
+-- HCC09   
+ALTER TABLE	[dbo].[Audit_Athena_PVP_Worklist]
+  ADD [HCC09] [varchar](4) NULL;
+
+-- HCC10Code   
+ALTER TABLE	[dbo].[Audit_Athena_PVP_Worklist]
+  ADD [HCC10Code] [varchar](7) NULL;
+
+-- HCC10   
+ALTER TABLE	[dbo].[Audit_Athena_PVP_Worklist]
+  ADD [HCC10] [varchar](4) NULL;
+
+-- OpenGapHCC01Code   
+ALTER TABLE	[dbo].[Audit_Athena_PVP_Worklist]
+  ADD [OpenGapHCC01Code] [varchar](7) NULL;
+
+-- OpenGapHCC01   
+ALTER TABLE	[dbo].[Audit_Athena_PVP_Worklist]
+  ADD [OpenGapHCC01] [varchar](4) NULL;
+
+-- OpenGapHCC02Code
+ALTER TABLE	[dbo].[Audit_Athena_PVP_Worklist]
+  ADD [OpenGapHCC02Code] [varchar](7) NULL;
+
+-- OpenGapHCC02
+ALTER TABLE	[dbo].[Audit_Athena_PVP_Worklist]
+  ADD [OpenGapHCC02] [varchar](4) NULL;
+
+-- OpenGapHCC03Code    
+ALTER TABLE	[dbo].[Audit_Athena_PVP_Worklist]
+  ADD [OpenGapHCC03Code] [varchar](7) NULL;
+
+-- OpenGapHCC03   
+ALTER TABLE	[dbo].[Audit_Athena_PVP_Worklist]
+  ADD [OpenGapHCC03] [varchar](4) NULL;
+
+-- OpenGapHCC04Code   
+ALTER TABLE	[dbo].[Audit_Athena_PVP_Worklist]	
+  ADD [OpenGapHCC04Code] [varchar](7) NULL;
+
+-- OpenGapHCC04   
+ALTER TABLE	[dbo].[Audit_Athena_PVP_Worklist]	
+  ADD [OpenGapHCC04] [varchar](4) NULL;
+
+-- OpenGapHCC05Code   
+ALTER TABLE	[dbo].[Audit_Athena_PVP_Worklist]
+  ADD [OpenGapHCC05Code] [varchar](7) NULL;
+
+-- OpenGapHCC05   
+ALTER TABLE	[dbo].[Audit_Athena_PVP_Worklist]	
+  ADD [OpenGapHCC05] [varchar](4) NULL;
+
+-- OpenGapHCC06Code   
+ALTER TABLE	[dbo].[Audit_Athena_PVP_Worklist]	
+  ADD [OpenGapHCC06Code] [varchar](7) NULL;
+
+-- OpenGapHCC06   
+ALTER TABLE	[dbo].[Audit_Athena_PVP_Worklist]	
+  ADD [OpenGapHCC06] [varchar](4) NULL;
+
+-- OpenGapHCC07Code   
+ALTER TABLE	[dbo].[Audit_Athena_PVP_Worklist]
+  ADD [OpenGapHCC07Code] [varchar](7) NULL;
+
+-- OpenGapHCC07   
+ALTER TABLE	[dbo].[Audit_Athena_PVP_Worklist]	
+  ADD [OpenGapHCC07] [varchar](4) NULL;
+
+-- OpenGapHCC08Code   
+ALTER TABLE	[dbo].[Audit_Athena_PVP_Worklist]	
+  ADD [OpenGapHCC08Code] [varchar](7) NULL;
+
+-- OpenGapHCC08   
+ALTER TABLE	[dbo].[Audit_Athena_PVP_Worklist]	
+  ADD [OpenGapHCC08] [varchar](4) NULL;
+
+-- OpenGapHCC09Code   
+ALTER TABLE	[dbo].[Audit_Athena_PVP_Worklist]	
+  ADD [OpenGapHCC09Code] [varchar](7) NULL;
+
+-- OpenGapHCC09   
+ALTER TABLE	[dbo].[Audit_Athena_PVP_Worklist]	
+  ADD [OpenGapHCC09] [varchar](4) NULL;
+
+-- OpenGapHCC10Code   
+ALTER TABLE	[dbo].[Audit_Athena_PVP_Worklist]	
+  ADD [OpenGapHCC10Code] [varchar](7) NULL;
+
+-- OpenGapHCC10   
+ALTER TABLE	[dbo].[Audit_Athena_PVP_Worklist]	
+  ADD [OpenGapHCC10] [varchar](4) NULL;
+
+-- Dismissed   
+ALTER TABLE	[dbo].[Audit_Athena_PVP_Worklist]	
+  ADD [Dismissed] [bit] NULL;
+
+-- DismissedDate   
+ALTER TABLE	[dbo].[Audit_Athena_PVP_Worklist]	
+  ADD [DismissedDate] [datetime] NULL;
+
+-- DismissedHCC01Code   
+ALTER TABLE	[dbo].[Audit_Athena_PVP_Worklist]	
+  ADD [DismissedHCC01Code] [varchar](7) NULL;
+
+-- DismissedHCC01   
+ALTER TABLE	[dbo].[Audit_Athena_PVP_Worklist]	
+  ADD [DismissedHCC01] [varchar](4) NULL;
+
+-- DismissedHCC02Code   
+ALTER TABLE	[dbo].[Audit_Athena_PVP_Worklist]	
+  ADD [DismissedHCC02Code] [varchar](7) NULL;
+
+-- DismissedHCC02   
+ALTER TABLE	[dbo].[Audit_Athena_PVP_Worklist]	
+  ADD [DismissedHCC02] [varchar](4) NULL;
+
+-- DismissedHCC03Code   
+ALTER TABLE	[dbo].[Audit_Athena_PVP_Worklist]	
+  ADD [DismissedHCC03Code] [varchar](7) NULL;
+
+-- DismissedHCC03   
+ALTER TABLE	[dbo].[Audit_Athena_PVP_Worklist]	
+  ADD [DismissedHCC03] [varchar](4) NULL;
+
+-- DismissedHCC04Code   
+ALTER TABLE	[dbo].[Audit_Athena_PVP_Worklist]	
+  ADD [DismissedHCC04Code] [varchar](7) NULL;
+
+-- DismissedHCC04   
+ALTER TABLE	[dbo].[Audit_Athena_PVP_Worklist]	
+  ADD [DismissedHCC04] [varchar](4) NULL;
+
+-- DismissedHCC05Code   
+ALTER TABLE	[dbo].[Audit_Athena_PVP_Worklist]	
+  ADD [DismissedHCC05Code] [varchar](7) NULL;
+
+-- DismissedHCC05   
+ALTER TABLE	[dbo].[Audit_Athena_PVP_Worklist]	
+  ADD [DismissedHCC05] [varchar](4) NULL;
+
+-- CorrectedClaims   
+ALTER TABLE	[dbo].[Audit_Athena_PVP_Worklist]	
+  ADD [CorrectedClaims] [bit] NULL;
+
+-- CorrectedClaimsNumber   
+ALTER TABLE	[dbo].[Audit_Athena_PVP_Worklist]	
+  ADD [CorrectedClaimsNumber] [varchar](10) NULL;
+
+-- CorrectedClaimsComments   
+ALTER TABLE	[dbo].[Audit_Athena_PVP_Worklist]	
+  ADD [CorrectedClaimsComments] [varchar](300) NULL;

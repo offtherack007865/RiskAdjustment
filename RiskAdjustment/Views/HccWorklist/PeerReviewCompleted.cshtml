@@ -1,0 +1,108 @@
+﻿
+
+
+@{
+    ViewBag.Title = "PeerReview";
+}
+
+
+@model RiskAdjustment.Data.ViewModels.HCC.HccMenuViewModel
+@using System.Web.UI.WebControls
+
+@{
+    ViewBag.Title = "HCC Worklist Selection";
+}
+
+@section AddToHead
+{
+    <script type="text/javascript" src="/Scripts/hcc_worklist_callbacks.js"></script>
+    <script type="text/javascript" src="/Scripts/general_callbacks.js"></script>
+}
+
+<div class="row justify-content-center pt-0">
+    <div class="col-5 border shadow p-0">
+
+        <div class="col-12 text-center p-3" style="background-color: #215b33; color: white">
+            <h3 class="mt-0">HCC Coding Review Database</h3><br />
+            <p>Worklist Search</p>
+        </div>
+
+        <div class="row justify-content-center">
+            <div class="col-12 text-center">
+                @using (Html.BeginForm("SelectedPeerReview", "HccWorklist", FormMethod.Post))
+                {
+                    @Html.DevExpress().FormLayout(f =>
+               {
+                   f.Name = "HccWorklistMenu";
+                   f.Width = Unit.Percentage(100);
+                   f.RequiredMarkDisplayMode = RequiredMarkMode.None;
+                   f.Items.Add(i =>
+                   {
+                       i.Name = "Contract";
+                       i.ShowCaption = DefaultBoolean.False;
+                       i.CssClass = "mt-3";
+                       i.HorizontalAlign = FormLayoutHorizontalAlign.Center;
+                       i.NestedExtension().ComboBox(cb =>
+                       {
+
+                           cb.ControlStyle.CssClass = "form-control";
+                           cb.Properties.CaptionSettings.Position = EditorCaptionPosition.Top;
+                           cb.Properties.CaptionSettings.RequiredMarkDisplayMode = EditorRequiredMarkMode.Hidden;
+                           cb.Properties.Caption = "Select Contract";
+                           cb.Properties.ValueType = typeof(string);
+                           cb.Properties.DataSource = Model.MenuValues;
+                           cb.Properties.ValidationSettings.RequiredField.IsRequired = true;
+                           cb.Properties.ValidationSettings.RequiredField.ErrorText = "This field is required.";
+                       });
+                   });
+                   f.Items.Add(i =>
+                   {
+                       i.Name = "FileDate";
+                       i.ShowCaption = DefaultBoolean.False;
+                       i.HorizontalAlign = FormLayoutHorizontalAlign.Center;
+                       i.NestedExtension().DateEdit(de =>
+                       {
+
+                           de.ControlStyle.CssClass = "form-control";
+                           de.Properties.CaptionSettings.Position = EditorCaptionPosition.Top;
+                           de.Properties.CaptionSettings.RequiredMarkDisplayMode = EditorRequiredMarkMode.Hidden;
+                           de.Properties.Caption = "Select File Date";
+                           de.Name = "FileDate";
+                           de.Properties.MinDate = DateTime.Parse("10/14/2021");
+                           de.Properties.MaxDate = DateTime.Now;
+                           de.Properties.ValidationSettings.RequiredField.IsRequired = true;
+                           de.Properties.ValidationSettings.RequiredField.ErrorText = "This field is required.";
+                       });
+                   });
+                   f.Items.Add(i =>
+                   {
+                       i.ShowCaption = DefaultBoolean.False;
+                       i.HorizontalAlign = FormLayoutHorizontalAlign.Center;
+                       i.SetNestedContent(() =>
+                       {
+                           Html.DevExpress().Button(buttonSettings =>
+                           {
+                               buttonSettings.ControlStyle.CssClass = "btn btn-dark";
+                               buttonSettings.Name = "btnSubmit";
+                               buttonSettings.Text = "Go To Completed Peer Reviews";
+                               buttonSettings.UseSubmitBehavior = true;
+                           }).Render();
+                       });
+                   });
+               }).GetHtml()
+                }
+            </div>
+        </div>
+        <hr />
+        <div class="row justify-content-center mb-4">
+            <div class="col-12 text-center">
+                <h4>All Contract Counts</h4>
+                <p>Denotes the number of unworked items per contract for the date given.</p>
+                @Html.Partial("partials/_contractCounts")
+            </div>
+        </div>
+    </div>
+</div>
+
+
+

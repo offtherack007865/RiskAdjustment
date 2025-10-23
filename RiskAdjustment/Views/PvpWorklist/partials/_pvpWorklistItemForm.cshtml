@@ -1,0 +1,1848 @@
+﻿@using System.Web.UI.WebControls
+
+@using (Html.BeginForm("Update", "PvpWorklist", FormMethod.Post))
+{
+    string Reviewer = Model.Entry.LockedBy.LastName + ", " + Model.Entry.LockedBy.FirstName;
+    @Html.DevExpress().FormLayout(f =>
+{
+    f.Name = "main";
+    f.Width = Unit.Percentage(100);
+    f.ColumnCount = 4;
+    f.Items.AddGroupItem(col1 =>
+    {
+        col1.ShowCaption = DefaultBoolean.False;
+        col1.Width = Unit.Percentage(25);
+        col1.GroupBoxDecoration = GroupBoxDecoration.None;
+        col1.Items.AddGroupItem(patdemogrp =>
+        {
+            patdemogrp.Name = "ptinfo";
+            patdemogrp.Caption = "Patient Information";
+            patdemogrp.ColumnCount = 1;
+            //A few hidden fields to send data back down to the controller
+            patdemogrp.Items.Add(i =>
+            {
+                i.Name = "Contract";
+                i.FieldName = "Contract";
+                i.ClientVisible = false;
+            });
+            patdemogrp.Items.Add(i =>
+            {
+                i.Name = "FileDate";
+                i.FieldName = "FileDate";
+                i.ClientVisible = false;
+            });
+            patdemogrp.Items.Add(i =>
+            {
+                i.Name = "LockId";
+                i.FieldName = "LockId";
+                i.ClientVisible = false;
+                i.ClientVisible = false;
+            });
+            patdemogrp.Items.Add(i =>
+            {
+                i.Name = "AppointmentID";
+                i.FieldName = "AppointmentID";
+                i.ClientVisible = false;
+            });
+            patdemogrp.Items.Add(i =>
+            {
+                i.Name = "StartTime";
+                i.FieldName = "StartTime";
+                i.ClientVisible = false;
+            });
+            //end hidden fields
+            patdemogrp.Items.Add(i =>
+            {
+                i.Name = "PatientName";
+                i.FieldName = "PatientName";
+                i.NestedExtension().TextBox(tb =>
+                {
+                    tb.Name = "PatientName";
+                    tb.Enabled = false;
+                    tb.ControlStyle.ForeColor = System.Drawing.Color.Black;
+                });
+            });
+            patdemogrp.Items.Add(i =>
+            {
+                i.Name = "patdob";
+                i.FieldName = "patdob";
+                i.Caption = "DOB";
+                i.NestedExtension().TextBox(tb =>
+                {
+                    tb.Name = "patdob";
+                    tb.Enabled = false;
+                    tb.ControlStyle.ForeColor = System.Drawing.Color.Black;
+                });
+            });
+            patdemogrp.Items.Add(i =>
+            {
+                i.Name = "_patientID";
+                i.FieldName = "PatientID";
+                i.Caption = "MRN";
+                i.NestedExtension().TextBox(tb =>
+                {
+                    tb.Enabled = false;
+                    tb.ControlStyle.ForeColor = System.Drawing.Color.Black;
+                });
+            });
+        });
+        col1.Items.AddGroupItem(apptinfogrp =>
+        {
+            apptinfogrp.Caption = "Appointment Info";
+            apptinfogrp.ColumnCount = 1;
+            apptinfogrp.Items.Add(i =>
+            {
+                i.Name = "AppointmentDateTime";
+                i.FieldName = "AppointmentDateTime";
+                i.Caption = "Appointment Date/Time";
+                i.NestedExtension().TextBox(tb =>
+                {
+                    tb.Enabled = false;
+                    tb.ControlStyle.ForeColor = System.Drawing.Color.Black;
+                });
+            });
+            apptinfogrp.Items.Add(i =>
+            {
+                i.Name = "AppointmentTypeShortName";
+                i.FieldName = "AppointmentTypeShortName";
+                i.Caption = "Type";
+                i.NestedExtension().TextBox(tb =>
+                {
+                    tb.Name = "AppointmentTypeShortName";
+                    tb.Enabled = false;
+                    tb.ControlStyle.ForeColor = System.Drawing.Color.Black;
+                });
+            });
+            apptinfogrp.Items.Add(i =>
+            {
+                i.Name = "AppointmentProvider";
+                i.FieldName = "AppointmentProvider";
+                i.Caption = "Provider";
+                i.NestedExtension().TextBox(tb =>
+                {
+                    tb.Name = "AppointmentProvider";
+                    tb.Enabled = false;
+                    tb.ControlStyle.ForeColor = System.Drawing.Color.Black;
+                });
+            });
+            apptinfogrp.Items.Add(i =>
+            {
+                i.Name = "_appointmentID";
+                i.CssClass = "groupitem_no_padding";
+                i.FieldName = "AppointmentID";
+                i.Caption = "Appt. No";
+                i.NestedExtension().TextBox(tb =>
+                {
+                    tb.Enabled = false;
+                    tb.ControlStyle.ForeColor = System.Drawing.Color.Black;
+                });
+            });
+            apptinfogrp.Items.Add(i =>
+            {
+                i.Name = "_fileDate";
+                i.FieldName = "FileDate";
+                i.Caption = "File Date";
+                i.NestedExtension().TextBox(tb =>
+                {
+                    tb.Enabled = false;
+                    tb.ControlStyle.ForeColor = System.Drawing.Color.Black;
+                });
+            });
+            apptinfogrp.Items.Add(i =>
+            {
+                i.Name = "PreviousPVPDate";
+                i.FieldName = "PreviousPVPDate";
+                i.Caption = "Previous PVP Date";
+                i.NestedExtension().TextBox(tb =>
+                {
+                    tb.Enabled = false;
+                    tb.ControlStyle.ForeColor = System.Drawing.Color.Black;
+                });
+            });
+
+        });
+        col1.Items.AddGroupItem(pcpgrp =>
+        {
+            pcpgrp.ColumnCount = 1;
+            pcpgrp.Caption = "PCP & Insurance";
+            pcpgrp.Items.Add(i =>
+            {
+                i.Name = "PcpName";
+                i.FieldName = "PcpName";
+                i.Caption = "PCP Name";
+                i.NestedExtension().TextBox(tb =>
+                {
+                    tb.Enabled = false;
+                    tb.ControlStyle.ForeColor = System.Drawing.Color.Black;
+                });
+            });
+            pcpgrp.Items.Add(i =>
+            {
+                i.Name = "PcpSiteName";
+                i.FieldName = "PcpSiteName";
+                i.Caption = "PCP Site";
+                i.NestedExtension().TextBox(tb =>
+                {
+                    tb.Name = "PcpSiteName";
+                    tb.Enabled = false;
+                    tb.ControlStyle.ForeColor = System.Drawing.Color.Black;
+                });
+            });
+            pcpgrp.Items.Add(i =>
+            {
+                i.Name = "PrimaryInsurancePackageName";
+                i.FieldName = "PrimaryInsurancePackageName";
+                i.Caption = "Insurance";
+                i.NestedExtension().TextBox(tb =>
+                {
+                    tb.Name = "PrimaryInsurancePackageName";
+                    tb.Enabled = false;
+                    tb.ControlStyle.ForeColor = System.Drawing.Color.Black;
+                });
+            });
+            pcpgrp.Items.Add(i =>
+            {
+                i.Name = "PrimaryInsID";
+                i.FieldName = "PrimaryInsID";
+                i.Caption = "Insurance ID";
+                i.NestedExtension().TextBox(tb =>
+                {
+                    tb.Name = "PrimaryInsID";
+                    tb.Enabled = false;
+                    tb.ControlStyle.ForeColor = System.Drawing.Color.Black;
+                });
+            });
+            pcpgrp.Items.Add(i =>
+            {
+                i.Name = "contract";
+                i.FieldName = "Contract";
+                i.Caption = "Contract";
+                i.NestedExtension().TextBox(tb =>
+                {
+                    tb.Enabled = false;
+                    tb.ControlStyle.ForeColor = System.Drawing.Color.Black;
+                });
+            });
+        });
+    });
+    f.Items.AddGroupItem(col2 =>
+    {
+        col2.ShowCaption = DefaultBoolean.False;
+        col2.Width = Unit.Percentage(25);
+        col2.GroupBoxDecoration = GroupBoxDecoration.None;
+
+        col2.Items.AddGroupItem(opengapconditioncodinggrp =>
+        {
+            opengapconditioncodinggrp.Caption = "Open Gap Condition Coding";
+            opengapconditioncodinggrp.Items.AddGroupItem(code1 =>
+            {
+                code1.ShowCaption = DefaultBoolean.False;
+                code1.GroupBoxDecoration = GroupBoxDecoration.None;
+                code1.CssClass = "pvpHccCode";
+                code1.Items.Add(i =>
+                {
+                    i.Name = "OpenGapHCC01CodeGroup";
+                    i.Caption = "Code 1/HCC";
+                    i.SetNestedContent(() =>
+                    {
+                        Html.DevExpress().TextBox(tb =>
+                        {
+                            tb.Name = "OpenGapHCC01Code";
+                            tb.Width = Unit.Pixel(50);
+                            tb.ControlStyle.CssClass = "pvpHccCode";
+                            tb.Properties.ClientSideEvents.TextChanged = "ccc_code_change";
+                        }).Bind(Model.Entry.OpenGapHCC01Code).Render();
+                        Html.DevExpress().Label(l =>
+                        {
+                            l.Text = " / ";
+                        }).Render();
+                        Html.DevExpress().TextBox(tb =>
+                        {
+                            tb.Name = "OpenGapHCC01";
+                            tb.Width = Unit.Pixel(50);
+                            tb.ControlStyle.CssClass = "pvpHccCode";
+                        }).Bind(Model.Entry.OpenGapHCC01).Render();
+                    });
+                });
+            });
+            opengapconditioncodinggrp.Items.AddGroupItem(code2 =>
+            {
+                code2.ShowCaption = DefaultBoolean.False;
+                code2.GroupBoxDecoration = GroupBoxDecoration.None;
+                code2.CssClass = "pvpHccCode";
+                code2.Items.Add(i =>
+                {
+                    i.Name = "OpenGapHCC02CodeGroup";
+                    i.Caption = "Code 2/HCC";
+                    i.SetNestedContent(() =>
+                    {
+                        Html.DevExpress().TextBox(tb =>
+                        {
+                            tb.Name = "OpenGapHCC02Code";
+                            tb.Width = Unit.Pixel(50);
+                            tb.ControlStyle.CssClass = "pvpHccCode";
+                            tb.Properties.ClientSideEvents.TextChanged = "ccc_code_change";
+                        }).Bind(Model.Entry.OpenGapHCC02Code).Render();
+                        Html.DevExpress().Label(l =>
+                        {
+                            l.Text = " / ";
+                        }).Render();
+                        Html.DevExpress().TextBox(tb =>
+                        {
+                            tb.Name = "OpenGapHCC02";
+                            tb.Width = Unit.Pixel(50);
+                            tb.ControlStyle.CssClass = "pvpHccCode";
+                        }).Bind(Model.Entry.OpenGapHCC02).Render();
+                    });
+                });
+            });
+            opengapconditioncodinggrp.Items.AddGroupItem(code3 =>
+            {
+                code3.ShowCaption = DefaultBoolean.False;
+                code3.GroupBoxDecoration = GroupBoxDecoration.None;
+                code3.CssClass = "pvpHccCode";
+                code3.Items.Add(i =>
+                {
+                    i.Name = "OpenGapHCC03CodeGroup";
+                    i.Caption = "Code 3/HCC";
+                    i.SetNestedContent(() =>
+                    {
+                        Html.DevExpress().TextBox(tb =>
+                        {
+                            tb.Name = "OpenGapHCC03Code";
+                            tb.Width = Unit.Pixel(50);
+                            tb.ControlStyle.CssClass = "pvpHccCode";
+                            tb.Properties.ClientSideEvents.TextChanged = "ccc_code_change";
+                        }).Bind(Model.Entry.OpenGapHCC03Code).Render();
+                        Html.DevExpress().Label(l =>
+                        {
+                            l.Text = " / ";
+                        }).Render();
+                        Html.DevExpress().TextBox(tb =>
+                        {
+                            tb.Name = "OpenGapHCC03";
+                            tb.Width = Unit.Pixel(50);
+                            tb.ControlStyle.CssClass = "pvpHccCode";
+                        }).Bind(Model.Entry.OpenGapHCC03).Render();
+                    });
+                });
+            });
+            opengapconditioncodinggrp.Items.AddGroupItem(code4 =>
+            {
+                code4.ShowCaption = DefaultBoolean.False;
+                code4.GroupBoxDecoration = GroupBoxDecoration.None;
+                code4.CssClass = "pvpHccCode";
+                code4.Items.Add(i =>
+                {
+                    i.Name = "OpenGapHCC04CodeGroup";
+                    i.Caption = "Code 4/HCC";
+                    i.SetNestedContent(() =>
+                    {
+                        Html.DevExpress().TextBox(tb =>
+                        {
+                            tb.Name = "OpenGapHCC04Code";
+                            tb.Width = Unit.Pixel(50);
+                            tb.ControlStyle.CssClass = "pvpHccCode";
+                            tb.Properties.ClientSideEvents.TextChanged = "ccc_code_change";
+                        }).Bind(Model.Entry.OpenGapHCC04Code).Render();
+                        Html.DevExpress().Label(l =>
+                        {
+                            l.Text = " / ";
+                        }).Render();
+                        Html.DevExpress().TextBox(tb =>
+                        {
+                            tb.Name = "OpenGapHCC04";
+                            tb.Width = Unit.Pixel(50);
+                            tb.ControlStyle.CssClass = "pvpHccCode";
+                        }).Bind(Model.Entry.OpenGapHCC04).Render();
+                    });
+                });
+            });
+            opengapconditioncodinggrp.Items.AddGroupItem(code5 =>
+            {
+                code5.ShowCaption = DefaultBoolean.False;
+                code5.GroupBoxDecoration = GroupBoxDecoration.None;
+                code5.CssClass = "pvpHccCode";
+                code5.Items.Add(i =>
+                {
+                    i.Name = "OpenGapHCC05CodeGroup";
+                    i.Caption = "Code 5/HCC";
+                    i.SetNestedContent(() =>
+                    {
+                        Html.DevExpress().TextBox(tb =>
+                        {
+                            tb.Name = "OpenGapHCC05Code";
+                            tb.Width = Unit.Pixel(50);
+                            tb.ControlStyle.CssClass = "pvpHccCode";
+                            tb.Properties.ClientSideEvents.TextChanged = "ccc_code_change";
+                        }).Bind(Model.Entry.OpenGapHCC05Code).Render();
+                        Html.DevExpress().Label(l =>
+                        {
+                            l.Text = " / ";
+                        }).Render();
+                        Html.DevExpress().TextBox(tb =>
+                        {
+                            tb.Name = "OpenGapHCC05";
+                            tb.Width = Unit.Pixel(50);
+                            tb.ControlStyle.CssClass = "pvpHccCode";
+                        }).Bind(Model.Entry.OpenGapHCC05).Render();
+                    });
+                });
+            });
+            opengapconditioncodinggrp.Items.AddGroupItem(code6 =>
+            {
+                code6.ShowCaption = DefaultBoolean.False;
+                code6.GroupBoxDecoration = GroupBoxDecoration.None;
+                code6.CssClass = "pvpHccCode";
+                code6.Items.Add(i =>
+                {
+                    i.Name = "OpenGapHCC06CodeGroup";
+                    i.Caption = "Code 6/HCC";
+                    i.SetNestedContent(() =>
+                    {
+                        Html.DevExpress().TextBox(tb =>
+                        {
+                            tb.Name = "OpenGapHCC06Code";
+                            tb.Width = Unit.Pixel(50);
+                            tb.ControlStyle.CssClass = "pvpHccCode";
+                            tb.Properties.ClientSideEvents.TextChanged = "ccc_code_change";
+                        }).Bind(Model.Entry.OpenGapHCC06Code).Render();
+                        Html.DevExpress().Label(l =>
+                        {
+                            l.Text = " / ";
+                        }).Render();
+                        Html.DevExpress().TextBox(tb =>
+                        {
+                            tb.Name = "OpenGapHCC06";
+                            tb.Width = Unit.Pixel(50);
+                            tb.ControlStyle.CssClass = "pvpHccCode";
+                        }).Bind(Model.Entry.OpenGapHCC06).Render();
+                    });
+                });
+            });
+            opengapconditioncodinggrp.Items.AddGroupItem(code7 =>
+            {
+                code7.ShowCaption = DefaultBoolean.False;
+                code7.GroupBoxDecoration = GroupBoxDecoration.None;
+                code7.CssClass = "pvpHccCode";
+                code7.Items.Add(i =>
+                {
+                    i.Name = "OpenGapHCC07CodeGroup";
+                    i.Caption = "Code 7/HCC";
+                    i.SetNestedContent(() =>
+                    {
+                        Html.DevExpress().TextBox(tb =>
+                        {
+                            tb.Name = "OpenGapHCC07Code";
+                            tb.Width = Unit.Pixel(50);
+                            tb.ControlStyle.CssClass = "pvpHccCode";
+                            tb.Properties.ClientSideEvents.TextChanged = "ccc_code_change";
+                        }).Bind(Model.Entry.OpenGapHCC07Code).Render();
+                        Html.DevExpress().Label(l =>
+                        {
+                            l.Text = " / ";
+                        }).Render();
+                        Html.DevExpress().TextBox(tb =>
+                        {
+                            tb.Name = "OpenGapHCC07";
+                            tb.Width = Unit.Pixel(50);
+                            tb.ControlStyle.CssClass = "pvpHccCode";
+                        }).Bind(Model.Entry.OpenGapHCC07).Render();
+                    });
+                });
+            });
+            opengapconditioncodinggrp.Items.AddGroupItem(code8 =>
+            {
+                code8.ShowCaption = DefaultBoolean.False;
+                code8.GroupBoxDecoration = GroupBoxDecoration.None;
+                code8.CssClass = "pvpHccCode";
+                code8.Items.Add(i =>
+                {
+                    i.Name = "OpenGapHCC08CodeGroup";
+                    i.Caption = "Code 8/HCC";
+                    i.SetNestedContent(() =>
+                    {
+                        Html.DevExpress().TextBox(tb =>
+                        {
+                            tb.Name = "OpenGapHCC08Code";
+                            tb.Width = Unit.Pixel(50);
+                            tb.ControlStyle.CssClass = "pvpHccCode";
+                            tb.Properties.ClientSideEvents.TextChanged = "ccc_code_change";
+                        }).Bind(Model.Entry.OpenGapHCC08Code).Render();
+                        Html.DevExpress().Label(l =>
+                        {
+                            l.Text = " / ";
+                        }).Render();
+                        Html.DevExpress().TextBox(tb =>
+                        {
+                            tb.Name = "OpenGapHCC08";
+                            tb.Width = Unit.Pixel(50);
+                            tb.ControlStyle.CssClass = "pvpHccCode";
+                        }).Bind(Model.Entry.OpenGapHCC08).Render();
+                    });
+                });
+            });
+
+
+            opengapconditioncodinggrp.Items.AddGroupItem(code9 =>
+            {
+                code9.ShowCaption = DefaultBoolean.False;
+                code9.GroupBoxDecoration = GroupBoxDecoration.None;
+                code9.CssClass = "pvpHccCode";
+                code9.Items.Add(i =>
+                {
+                    i.Name = "OpenGapHCC09CodeGroup";
+                    i.Caption = "Code 9/HCC";
+                    i.SetNestedContent(() =>
+                    {
+                        Html.DevExpress().TextBox(tb =>
+                        {
+                            tb.Name = "OpenGapHCC09Code";
+                            tb.Width = Unit.Pixel(50);
+                            tb.ControlStyle.CssClass = "pvpHccCode";
+                            tb.Properties.ClientSideEvents.TextChanged = "ccc_code_change";
+                        }).Bind(Model.Entry.OpenGapHCC09Code).Render();
+                        Html.DevExpress().Label(l =>
+                        {
+                            l.Text = " / ";
+                        }).Render();
+                        Html.DevExpress().TextBox(tb =>
+                        {
+                            tb.Name = "OpenGapHCC09";
+                            tb.Width = Unit.Pixel(50);
+                            tb.ControlStyle.CssClass = "pvpHccCode";
+                        }).Bind(Model.Entry.OpenGapHCC09).Render();
+                    });
+                });
+            });
+
+            opengapconditioncodinggrp.Items.AddGroupItem(code10 =>
+            {
+                code10.ShowCaption = DefaultBoolean.False;
+                code10.GroupBoxDecoration = GroupBoxDecoration.None;
+                code10.CssClass = "pvpHccCode";
+                code10.Items.Add(i =>
+                {
+                    i.Name = "OpenGapHCC10CodeGroup";
+                    i.Caption = "Code 10/HCC";
+                    i.SetNestedContent(() =>
+                    {
+                        Html.DevExpress().TextBox(tb =>
+                        {
+                            tb.Name = "OpenGapHCC10Code";
+                            tb.Width = Unit.Pixel(50);
+                            tb.ControlStyle.CssClass = "pvpHccCode";
+                            tb.Properties.ClientSideEvents.TextChanged = "ccc_code_change";
+                        }).Bind(Model.Entry.OpenGapHCC10Code).Render();
+                        Html.DevExpress().Label(l =>
+                        {
+                            l.Text = " / ";
+                        }).Render();
+                        Html.DevExpress().TextBox(tb =>
+                        {
+                            tb.Name = "OpenGapHCC10";
+                            tb.Width = Unit.Pixel(50);
+                            tb.ControlStyle.CssClass = "pvpHccCode";
+                        }).Bind(Model.Entry.OpenGapHCC10).Render();
+                    });
+                });
+            });
+        });
+
+        col2.Items.AddGroupItem(conditioncodinggrpSuspect =>
+        {
+            conditioncodinggrpSuspect.Caption = "Suspect Condition Coding";
+            conditioncodinggrpSuspect.Items.AddGroupItem(code1 =>
+            {
+                code1.ShowCaption = DefaultBoolean.False;
+                code1.GroupBoxDecoration = GroupBoxDecoration.None;
+                code1.CssClass = "pvpHccCode";
+                code1.Items.Add(i =>
+                {
+                    i.Name = "SuspectHCC01CodeGroup";
+                    i.Caption = "Suspect Code 1/HCC";
+                    i.SetNestedContent(() =>
+                    {
+                        Html.DevExpress().TextBox(tb =>
+                        {
+                            tb.Name = "SuspectHCC01Code";
+                            tb.Width = Unit.Pixel(50);
+                            tb.ControlStyle.CssClass = "pvpHccCode";
+                            tb.Properties.ClientSideEvents.TextChanged = "ccc_code_change";
+                        }).Bind(Model.Entry.SuspectHCC01Code).Render();
+                        Html.DevExpress().Label(l =>
+                        {
+                            l.Text = " / ";
+                        }).Render();
+                        Html.DevExpress().TextBox(tb =>
+                        {
+                            tb.Name = "SuspectHCC01";
+                            tb.Width = Unit.Pixel(50);
+                            tb.ControlStyle.CssClass = "pvpHccCode";
+                        }).Bind(Model.Entry.SuspectHCC01).Render();
+                    });
+                });
+            });
+            conditioncodinggrpSuspect.Items.AddGroupItem(code2 =>
+            {
+                code2.ShowCaption = DefaultBoolean.False;
+                code2.GroupBoxDecoration = GroupBoxDecoration.None;
+                code2.CssClass = "pvpHccCode";
+                code2.Items.Add(i =>
+                {
+                    i.Name = "SuspectHCC02CodeGroup";
+                    i.Caption = "Suspect Code 2/HCC";
+                    i.SetNestedContent(() =>
+                    {
+                        Html.DevExpress().TextBox(tb =>
+                        {
+                            tb.Name = "SuspectHCC02Code";
+                            tb.Width = Unit.Pixel(50);
+                            tb.ControlStyle.CssClass = "pvpHccCode";
+                            tb.Properties.ClientSideEvents.TextChanged = "ccc_code_change";
+                        }).Bind(Model.Entry.SuspectHCC02Code).Render();
+                        Html.DevExpress().Label(l =>
+                        {
+                            l.Text = " / ";
+                        }).Render();
+                        Html.DevExpress().TextBox(tb =>
+                        {
+                            tb.Name = "SuspectHCC02";
+                            tb.Width = Unit.Pixel(50);
+                            tb.ControlStyle.CssClass = "pvpHccCode";
+                        }).Bind(Model.Entry.SuspectHCC02).Render();
+                    });
+                });
+            });
+            conditioncodinggrpSuspect.Items.AddGroupItem(code3 =>
+            {
+                code3.ShowCaption = DefaultBoolean.False;
+                code3.GroupBoxDecoration = GroupBoxDecoration.None;
+                code3.CssClass = "pvpHccCode";
+                code3.Items.Add(i =>
+                {
+                    i.Name = "SuspectHCC03CodeGroup";
+                    i.Caption = "Suspect Code 3/HCC";
+                    i.SetNestedContent(() =>
+                    {
+                        Html.DevExpress().TextBox(tb =>
+                        {
+                            tb.Name = "SuspectHCC03Code";
+                            tb.Width = Unit.Pixel(50);
+                            tb.ControlStyle.CssClass = "pvpHccCode";
+                            tb.Properties.ClientSideEvents.TextChanged = "ccc_code_change";
+                        }).Bind(Model.Entry.SuspectHCC03Code).Render();
+                        Html.DevExpress().Label(l =>
+                        {
+                            l.Text = " / ";
+                        }).Render();
+                        Html.DevExpress().TextBox(tb =>
+                        {
+                            tb.Name = "SuspectHCC03";
+                            tb.Width = Unit.Pixel(50);
+                            tb.ControlStyle.CssClass = "pvpHccCode";
+                        }).Bind(Model.Entry.SuspectHCC03).Render();
+                    });
+                });
+            });
+            conditioncodinggrpSuspect.Items.AddGroupItem(code4 =>
+            {
+                code4.ShowCaption = DefaultBoolean.False;
+                code4.GroupBoxDecoration = GroupBoxDecoration.None;
+                code4.CssClass = "pvpHccCode";
+                code4.Items.Add(i =>
+                {
+                    i.Name = "SuspectHCC04CodeGroup";
+                    i.Caption = "Suspect Code 4/HCC";
+                    i.SetNestedContent(() =>
+                    {
+                        Html.DevExpress().TextBox(tb =>
+                        {
+                            tb.Name = "SuspectHCC04Code";
+                            tb.Width = Unit.Pixel(50);
+                            tb.ControlStyle.CssClass = "pvpHccCode";
+                            tb.Properties.ClientSideEvents.TextChanged = "ccc_code_change";
+                        }).Bind(Model.Entry.SuspectHCC04Code).Render();
+                        Html.DevExpress().Label(l =>
+                        {
+                            l.Text = " / ";
+                        }).Render();
+                        Html.DevExpress().TextBox(tb =>
+                        {
+                            tb.Name = "SuspectHCC04";
+                            tb.Width = Unit.Pixel(50);
+                            tb.ControlStyle.CssClass = "pvpHccCode";
+                        }).Bind(Model.Entry.SuspectHCC04).Render();
+                    });
+                });
+            });
+            conditioncodinggrpSuspect.Items.AddGroupItem(code5 =>
+            {
+                code5.ShowCaption = DefaultBoolean.False;
+                code5.GroupBoxDecoration = GroupBoxDecoration.None;
+                code5.CssClass = "pvpHccCode";
+                code5.Items.Add(i =>
+                {
+                    i.Name = "SuspectHCC08CodeGroup";
+                    i.Caption = "Suspect Code 5/HCC";
+                    i.SetNestedContent(() =>
+                    {
+                        Html.DevExpress().TextBox(tb =>
+                        {
+                            tb.Name = "SuspectHCC05Code";
+                            tb.Width = Unit.Pixel(50);
+                            tb.ControlStyle.CssClass = "pvpHccCode";
+                            tb.Properties.ClientSideEvents.TextChanged = "ccc_code_change";
+                        }).Bind(Model.Entry.SuspectHCC05Code).Render();
+                        Html.DevExpress().Label(l =>
+                        {
+                            l.Text = " / ";
+                        }).Render();
+                        Html.DevExpress().TextBox(tb =>
+                        {
+                            tb.Name = "SuspectHCC05";
+                            tb.Width = Unit.Pixel(50);
+                            tb.ControlStyle.CssClass = "pvpHccCode";
+                        }).Bind(Model.Entry.SuspectHCC05).Render();
+                    });
+                });
+            });
+        });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        col2.Items.AddGroupItem(icd10grp =>
+        {
+            icd10grp.Name = "icd10grp";
+            icd10grp.Caption = "CPT 99499";
+            icd10grp.Items.Add(i =>
+            {
+                i.Name = "CPT_99499_ICD";
+                i.FieldName = "CPT_99499_ICD";
+                i.Caption = "ICD Code";
+                i.NestedExtension().TextBox(tb =>
+                {
+                    tb.Name = "CPT_99499_ICD";
+                });
+            });
+            icd10grp.Items.Add(i =>
+            {
+                i.Name = "CPT_99499_DOS";
+                i.FieldName = "CPT_99499_DOS";
+                i.Caption = "DOS";
+                i.NestedExtension().DateEdit(de =>
+                {
+                    de.Name = "CPT_99499_DOS";
+                });
+            });
+        });
+    });
+
+    f.Items.AddGroupItem(col14 =>
+    {
+        col14.ShowCaption = DefaultBoolean.False;
+        col14.Width = Unit.Percentage(25);
+        col14.GroupBoxDecoration = GroupBoxDecoration.None;
+
+
+        col14.Items.AddGroupItem(conditioncodinggrp =>
+        {
+            conditioncodinggrp.Caption = "Chronic Condition Coding";
+            conditioncodinggrp.Items.AddGroupItem(code1 =>
+            {
+                code1.ShowCaption = DefaultBoolean.False;
+                code1.GroupBoxDecoration = GroupBoxDecoration.None;
+                code1.CssClass = "pvpHccCode";
+                code1.Items.Add(i =>
+                {
+                    i.Name = "HCC01CodeGroup";
+                    i.Caption = "Code 1/HCC";
+                    i.SetNestedContent(() =>
+                    {
+                        Html.DevExpress().TextBox(tb =>
+                        {
+                            tb.Name = "HCC01Code";
+                            tb.Width = Unit.Pixel(50);
+                            tb.ControlStyle.CssClass = "pvpHccCode";
+                            tb.Properties.ClientSideEvents.TextChanged = "ccc_code_change";
+                        }).Bind(Model.Entry.HCC01Code).Render();
+                        Html.DevExpress().Label(l =>
+                        {
+                            l.Text = " / ";
+                        }).Render();
+                        Html.DevExpress().TextBox(tb =>
+                        {
+                            tb.Name = "HCC01";
+                            tb.Width = Unit.Pixel(50);
+                            tb.ControlStyle.CssClass = "pvpHccCode";
+                        }).Bind(Model.Entry.HCC01).Render();
+                    });
+                });
+            });
+            conditioncodinggrp.Items.AddGroupItem(code2 =>
+            {
+                code2.ShowCaption = DefaultBoolean.False;
+                code2.GroupBoxDecoration = GroupBoxDecoration.None;
+                code2.CssClass = "pvpHccCode";
+                code2.Items.Add(i =>
+                {
+                    i.Name = "HCC02CodeGroup";
+                    i.Caption = "Code 2/HCC";
+                    i.SetNestedContent(() =>
+                    {
+                        Html.DevExpress().TextBox(tb =>
+                        {
+                            tb.Name = "HCC02Code";
+                            tb.Width = Unit.Pixel(50);
+                            tb.ControlStyle.CssClass = "pvpHccCode";
+                            tb.Properties.ClientSideEvents.TextChanged = "ccc_code_change";
+                        }).Bind(Model.Entry.HCC02Code).Render();
+                        Html.DevExpress().Label(l =>
+                        {
+                            l.Text = " / ";
+                        }).Render();
+                        Html.DevExpress().TextBox(tb =>
+                        {
+                            tb.Name = "HCC02";
+                            tb.Width = Unit.Pixel(50);
+                            tb.ControlStyle.CssClass = "pvpHccCode";
+                        }).Bind(Model.Entry.HCC02).Render();
+                    });
+                });
+            });
+            conditioncodinggrp.Items.AddGroupItem(code3 =>
+            {
+                code3.ShowCaption = DefaultBoolean.False;
+                code3.GroupBoxDecoration = GroupBoxDecoration.None;
+                code3.CssClass = "pvpHccCode";
+                code3.Items.Add(i =>
+                {
+                    i.Name = "HCC03CodeGroup";
+                    i.Caption = "Code 3/HCC";
+                    i.SetNestedContent(() =>
+                    {
+                        Html.DevExpress().TextBox(tb =>
+                        {
+                            tb.Name = "HCC03Code";
+                            tb.Width = Unit.Pixel(50);
+                            tb.ControlStyle.CssClass = "pvpHccCode";
+                            tb.Properties.ClientSideEvents.TextChanged = "ccc_code_change";
+                        }).Bind(Model.Entry.HCC03Code).Render();
+                        Html.DevExpress().Label(l =>
+                        {
+                            l.Text = " / ";
+                        }).Render();
+                        Html.DevExpress().TextBox(tb =>
+                        {
+                            tb.Name = "HCC03";
+                            tb.Width = Unit.Pixel(50);
+                            tb.ControlStyle.CssClass = "pvpHccCode";
+                        }).Bind(Model.Entry.HCC03).Render();
+                    });
+                });
+            });
+            conditioncodinggrp.Items.AddGroupItem(code4 =>
+            {
+                code4.ShowCaption = DefaultBoolean.False;
+                code4.GroupBoxDecoration = GroupBoxDecoration.None;
+                code4.CssClass = "pvpHccCode";
+                code4.Items.Add(i =>
+                {
+                    i.Name = "HCC04CodeGroup";
+                    i.Caption = "Code 4/HCC";
+                    i.SetNestedContent(() =>
+                    {
+                        Html.DevExpress().TextBox(tb =>
+                        {
+                            tb.Name = "HCC04Code";
+                            tb.Width = Unit.Pixel(50);
+                            tb.ControlStyle.CssClass = "pvpHccCode";
+                            tb.Properties.ClientSideEvents.TextChanged = "ccc_code_change";
+                        }).Bind(Model.Entry.HCC04Code).Render();
+                        Html.DevExpress().Label(l =>
+                        {
+                            l.Text = " / ";
+                        }).Render();
+                        Html.DevExpress().TextBox(tb =>
+                        {
+                            tb.Name = "HCC04";
+                            tb.Width = Unit.Pixel(50);
+                            tb.ControlStyle.CssClass = "pvpHccCode";
+                        }).Bind(Model.Entry.HCC04).Render();
+                    });
+                });
+            });
+            conditioncodinggrp.Items.AddGroupItem(code5 =>
+            {
+                code5.ShowCaption = DefaultBoolean.False;
+                code5.GroupBoxDecoration = GroupBoxDecoration.None;
+                code5.CssClass = "pvpHccCodeGroup";
+                code5.Items.Add(i =>
+                {
+                    i.Name = "HCC05Code";
+                    i.Caption = "Code 5/HCC";
+                    i.SetNestedContent(() =>
+                    {
+                        Html.DevExpress().TextBox(tb =>
+                        {
+                            tb.Name = "HCC05Code";
+                            tb.Width = Unit.Pixel(50);
+                            tb.ControlStyle.CssClass = "pvpHccCode";
+                            tb.Properties.ClientSideEvents.TextChanged = "ccc_code_change";
+                        }).Bind(Model.Entry.HCC05Code).Render();
+                        Html.DevExpress().Label(l =>
+                        {
+                            l.Text = " / ";
+                        }).Render();
+                        Html.DevExpress().TextBox(tb =>
+                        {
+                            tb.Name = "HCC05";
+                            tb.Width = Unit.Pixel(50);
+                            tb.ControlStyle.CssClass = "pvpHccCode";
+                        }).Bind(Model.Entry.HCC05).Render();
+                    });
+                });
+            });
+            conditioncodinggrp.Items.AddGroupItem(code6 =>
+            {
+                code6.ShowCaption = DefaultBoolean.False;
+                code6.GroupBoxDecoration = GroupBoxDecoration.None;
+                code6.CssClass = "pvpHccCode";
+                code6.Items.Add(i =>
+                {
+                    i.Name = "HCC06CodeGroup";
+                    i.Caption = "Code 6/HCC";
+                    i.SetNestedContent(() =>
+                    {
+                        Html.DevExpress().TextBox(tb =>
+                        {
+                            tb.Name = "HCC06Code";
+                            tb.Width = Unit.Pixel(50);
+                            tb.ControlStyle.CssClass = "pvpHccCode";
+                            tb.Properties.ClientSideEvents.TextChanged = "ccc_code_change";
+                        }).Bind(Model.Entry.HCC06Code).Render();
+                        Html.DevExpress().Label(l =>
+                        {
+                            l.Text = " / ";
+                        }).Render();
+                        Html.DevExpress().TextBox(tb =>
+                        {
+                            tb.Name = "HCC06";
+                            tb.Width = Unit.Pixel(50);
+                            tb.ControlStyle.CssClass = "pvpHccCode";
+                        }).Bind(Model.Entry.HCC06).Render();
+                    });
+                });
+            });
+            conditioncodinggrp.Items.AddGroupItem(code7 =>
+            {
+                code7.ShowCaption = DefaultBoolean.False;
+                code7.GroupBoxDecoration = GroupBoxDecoration.None;
+                code7.CssClass = "pvpHccCode";
+                code7.Items.Add(i =>
+                {
+                    i.Name = "HCC07CodeGroup";
+                    i.Caption = "Code 7/HCC";
+                    i.SetNestedContent(() =>
+                    {
+                        Html.DevExpress().TextBox(tb =>
+                        {
+                            tb.Name = "HCC07Code";
+                            tb.Width = Unit.Pixel(50);
+                            tb.ControlStyle.CssClass = "pvpHccCode";
+                            tb.Properties.ClientSideEvents.TextChanged = "ccc_code_change";
+                        }).Bind(Model.Entry.HCC07Code).Render();
+                        Html.DevExpress().Label(l =>
+                        {
+                            l.Text = " / ";
+                        }).Render();
+                        Html.DevExpress().TextBox(tb =>
+                        {
+                            tb.Name = "HCC07";
+                            tb.Width = Unit.Pixel(50);
+                            tb.ControlStyle.CssClass = "pvpHccCode";
+                        }).Bind(Model.Entry.HCC07).Render();
+                    });
+                });
+            });
+            conditioncodinggrp.Items.AddGroupItem(code8 =>
+            {
+                code8.ShowCaption = DefaultBoolean.False;
+                code8.GroupBoxDecoration = GroupBoxDecoration.None;
+                code8.CssClass = "pvpHccCode";
+                code8.Items.Add(i =>
+                {
+                    i.Name = "HCC08CodeGroup";
+                    i.Caption = "Code 8/HCC";
+                    i.SetNestedContent(() =>
+                    {
+                        Html.DevExpress().TextBox(tb =>
+                        {
+                            tb.Name = "HCC08Code";
+                            tb.Width = Unit.Pixel(50);
+                            tb.ControlStyle.CssClass = "pvpHccCode";
+                            tb.Properties.ClientSideEvents.TextChanged = "ccc_code_change";
+                        }).Bind(Model.Entry.HCC08Code).Render();
+                        Html.DevExpress().Label(l =>
+                        {
+                            l.Text = " / ";
+                        }).Render();
+                        Html.DevExpress().TextBox(tb =>
+                        {
+                            tb.Name = "HCC08";
+                            tb.Width = Unit.Pixel(50);
+                            tb.ControlStyle.CssClass = "pvpHccCode";
+                        }).Bind(Model.Entry.HCC08).Render();
+                    });
+                });
+            });
+
+
+            conditioncodinggrp.Items.AddGroupItem(code9 =>
+            {
+                code9.ShowCaption = DefaultBoolean.False;
+                code9.GroupBoxDecoration = GroupBoxDecoration.None;
+                code9.CssClass = "pvpHccCode";
+                code9.Items.Add(i =>
+                {
+                    i.Name = "HCC09CodeGroup";
+                    i.Caption = "Code 9/HCC";
+                    i.SetNestedContent(() =>
+                    {
+                        Html.DevExpress().TextBox(tb =>
+                        {
+                            tb.Name = "HCC09Code";
+                            tb.Width = Unit.Pixel(50);
+                            tb.ControlStyle.CssClass = "pvpHccCode";
+                            tb.Properties.ClientSideEvents.TextChanged = "ccc_code_change";
+                        }).Bind(Model.Entry.HCC09Code).Render();
+                        Html.DevExpress().Label(l =>
+                        {
+                            l.Text = " / ";
+                        }).Render();
+                        Html.DevExpress().TextBox(tb =>
+                        {
+                            tb.Name = "HCC09";
+                            tb.Width = Unit.Pixel(50);
+                            tb.ControlStyle.CssClass = "pvpHccCode";
+                        }).Bind(Model.Entry.HCC09).Render();
+                    });
+                });
+            });
+
+            conditioncodinggrp.Items.AddGroupItem(code10 =>
+            {
+                code10.ShowCaption = DefaultBoolean.False;
+                code10.GroupBoxDecoration = GroupBoxDecoration.None;
+                code10.CssClass = "pvpHccCode";
+                code10.Items.Add(i =>
+                {
+                    i.Name = "HCC10CodeGroup";
+                    i.Caption = "Code 10/HCC";
+                    i.SetNestedContent(() =>
+                    {
+                        Html.DevExpress().TextBox(tb =>
+                        {
+                            tb.Name = "HCC10Code";
+                            tb.Width = Unit.Pixel(50);
+                            tb.ControlStyle.CssClass = "pvpHccCode";
+                            tb.Properties.ClientSideEvents.TextChanged = "ccc_code_change";
+                        }).Bind(Model.Entry.HCC10Code).Render();
+                        Html.DevExpress().Label(l =>
+                        {
+                            l.Text = " / ";
+                        }).Render();
+                        Html.DevExpress().TextBox(tb =>
+                        {
+                            tb.Name = "HCC10";
+                            tb.Width = Unit.Pixel(50);
+                            tb.ControlStyle.CssClass = "pvpHccCode";
+                        }).Bind(Model.Entry.HCC10).Render();
+                    });
+                });
+            });
+        });
+    });
+    f.Items.AddGroupItem(col3 =>
+    {
+        col3.ShowCaption = DefaultBoolean.False;
+        col3.Width = Unit.Percentage(25);
+        col3.GroupBoxDecoration = GroupBoxDecoration.None;
+        col3.Items.AddGroupItem(reviewnotes =>
+        {
+            reviewnotes.Caption = "Review Notes";
+            reviewnotes.Items.Add(i =>
+            {
+                i.Name = "ReviewNote";
+                i.FieldName = "ReviewNote";
+                i.ShowCaption = DefaultBoolean.False;
+                i.NestedExtension().Memo(m =>
+                {
+                    m.Name = "ReviewNote";
+                    m.Width = Unit.Percentage(100);
+                    //m.Properties.ClientSideEvents.LostFocus = "pvp_review_notes_typing";
+                    m.Height = Unit.Pixel(120);
+                });
+            });
+            reviewnotes.Items.Add(i =>
+            {
+                i.Name = "ProblemListUpdate";
+                i.FieldName = "ProblemListUpdate";
+                i.Caption = "Problem List";
+                i.RequiredMarkDisplayMode = FieldRequiredMarkMode.Hidden;
+                i.NestedExtension().CheckBox(cb =>
+                {
+                    cb.Name = "ProblemListUpdate";
+                });
+            });
+            reviewnotes.Items.Add(i =>
+            {
+                i.Name = "PortalReview";
+                i.FieldName = "PortalReview";
+                i.Caption = "Portal Review";
+                i.RequiredMarkDisplayMode = FieldRequiredMarkMode.Hidden;
+                i.NestedExtension().CheckBox(cb =>
+                {
+                    cb.Name = "PortalReview";
+                });
+            });
+            reviewnotes.Items.Add(i =>
+            {
+                i.Name = "EmailNotification";
+                i.FieldName = "EmailNotification";
+                i.Caption = "Email/Notification";
+                i.RequiredMarkDisplayMode = FieldRequiredMarkMode.Hidden;
+                i.NestedExtension().CheckBox(cb =>
+                {
+                    cb.Name = "EmailNotification";
+                });
+            });
+            reviewnotes.Items.Add(i =>
+            {
+                i.Name = "BannerAlertAdded";
+                i.FieldName = "BannerAlertAdded";
+                i.Caption = "Banner Alert Added";
+                i.RequiredMarkDisplayMode = FieldRequiredMarkMode.Hidden;
+                i.NestedExtension().CheckBox(cb =>
+                {
+                    cb.Name = "BannerAlertAdded";
+                });
+            });
+            reviewnotes.Items.Add(i =>
+            {
+                i.Name = "PVPNoteAdded";
+                i.FieldName = "PVPNoteAdded";
+                i.Caption = "PVP Note Added";
+                i.RequiredMarkDisplayMode = FieldRequiredMarkMode.Hidden;
+                i.NestedExtension().CheckBox(cb =>
+                {
+                    cb.Name = "PVPNoteAdded";
+                });
+            });
+            reviewnotes.Items.Add(i =>
+            {
+                i.Name = "PatientCaseSent";
+                i.FieldName = "PatientCaseSent";
+                i.Caption = "Patient Case Sent";
+                i.RequiredMarkDisplayMode = FieldRequiredMarkMode.Hidden;
+                i.NestedExtension().CheckBox(cb =>
+                {
+                    cb.Name = "PatientCaseSent";
+                    //cb.Properties.ClientSideEvents.CheckedChanged = "function(s,e) { PtCaseSent.Show(); }";
+                    cb.Properties.ClientSideEvents.CheckedChanged = "pt_case_sent_chckbx_change";
+                });
+            });
+            reviewnotes.Items.Add(i =>
+            {
+                i.Name = "Dismissed";
+                i.FieldName = "Dismissed";
+                i.Caption = "Dismissed HCCs";
+                i.RequiredMarkDisplayMode = FieldRequiredMarkMode.Hidden;
+                i.NestedExtension().CheckBox(cb =>
+                {
+                    cb.Name = "Dismissed";
+                    //cb.Properties.ClientSideEvents.CheckedChanged = "function(s,e) { PtCaseSent.Show(); }";
+                    cb.Properties.ClientSideEvents.CheckedChanged = "dismissed_chckbx_change";
+                });
+            });
+            reviewnotes.Items.Add(i =>
+            {
+                i.Name = "CorrectedClaims";
+                i.FieldName = "CorrectedClaims";
+                i.Caption = "Corrected Claims";
+                i.RequiredMarkDisplayMode = FieldRequiredMarkMode.Hidden;
+                i.NestedExtension().CheckBox(cb =>
+                {
+                    cb.Name = "CorrectedClaims";
+                    //cb.Properties.ClientSideEvents.CheckedChanged = "function(s,e) { PtCaseSent.Show(); }";
+                    cb.Properties.ClientSideEvents.CheckedChanged = "correctedclaims_chckbx_change";
+                });
+            });
+
+            reviewnotes.Items.Add(i =>
+            {
+                i.Name = "Hold";
+                i.Caption = "Hold in Reviews In Progress";
+                i.RequiredMarkDisplayMode = FieldRequiredMarkMode.Hidden;
+                i.NestedExtension().CheckBox(cb =>
+                {
+                    cb.Name = "Hold";
+                });
+            });
+        });
+        col3.Items.AddGroupItem(reviewerinfo =>
+        {
+            reviewerinfo.Caption = "Review Info";
+            //reviewerinfo.Items.Add(i =>
+            //{
+            //    i.Caption = "Placeholder for PVP Added note";
+            //});
+                reviewerinfo.Caption = "Review Info";
+                //reviewerinfo.Items.Add(i =>
+                //{
+                //    i.Caption = "Placeholder for PVP Added note";
+                //});
+                reviewerinfo.Items.Add(j =>
+                {
+                    j.Name = "ReviewDate";
+                    j.Caption = "Review Date";
+                    j.FieldName = "ReviewDate";
+
+                    j.NestedExtension().DateEdit(de =>
+                    {
+                        de.Name = "ReviewDate";
+                        de.Date = DateTime.Now;
+                        de.Properties.ValidationSettings.RequiredField.IsRequired = true;
+                        //de.Properties.ClientSideEvents.Init = "function(s,e){ ReviewDate.SetValue(new Date()) }";
+                    });
+                });
+                reviewerinfo.Items.Add(k =>
+                {
+                    k.Name = "Reviewer";
+                    k.Caption = "Reviewer";
+                    k.FieldName = "Reviewer";
+                    k.NestedExtension().ComboBox(cb =>
+                    {
+                        cb.Properties.TextField = "DisplayName";
+                        cb.Properties.ValueField = "DisplayName";
+                        cb.Properties.ValueType = typeof(string);
+                        cb.Properties.ValidationSettings.RequiredField.IsRequired = true;
+                        cb.Properties.DataSource = Model.ActiveUsers;
+                    });
+                });
+        });
+    });
+    f.Items.AddGroupItem(col4 =>
+    {
+        col4.Items.Add(i =>
+        {
+            i.Name = "finishBtn";
+            i.ShowCaption = DefaultBoolean.False;
+            i.NestedExtension().Button(b =>
+            {
+                b.ControlStyle.CssClass = "btn btn-dark";
+                b.Text = "Finish";
+                b.ToolTip = "Finish the chart";
+                b.UseSubmitBehavior = true;
+            });
+        });
+    });
+}).Bind(Model.Entry).GetHtml();
+
+
+
+    @Html.DevExpress().PopupControl(p =>
+    {
+        p.Name = "PtCaseSent";
+        p.Width = Unit.Pixel(250);
+        p.AllowDragging = true;
+        p.CloseAction = CloseAction.CloseButton;
+        p.CloseOnEscape = true;
+        p.PopupAnimationType = AnimationType.None;
+        p.HeaderText = "Patient Case Sent";
+        p.Modal = true;
+        p.AutoUpdatePosition = true;
+        p.PopupHorizontalAlign = PopupHorizontalAlign.WindowCenter;
+        p.PopupVerticalAlign = PopupVerticalAlign.WindowCenter;
+        p.SetContent(() =>
+        {
+            Html.DevExpress().FormLayout(f =>
+            {
+                f.Name = "ptcasesent";
+                f.Width = Unit.Percentage(100);
+                f.ColumnCount = 1;
+                f.Items.Add(i =>
+                {
+                    i.Name = "PatientCaseDate";
+                    i.FieldName = "PatientCaseDate";
+                    i.NestedExtension().DateEdit(de =>
+                    {
+                        de.Name = "PatientCaseDate";
+                        de.Date = Model.Entry.PatientCaseDate;
+                        //de.Properties.ClientSideEvents.Init = "function (s,e) { s.SetDate(new Date())}";
+                    });
+                });
+                f.Items.AddGroupItem(lbl =>
+                {
+                    lbl.ShowCaption = DefaultBoolean.False;
+                    lbl.GroupBoxDecoration = GroupBoxDecoration.None;
+                    lbl.Items.AddEmptyItem();
+                    lbl.Items.Add(i =>
+                    {
+                        i.ShowCaption = DefaultBoolean.False;
+                        i.CssClass = "ptcase_sent_txt_align";
+                        i.NestedExtension().Label(l =>
+                        {
+                            l.Text = "Reason(ICD-10)/HCC Gained/HCC Replaced";
+                        });
+                    });
+                });
+                f.Items.AddGroupItem(hcc1 =>
+                {
+                    hcc1.ShowCaption = DefaultBoolean.False;
+                    hcc1.GroupBoxDecoration = GroupBoxDecoration.None;
+                    hcc1.CssClass = "pvpHccCode";
+                    hcc1.Items.Add(i =>
+                    {
+                        i.Name = "PCSHCC01";
+                        i.Caption = "HCC 1";
+                        i.SetNestedContent(() =>
+                        {
+                            Html.DevExpress().TextBox(tb =>
+                            {
+                                tb.Name = "PatientCaseCode01";
+                                tb.Width = Unit.Pixel(50);
+                                tb.Properties.MaxLength = 7;
+                                tb.ControlStyle.CssClass = "pvpHccCode";
+                            }).Bind(Model.Entry.PatientCaseCode01).Render();
+                            Html.DevExpress().Label(l =>
+                            {
+                                l.Text = " / ";
+                            }).Render();
+                            Html.DevExpress().TextBox(tb =>
+                            {
+                                tb.Name = "PatientCaseHCC01";
+                                tb.Width = Unit.Pixel(50);
+                                tb.Properties.MaxLength = 4;
+                                tb.ControlStyle.CssClass = "pvpHccCode";
+                            }).Bind(Model.Entry.PatientCaseHCC01).Render();
+                            Html.DevExpress().Label(l =>
+                            {
+                                l.Text = " / ";
+                            }).Render();
+                            Html.DevExpress().TextBox(tb =>
+                            {
+                                tb.Name = "PatientCaseHCCReplaced01";
+                                tb.Width = Unit.Pixel(50);
+                                tb.Properties.MaxLength = 4;
+                                tb.ControlStyle.CssClass = "pvpHccCode";
+                            }).Bind(Model.Entry.PatientCaseHCCReplaced01).Render();
+                        });
+                    });
+                });
+                f.Items.AddGroupItem(hcc2 =>
+                {
+                    hcc2.ShowCaption = DefaultBoolean.False;
+                    hcc2.GroupBoxDecoration = GroupBoxDecoration.None;
+                    hcc2.CssClass = "pvpHccCode";
+                    hcc2.Items.Add(i =>
+                    {
+                        i.Name = "PCSHCC02";
+                        i.Caption = "HCC 2";
+                        i.SetNestedContent(() =>
+                        {
+                            Html.DevExpress().TextBox(tb =>
+                            {
+                                tb.Name = "PatientCaseCode02";
+                                tb.Width = Unit.Pixel(50);
+                                tb.Properties.MaxLength = 7;
+                                tb.ControlStyle.CssClass = "pvpHccCode";
+                            }).Bind(Model.Entry.PatientCaseCode02).Render();
+                            Html.DevExpress().Label(l =>
+                            {
+                                l.Text = " / ";
+                            }).Render();
+                            Html.DevExpress().TextBox(tb =>
+                            {
+                                tb.Name = "PatientCaseHCC02";
+                                tb.Width = Unit.Pixel(50);
+                                tb.Properties.MaxLength = 4;
+                                tb.ControlStyle.CssClass = "pvpHccCode";
+                            }).Bind(Model.Entry.PatientCaseHCC02).Render();
+                            Html.DevExpress().Label(l =>
+                            {
+                                l.Text = " / ";
+                            }).Render();
+                            Html.DevExpress().TextBox(tb =>
+                            {
+                                tb.Name = "PatientCaseHCCReplaced02";
+                                tb.Width = Unit.Pixel(50);
+                                tb.Properties.MaxLength = 4;
+                                tb.ControlStyle.CssClass = "pvpHccCode";
+                            }).Bind(Model.Entry.PatientCaseHCCReplaced02).Render();
+                        });
+                    });
+                });
+                f.Items.AddGroupItem(hcc3 =>
+                {
+                    hcc3.ShowCaption = DefaultBoolean.False;
+                    hcc3.GroupBoxDecoration = GroupBoxDecoration.None;
+                    hcc3.CssClass = "pvpHccCode";
+                    hcc3.Items.Add(i =>
+                    {
+                        i.Name = "PCSHCC03";
+                        i.Caption = "HCC 3";
+                        i.SetNestedContent(() =>
+                        {
+                            Html.DevExpress().TextBox(tb =>
+                            {
+                                tb.Name = "PatientCaseCode03";
+                                tb.Width = Unit.Pixel(50);
+                                tb.Properties.MaxLength = 7;
+                                tb.ControlStyle.CssClass = "pvpHccCode";
+                            }).Bind(Model.Entry.PatientCaseCode03).Render();
+                            Html.DevExpress().Label(l =>
+                            {
+                                l.Text = " / ";
+                            }).Render();
+                            Html.DevExpress().TextBox(tb =>
+                            {
+                                tb.Name = "PatientCaseHCC03";
+                                tb.Width = Unit.Pixel(50);
+                                tb.Properties.MaxLength = 4;
+                                tb.ControlStyle.CssClass = "pvpHccCode";
+                            }).Bind(Model.Entry.PatientCaseHCC03).Render();
+                            Html.DevExpress().Label(l =>
+                            {
+                                l.Text = " / ";
+                            }).Render();
+                            Html.DevExpress().TextBox(tb =>
+                            {
+                                tb.Name = "PatientCaseHCCReplaced03";
+                                tb.Width = Unit.Pixel(50);
+                                tb.Properties.MaxLength = 4;
+                                tb.ControlStyle.CssClass = "pvpHccCode";
+                            }).Bind(Model.Entry.PatientCaseHCCReplaced03).Render();
+                        });
+                    });
+                });
+                f.Items.AddGroupItem(hcc4 =>
+                {
+                    hcc4.ShowCaption = DefaultBoolean.False;
+                    hcc4.GroupBoxDecoration = GroupBoxDecoration.None;
+                    hcc4.CssClass = "pvpHccCode";
+                    hcc4.Items.Add(i =>
+                    {
+                        i.Name = "PCSHCC04";
+                        i.Caption = "HCC 4";
+                        i.SetNestedContent(() =>
+                        {
+                            Html.DevExpress().TextBox(tb =>
+                            {
+                                tb.Name = "PatientCaseCode04";
+                                tb.Width = Unit.Pixel(50);
+                                tb.Properties.MaxLength = 7;
+                                tb.ControlStyle.CssClass = "pvpHccCode";
+                            }).Bind(Model.Entry.PatientCaseCode04).Render();
+                            Html.DevExpress().Label(l =>
+                            {
+                                l.Text = " / ";
+                            }).Render();
+                            Html.DevExpress().TextBox(tb =>
+                            {
+                                tb.Name = "PatientCaseHCC04";
+                                tb.Width = Unit.Pixel(50);
+                                tb.Properties.MaxLength = 4;
+                                tb.ControlStyle.CssClass = "pvpHccCode";
+                            }).Bind(Model.Entry.PatientCaseHCC04).Render();
+                            Html.DevExpress().Label(l =>
+                            {
+                                l.Text = " / ";
+                            }).Render();
+                            Html.DevExpress().TextBox(tb =>
+                            {
+                                tb.Name = "PatientCaseHCCReplaced04";
+                                tb.Width = Unit.Pixel(50);
+                                tb.Properties.MaxLength = 4;
+                                tb.ControlStyle.CssClass = "pvpHccCode";
+                            }).Bind(Model.Entry.PatientCaseHCCReplaced04).Render();
+                        });
+                    });
+                });
+                f.Items.AddGroupItem(hcc5 =>
+                {
+                    hcc5.ShowCaption = DefaultBoolean.False;
+                    hcc5.GroupBoxDecoration = GroupBoxDecoration.None;
+                    hcc5.CssClass = "pvpHccCode";
+                    hcc5.Items.Add(i =>
+                    {
+                        i.Name = "PCSHCC05";
+                        i.Caption = "HCC 5";
+                        i.SetNestedContent(() =>
+                        {
+                            Html.DevExpress().TextBox(tb =>
+                            {
+                                tb.Name = "PatientCaseCode05";
+                                tb.Width = Unit.Pixel(50);
+                                tb.Properties.MaxLength = 7;
+                                tb.ControlStyle.CssClass = "pvpHccCode";
+                            }).Bind(Model.Entry.PatientCaseCode05).Render();
+                            Html.DevExpress().Label(l =>
+                            {
+                                l.Text = " / ";
+                            }).Render();
+                            Html.DevExpress().TextBox(tb =>
+                            {
+                                tb.Name = "PatientCaseHCC05";
+                                tb.Width = Unit.Pixel(50);
+                                tb.Properties.MaxLength = 4;
+                                tb.ControlStyle.CssClass = "pvpHccCode";
+                            }).Bind(Model.Entry.PatientCaseHCC05).Render();
+                            Html.DevExpress().Label(l =>
+                            {
+                                l.Text = " / ";
+                            }).Render();
+                            Html.DevExpress().TextBox(tb =>
+                            {
+                                tb.Name = "PatientCaseHCCReplaced05";
+                                tb.Width = Unit.Pixel(50);
+                                tb.Properties.MaxLength = 4;
+                                tb.ControlStyle.CssClass = "pvpHccCode";
+                            }).Bind(Model.Entry.PatientCaseHCCReplaced05).Render();
+                        });
+                    });
+                });
+                f.Items.Add(i =>
+                {
+                    i.ShowCaption = DefaultBoolean.False;
+                    i.NestedExtension().Button(b =>
+                    {
+                        b.Text = "Accept";
+                        b.Name = "accepbtn";
+                        b.ControlStyle.ForeColor = System.Drawing.Color.White;
+                        b.ControlStyle.HorizontalAlign = HorizontalAlign.Right;
+                        b.ClientSideEvents.Click = "accept_btn_click";
+                    });
+                });
+            }).Bind(Model.Entry).Render();
+
+        });
+    }).GetHtml();
+	
+	
+	
+	
+	
+	
+	
+	
+	
+    @Html.DevExpress().PopupControl(p =>
+    {
+        p.Name = "DismissedHccs";
+        p.Width = Unit.Pixel(250);
+        p.AllowDragging = true;
+        p.CloseAction = CloseAction.CloseButton;
+        p.CloseOnEscape = true;
+        p.PopupAnimationType = AnimationType.None;
+        p.HeaderText = "Dismissed HCCs";
+        p.Modal = true;
+        p.AutoUpdatePosition = true;
+        p.PopupHorizontalAlign = PopupHorizontalAlign.WindowCenter;
+        p.PopupVerticalAlign = PopupVerticalAlign.WindowCenter;
+        p.SetContent(() =>
+        {
+            Html.DevExpress().FormLayout(f =>
+            {
+                f.Name = "dismissedhccsform";
+                f.Width = Unit.Percentage(100);
+                f.ColumnCount = 1;
+                f.Items.Add(i =>
+                {
+                    i.Name = "DismissedDate";
+                    i.FieldName = "DismissedDate";
+                    i.NestedExtension().DateEdit(de =>
+                    {
+                        de.Name = "DismissedDate";
+                        de.Date = Model.Entry.DismissedDate;
+                        //de.Properties.ClientSideEvents.Init = "function (s,e) { s.SetDate(new Date())}";
+                    });
+                });
+                f.Items.AddGroupItem(hcc1 =>
+                {
+                    hcc1.ShowCaption = DefaultBoolean.False;
+                    hcc1.GroupBoxDecoration = GroupBoxDecoration.None;
+                    hcc1.CssClass = "pvpHccCode";
+                    hcc1.Items.Add(i =>
+                    {
+                        i.Name = "DismissedHCC01Group";
+                        i.Caption = "Code 1/HCC";
+                        i.SetNestedContent(() =>
+                        {
+                            Html.DevExpress().TextBox(tb =>
+                            {
+                                tb.Name = "DismissedHCC01Code";
+                                tb.Width = Unit.Pixel(50);
+                                tb.Properties.MaxLength = 7;
+                                tb.ControlStyle.CssClass = "pvpHccCode";
+                            }).Bind(Model.Entry.DismissedHCC01Code).Render();
+                            Html.DevExpress().Label(l =>
+                            {
+                                l.Text = " / ";
+                            }).Render();
+                            Html.DevExpress().TextBox(tb =>
+                            {
+                                tb.Name = "DismissedHCC01";
+                                tb.Width = Unit.Pixel(50);
+                                tb.Properties.MaxLength = 4;
+                                tb.ControlStyle.CssClass = "pvpHccCode";
+                            }).Bind(Model.Entry.DismissedHCC01).Render();
+                        });
+                    });
+                });
+				
+				f.Items.AddGroupItem(hcc2 =>
+                {
+                    hcc2.ShowCaption = DefaultBoolean.False;
+                    hcc2.GroupBoxDecoration = GroupBoxDecoration.None;
+                    hcc2.CssClass = "pvpHccCode";
+                    hcc2.Items.Add(i =>
+                    {
+                        i.Name = "DismissedHCC02Group";
+                        i.Caption = "Code 2/HCC";
+                        i.SetNestedContent(() =>
+                        {
+                            Html.DevExpress().TextBox(tb =>
+                            {
+                                tb.Name = "DismissedHCC02Code";
+                                tb.Width = Unit.Pixel(50);
+                                tb.Properties.MaxLength = 7;
+                                tb.ControlStyle.CssClass = "pvpHccCode";
+                            }).Bind(Model.Entry.DismissedHCC02Code).Render();
+                            Html.DevExpress().Label(l =>
+                            {
+                                l.Text = " / ";
+                            }).Render();
+                            Html.DevExpress().TextBox(tb =>
+                            {
+                                tb.Name = "DismissedHCC02";
+                                tb.Width = Unit.Pixel(50);
+                                tb.Properties.MaxLength = 4;
+                                tb.ControlStyle.CssClass = "pvpHccCode";
+                            }).Bind(Model.Entry.DismissedHCC02).Render();
+                        });
+                    });
+                });
+
+				f.Items.AddGroupItem(hcc3 =>
+                {
+                    hcc3.ShowCaption = DefaultBoolean.False;
+                    hcc3.GroupBoxDecoration = GroupBoxDecoration.None;
+                    hcc3.CssClass = "pvpHccCode";
+                    hcc3.Items.Add(i =>
+                    {
+                        i.Name = "DismissedHCC03Group";
+                        i.Caption = "Code 3/HCC";
+                        i.SetNestedContent(() =>
+                        {
+                            Html.DevExpress().TextBox(tb =>
+                            {
+                                tb.Name = "DismissedHCC03Code";
+                                tb.Width = Unit.Pixel(50);
+                                tb.Properties.MaxLength = 7;
+                                tb.ControlStyle.CssClass = "pvpHccCode";
+                            }).Bind(Model.Entry.DismissedHCC03Code).Render();
+                            Html.DevExpress().Label(l =>
+                            {
+                                l.Text = " / ";
+                            }).Render();
+                            Html.DevExpress().TextBox(tb =>
+                            {
+                                tb.Name = "DismissedHCC03";
+                                tb.Width = Unit.Pixel(50);
+                                tb.Properties.MaxLength = 4;
+                                tb.ControlStyle.CssClass = "pvpHccCode";
+                            }).Bind(Model.Entry.DismissedHCC03).Render();
+                        });
+                    });
+                });
+
+
+				f.Items.AddGroupItem(hcc4 =>
+                {
+                    hcc4.ShowCaption = DefaultBoolean.False;
+                    hcc4.GroupBoxDecoration = GroupBoxDecoration.None;
+                    hcc4.CssClass = "pvpHccCode";
+                    hcc4.Items.Add(i =>
+                    {
+                        i.Name = "DismissedHCC04Group";
+                        i.Caption = "Code 4/HCC";
+                        i.SetNestedContent(() =>
+                        {
+                            Html.DevExpress().TextBox(tb =>
+                            {
+                                tb.Name = "DismissedHCC04Code";
+                                tb.Width = Unit.Pixel(50);
+                                tb.Properties.MaxLength = 7;
+                                tb.ControlStyle.CssClass = "pvpHccCode";
+                            }).Bind(Model.Entry.DismissedHCC04Code).Render();
+                            Html.DevExpress().Label(l =>
+                            {
+                                l.Text = " / ";
+                            }).Render();
+                            Html.DevExpress().TextBox(tb =>
+                            {
+                                tb.Name = "DismissedHCC04";
+                                tb.Width = Unit.Pixel(50);
+                                tb.Properties.MaxLength = 4;
+                                tb.ControlStyle.CssClass = "pvpHccCode";
+                            }).Bind(Model.Entry.DismissedHCC04).Render();
+                        });
+                    });
+                });
+
+				
+				f.Items.AddGroupItem(hcc5 =>
+                {
+                    hcc5.ShowCaption = DefaultBoolean.False;
+                    hcc5.GroupBoxDecoration = GroupBoxDecoration.None;
+                    hcc5.CssClass = "pvpHccCode";
+                    hcc5.Items.Add(i =>
+                    {
+                        i.Name = "DismissedHCC05Group";
+                        i.Caption = "Code 5/HCC";
+                        i.SetNestedContent(() =>
+                        {
+                            Html.DevExpress().TextBox(tb =>
+                            {
+                                tb.Name = "DismissedHCC05Code";
+                                tb.Width = Unit.Pixel(50);
+                                tb.Properties.MaxLength = 7;
+                                tb.ControlStyle.CssClass = "pvpHccCode";
+                            }).Bind(Model.Entry.DismissedHCC05Code).Render();
+                            Html.DevExpress().Label(l =>
+                            {
+                                l.Text = " / ";
+                            }).Render();
+                            Html.DevExpress().TextBox(tb =>
+                            {
+                                tb.Name = "DismissedHCC05";
+                                tb.Width = Unit.Pixel(50);
+                                tb.Properties.MaxLength = 4;
+                                tb.ControlStyle.CssClass = "pvpHccCode";
+                            }).Bind(Model.Entry.DismissedHCC05).Render();
+                        });
+                    });
+                });
+				
+                f.Items.Add(i =>
+                {
+                    i.ShowCaption = DefaultBoolean.False;
+                    i.NestedExtension().Button(b =>
+                    {
+                        b.Text = "Accept";
+                        b.Name = "dismissedaccepbtn";
+                        b.ControlStyle.ForeColor = System.Drawing.Color.White;
+                        b.ControlStyle.HorizontalAlign = HorizontalAlign.Right;
+                        b.ClientSideEvents.Click = "dismissed_accept_btn_click";
+                    });
+                });
+            }).Bind(Model.Entry).Render();
+        });
+    }).GetHtml();
+	
+	
+	
+    @Html.DevExpress().PopupControl(p =>
+{
+    p.Name = "CorrectedClaimsArea";
+    p.Width = Unit.Pixel(500);
+    p.AllowDragging = true;
+    p.CloseAction = CloseAction.CloseButton;
+    p.CloseOnEscape = true;
+    p.PopupAnimationType = AnimationType.None;
+    p.HeaderText = "Corrected Claims";
+    p.Modal = true;
+    p.AutoUpdatePosition = true;
+    p.PopupHorizontalAlign = PopupHorizontalAlign.WindowCenter;
+    p.PopupVerticalAlign = PopupVerticalAlign.WindowCenter;
+    p.SetContent(() =>
+    {
+        Html.DevExpress().FormLayout(f =>
+        {
+            f.Name = "correctedclaimsform";
+            f.Width = Unit.Percentage(100);
+            f.ColumnCount = 1;
+            f.Items.AddGroupItem(claimsnbr =>
+            {
+                claimsnbr.ShowCaption = DefaultBoolean.False;
+                claimsnbr.GroupBoxDecoration = GroupBoxDecoration.None;
+                claimsnbr.CssClass = "pvpHccCode";
+                claimsnbr.Items.Add(i =>
+                {
+                    i.Name = "CorrectedClaimsNumberGroup";
+                    i.Caption = "Claim Number";
+                    i.SetNestedContent(() =>
+                    {
+                        Html.DevExpress().TextBox(tb =>
+                        {
+                            tb.Name = "CorrectedClaimsNumber";
+                            tb.Width = Unit.Pixel(150);
+                            tb.Properties.MaxLength = 10;
+                            tb.ControlStyle.CssClass = "pvpHccCode";
+                        }).Bind(Model.Entry.CorrectedClaimsNumber).Render();
+                    });
+                });
+            });
+            f.Items.AddGroupItem(claimscomments =>
+            {
+                claimscomments.ShowCaption = DefaultBoolean.False;
+                claimscomments.GroupBoxDecoration = GroupBoxDecoration.None;
+                claimscomments.CssClass = "pvpHccCode";
+                claimscomments.Items.Add(i =>
+                {
+                    i.Name = "CorrectedClaimsCommentsGroup";
+                    i.Caption = "Action Needed";
+                    i.SetNestedContent(() =>
+                    {
+                        Html.DevExpress().TextBox(tb =>
+                        {
+                            tb.Name = "CorrectedClaimsComments";
+                            tb.Width = Unit.Pixel(150);
+                            tb.Properties.MaxLength = 300;
+                            tb.ControlStyle.CssClass = "pvpHccCode";
+                        }).Bind(Model.Entry.CorrectedClaimsNumber).Render();
+                    });
+                });
+            });
+
+
+            f.Items.Add(i =>
+            {
+                i.ShowCaption = DefaultBoolean.False;
+                i.NestedExtension().Button(b =>
+                {
+                    b.Text = "Accept";
+                    b.Name = "correctedclaimsaccepbtn";
+                    b.ControlStyle.ForeColor = System.Drawing.Color.White;
+                    b.ControlStyle.HorizontalAlign = HorizontalAlign.Right;
+                    b.ClientSideEvents.Click = "correctedclaims_accept_btn_click";
+                });
+            });
+        }).Bind(Model.Entry).Render();
+    });
+}).GetHtml();
+	
+}

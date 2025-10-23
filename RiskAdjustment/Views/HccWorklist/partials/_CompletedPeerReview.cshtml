@@ -1,0 +1,68 @@
+﻿@using System.Web.UI.WebControls
+@Html.DevExpress().GridView(settings =>
+{
+    settings.Name = "AllPeerReviews";
+    settings.KeyFieldName = "ChargeID";
+    settings.CallbackRouteValues = new { Controller = "HccWorklist", Action = "ManagersCompletedViewCalback" };
+    //settings.ClientSideEvents.BeginCallback = "mainWorklistBeginCallback";
+    settings.ControlStyle.Border.BorderWidth = 1;
+    settings.SettingsPager.PageSize = 35;
+    settings.SettingsBehavior.EnableRowHotTrack = true;
+
+    //Filtering
+
+    settings.Settings.ShowHeaderFilterButton = true;
+    settings.Settings.ShowHeaderFilterListBoxSearchUI = true;
+
+    //Editing
+    settings.SettingsBehavior.AllowFocusedRow = true;
+
+
+    //Styling
+    settings.Width = Unit.Percentage(100);
+    settings.Columns.Add(c =>
+    {
+        c.Caption = "Action";
+        c.SetDataItemTemplateContent(tc =>
+        {
+            ViewContext.Writer.Write((Html.ActionLink("Select", "ManagersCompletedView", new { ChargeID = DataBinder.Eval(tc.DataItem, "ChargeID") })));
+        });
+    });
+    settings.Columns.Add(c =>
+    {
+        c.Caption = "Claim ID";
+        c.FieldName = "ClaimID";
+    });
+    settings.Columns.Add(c =>
+    {
+        c.Caption = "Charge No.";
+        c.FieldName = "ChargeID";
+    });
+    settings.Columns.Add("PatientFullName");
+    settings.Columns.Add("PatientID");
+    settings.Columns.Add("Contract");
+    settings.Columns.Add("ClaimPriority"); //.SortOrder = DevExpress.Data.ColumnSortOrder.Ascending;
+    settings.Columns.Add(c =>
+    {
+        c.FieldName = "ProcCode";
+    });
+    settings.Columns.Add("Reviewer");
+    settings.Columns.Add("ReviewDate");
+    settings.CustomColumnDisplayText = (s, e) =>
+    {
+        if (e.Column.FieldName == "ClaimPriority")
+        {
+            e.DisplayText = e.Value.ToString().Split('-')[0];
+        }
+        if (e.Column.FieldName == "ReviewDate")
+        {
+            e.DisplayText = e.Value.ToString().Split(' ')[0];
+        }
+    };
+    settings.Columns.Add(c =>
+    {
+        c.Caption = "Agree/Disagree";
+        c.FieldName = "decision";
+    });
+}).Bind(Model.WorklistEntries).GetHtml()
+

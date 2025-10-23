@@ -1,0 +1,69 @@
+﻿@using System.Web.UI.WebControls
+@Html.DevExpress().GridView(settings =>
+{
+    settings.Name = "MainWorkList";
+    settings.KeyFieldName = "ChargeID";
+    settings.CallbackRouteValues = new { Controller = "HccWorklist", Action = "MainWorklistCallback" };
+    settings.ClientSideEvents.BeginCallback = "mainWorklistBeginCallback";
+    settings.ClientSideEvents.EndCallback = "grid_EndCallback";
+    settings.ClientSideEvents.Init = "grid_Init";
+    settings.ControlStyle.Border.BorderWidth = 1;
+    settings.SettingsPager.PageSize = 35;
+    settings.SettingsBehavior.EnableRowHotTrack = true;
+
+    //Filtering
+
+    //settings.Settings.ShowHeaderFilterButton = true;
+    //settings.Settings.ShowHeaderFilterListBoxSearchUI = true;
+
+    //Editing
+    settings.SettingsBehavior.AllowFocusedRow = true;
+
+
+    //Styling
+    settings.Width = Unit.Percentage(100);
+    settings.Columns.Add(c =>
+    {
+        c.Caption = "Action";
+        c.SetDataItemTemplateContent(tc =>
+        {
+            ViewContext.Writer.Write((Html.ActionLink("Select", "WorkEntry", new { ChargeID = DataBinder.Eval(tc.DataItem, "ChargeID") })));
+        });
+    });
+    settings.Columns.Add("FileDate");
+    settings.Columns.Add(c =>
+    {
+        c.Caption = "Claim ID";
+        c.FieldName = "ClaimID";
+    });
+    settings.Columns.Add(c =>
+    {
+        c.Caption = "Charge No.";
+        c.FieldName = "ChargeID";
+    });
+    settings.Columns.Add("PatientFullName");
+    settings.Columns.Add("PatientID");
+    settings.Columns.Add("ClaimPriority"); //.SortOrder = DevExpress.Data.ColumnSortOrder.Ascending;
+    settings.Columns.Add(c =>
+    {
+        c.FieldName = "ProcCode";
+    });
+    settings.CustomColumnDisplayText = (s, e) =>
+    {
+        if (e.Column.FieldName == "ClaimPriority")
+        {
+            e.DisplayText = e.Value.ToString().Split('-')[0];
+        }
+    };
+    settings.Columns.Add(c =>
+    {
+        c.Caption = "Stie Name";
+        c.FieldName = "DepartmentBillingName";
+    });
+    settings.Columns.Add(c =>
+    {
+        c.Caption = "Provider";
+        c.FieldName = "ProviderFullName";
+    });
+
+}).Bind(Model.WorklistEntries).GetHtml()

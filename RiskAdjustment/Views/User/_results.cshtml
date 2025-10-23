@@ -1,0 +1,179 @@
+﻿@using System.Web.UI.WebControls
+@Html.DevExpress().GridView(settings =>
+{
+    settings.Name = "HccUserList";
+    settings.ControlStyle.Border.BorderWidth = 1;
+    settings.KeyFieldName = "Id";
+    settings.SettingsEditing.Mode = GridViewEditingMode.PopupEditForm;
+    settings.ClientSideEvents.BeginCallback = "OnBeginCallback";
+    settings.SettingsBehavior.AllowFocusedRow = true;
+    settings.CallbackRouteValues = new { Controller = "User", Action = "EditCallback" };
+    settings.SettingsEditing.UpdateRowRouteValues = new { Controller = "User", Action = "Update" };
+    settings.SettingsPopup.EditForm.Width = 1200;
+    settings.SettingsPopup.EditForm.SettingsAdaptivity.Mode = PopupControlAdaptivityMode.Off;
+    settings.SettingsPopup.EditForm.HorizontalAlign = PopupHorizontalAlign.WindowCenter;
+    settings.SettingsPopup.EditForm.VerticalAlign = PopupVerticalAlign.WindowCenter;
+    settings.SettingsPopup.EditForm.SettingsAdaptivity.SwitchAtWindowInnerWidth = 768;
+    settings.SettingsPopup.EditForm.Width = Unit.Percentage(100);
+    settings.SettingsPopup.EditForm.MinWidth = 800;
+    settings.SettingsPopup.EditForm.AllowResize = true;
+    settings.EditFormLayoutProperties.SettingsAdaptivity.AdaptivityMode = FormLayoutAdaptivityMode.SingleColumnWindowLimit;
+    settings.EditFormLayoutProperties.SettingsAdaptivity.SwitchToSingleColumnAtWindowInnerWidth = 700;
+    settings.EditFormLayoutProperties.SettingsItems.VerticalAlign = FormLayoutVerticalAlign.Middle;
+    settings.SettingsBehavior.ConfirmDelete = true;
+    settings.SettingsBehavior.AllowSort = false;
+    settings.SettingsPager.PageSize = 25;
+    settings.CommandColumn.Visible = true;
+    settings.CommandColumn.ShowEditButton = true;
+    settings.Width = Unit.Percentage(100);
+    settings.Columns.Add("Initials");
+    settings.Columns.Add(c =>
+    {
+        c.Name = "UserName";
+        c.FieldName = "UserName";
+        c.Caption = "User name";
+    });
+    settings.Columns.Add("FirstName");
+    settings.Columns.Add("LastName");
+    settings.Columns.Add("Email");
+    settings.Columns.Add("ActiveDate");
+    settings.Columns.Add("AthenaId");
+    settings.Columns.Add("Role");
+    settings.Columns.Add("Contract");
+    settings.Columns.Add("Note");
+    settings.SetEditFormTemplateContent(t =>
+    {
+        Html.DevExpress().FormLayout(f =>
+        {
+            f.Name = "FormLayoutUsers";
+            f.Width = Unit.Percentage(100);
+
+            f.SettingsAdaptivity.AdaptivityMode = FormLayoutAdaptivityMode.SingleColumnWindowLimit;
+            f.SettingsAdaptivity.SwitchToSingleColumnAtWindowInnerWidth = 700;
+            f.ColCount = 1;
+            f.Items.Add(i =>
+            {
+                i.FieldName = "Id";
+                i.NestedExtension().TextBox(tb =>
+                {
+                    tb.ReadOnly = true;
+                    tb.ToolTip = "You may not change this field";
+                });
+            });
+            f.Items.Add(i =>
+            {
+                i.FieldName = "Initials";
+                i.NestedExtension().TextBox(tb =>
+                {
+                    tb.Properties.ValidationSettings.RequiredField.IsRequired = true;
+                    tb.Properties.ValidationSettings.RequiredField.ErrorText = "This field is required";
+                });
+            });
+            f.Items.Add(i =>
+            {
+                i.FieldName = "UserName";
+                i.NestedExtension().TextBox(tb =>
+                {
+                    tb.Properties.ValidationSettings.RequiredField.IsRequired = true;
+                    tb.Properties.ValidationSettings.RequiredField.ErrorText = "This field is required";
+                });
+            });
+            f.Items.Add(i =>
+            {
+                i.FieldName = "FirstName";
+                i.NestedExtension().TextBox(tb =>
+                {
+                    tb.Properties.ValidationSettings.RequiredField.IsRequired = true;
+                    tb.Properties.ValidationSettings.RequiredField.ErrorText = "This field is required";
+                });
+            });
+            f.Items.Add(i =>
+            {
+                i.FieldName = "LastName";
+                i.NestedExtension().TextBox(tb =>
+                {
+                    tb.Properties.ValidationSettings.RequiredField.IsRequired = true;
+                    tb.Properties.ValidationSettings.RequiredField.ErrorText = "This field is required";
+                });
+            });
+            f.Items.Add(i =>
+            {
+                i.FieldName = "Email";
+                i.NestedExtension().TextBox(tb =>
+                {
+                    tb.Properties.ValidationSettings.RequiredField.IsRequired = true;
+                    tb.Properties.ValidationSettings.RequiredField.ErrorText = "This field is required";
+                    tb.Properties.ValidationSettings.RegularExpression.ValidationExpression = "\\w+([-+.']\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*";
+                    tb.Properties.ValidationSettings.RegularExpression.ErrorText = "Please enter a valid email address";
+                });
+            });
+            f.Items.Add(i =>
+            {
+                i.FieldName = "ActiveDate";
+                i.NestedExtension().DateEdit(de =>
+                {
+                    de.Properties.ValidationSettings.RequiredField.IsRequired = true;
+                    de.Properties.ValidationSettings.RequiredField.ErrorText = "This field is required";
+                });
+            });
+            f.Items.Add(i =>
+            {
+                i.FieldName = "AthenaId";
+                i.NestedExtension().TextBox(tb =>
+                {
+                    tb.Properties.ValidationSettings.RequiredField.IsRequired = true;
+                    tb.Properties.ValidationSettings.RequiredField.ErrorText = "This field is required";
+                });
+            });
+            f.Items.Add(i =>
+            {
+                i.FieldName = "InactiveDate";
+                i.NestedExtension().DateEdit(de =>
+                {
+                    de.Name = "InactiveDate";
+                });
+
+            });
+            f.Items.Add(i =>
+            {
+                i.FieldName = "Note";
+                i.NestedExtension().TextBox(tb =>
+                {
+                });
+            });
+            f.Items.Add(i =>
+            {
+                i.FieldName = "Contract";
+                i.NestedExtension().TextBox(tb =>
+                {
+                    tb.Properties.ValidationSettings.RequiredField.IsRequired = true;
+                    tb.Properties.ValidationSettings.RequiredField.ErrorText = "This field is required";
+                });
+            });
+            f.Items.Add(i =>
+            {
+                i.FieldName = "Role";
+                i.NestedExtension().ComboBox(cb =>
+                {
+                    cb.Properties.ValueType = typeof(string);
+                    cb.Properties.DataSource = Model.UserRoles.Values;
+                    cb.Properties.ValidationSettings.RequiredField.IsRequired = true;
+                    cb.Properties.ValidationSettings.RequiredField.ErrorText = "This field is required.";
+                });
+            });
+            f.Items.Add(i =>
+            {
+                i.ShowCaption = DefaultBoolean.False;
+                i.Width = Unit.Percentage(20);
+                i.NestedExtension().Button(b => {
+                    b.ControlStyle.CssClass = "btn btn-dark";
+                    b.Name = "UpdateUsr";
+                    b.Text = "Update";
+                    b.ClientSideEvents.Click = "function(s, e){HccUserList.UpdateEdit();}";
+                });
+            });
+        }).Bind(t.Grid.GetRow(t.Grid.EditingRowVisibleIndex)).Render();
+    });
+}).Bind(Model.UserList).GetHtml()
+
+

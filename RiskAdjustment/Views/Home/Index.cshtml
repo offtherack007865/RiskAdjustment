@@ -1,0 +1,35 @@
+﻿
+@{
+    ViewBag.Title = "Home Page";
+}
+<div class="container">
+    <div class="row justify-content-center mb-3">
+        <div class="col-4">
+            @Html.ActionLink("HCC Worklist", "Menu", "HccWorklist", null, new {@class = "btn btn-dark"})
+        </div>
+    </div>
+    <div class="row justify-content-center mb-3">
+        <div class="col-4">
+            @Html.ActionLink("PVP Worklist", "Menu", "PvpWorklist", null, new { @class = "btn btn-dark" })
+        </div>    
+    </div>
+    <div class="row justify-content-center">
+        <div class="col-4">
+            <hr/>
+            @{
+                string AccessLevel = HttpContext.Current.Session["AccessLevel"].ToString();
+                if (AccessLevel == "Manager" || AccessLevel == "Admin")
+                {
+                   
+                @Html.ActionLink("User Administration", "Index", "User", null, new { @class = "btn btn-dark" })
+
+                }
+            }
+        </div>
+    </div>
+
+            
+           
+
+</div>
+

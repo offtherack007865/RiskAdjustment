@@ -1,0 +1,106 @@
+﻿@using System.Web.UI.WebControls
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - Risk Adjustment Productivity Suite</title>
+    @Html.DevExpress().GetStyleSheets(
+        new StyleSheet { ExtensionSuite = ExtensionSuite.NavigationAndLayout },
+        new StyleSheet { ExtensionSuite = ExtensionSuite.GridView }
+        )
+    @Html.DevExpress().GetScripts(
+        new Script { ExtensionSuite = ExtensionSuite.NavigationAndLayout },
+        new Script { ExtensionSuite = ExtensionSuite.GridView }
+        )
+    @if (IsSectionDefined("AddToHead"))
+    {
+        @RenderSection("AddToHead", required: false)
+    }
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.0/css/all.min.css" rel="stylesheet" />
+
+    @if (HttpContext.Current.Session["Username"] == null)
+    {
+        HttpContext.Current.Session["Username"] = HttpContext.Current.User.Identity.Name.Replace(@"SUMMIT_NT\", "");
+    }
+</head>
+<body onunload="" >
+    <div class="container-fluid p-0 mb-4">
+        <div class="row justify-content-center " style="background-color: #215b33; min-height: 35px;">
+            <div class="col-8 text-left">
+                <div class="row">
+                    <nav class="navbar navbar-expand-lg p-0">
+                        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                            <span class="navbar-toggler-icon"></span>
+                        </button>
+                        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                            <ul class="navbar-nav mr-auto">
+                                <li class="nav-item active">
+                                    @Html.ActionLink("Home", "Index", "Home", null, new { @class = "nav-link" })
+                                </li>
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        HCC
+                                    </a>
+                                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                        @Html.ActionLink("HCC Main Menu", "Menu", "HccWorklist", null, new { @class = "dropdown-item" })
+                                        @Html.ActionLink("Coding Review Worklist", "HccSelect", "HccWorklist", null, new { @class = "dropdown-item" })
+                                        @Html.ActionLink("Reviews In Progress", "ReviewsInProgress", "HccWorklist", null, new { @class = "dropdown-item" })
+                                        @Html.ActionLink("On Hold - Pended", "ReviewsOnHoldPended", "HccWorklist", null, new { @class = "dropdown-item" })
+                                        @Html.ActionLink("Peer Review", "PeerReview", "HccWorklist", null, new { @class = "dropdown-item" })
+                                    </div>
+                                </li>
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle" href="#" id="pvpnavbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expaded="false">
+                                        PVP
+                                    </a>
+                                    <div class="dropdown-menu" aria-labelledby="pvpnavbarDropdown">
+                                        @Html.ActionLink("PVP Main Menu", "Menu", "PvpWorklist", null, new { @class="dropdown-item" })
+                                        @Html.ActionLink("PVP Worklist", "PvpSelect", "PvpWorklist", null, new { @class="dropdown-item" })
+                                        @Html.ActionLink("PVP Reviews In Progress", "ReviewsInProgress", "PvpWorklist", null, new { @class="dropdown-item" })
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="row mb-4">
+            <div class="col-md-4 col-sm-12 text-center">
+                <img src="~/Content/images/raps_logo.png" width="350" height:"auto" />
+            </div>
+            <div class="col-md-8 col-sm-12 text-right">
+
+            </div>
+            <div class="col-12">
+                <hr />
+            </div>
+        </div>
+    </div>
+    @RenderBody()
+    @*<footer class="mt-auto">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12 text-center">
+                    <p>&copy; Copyright @DateTime.Now.Year.ToString().  Summit Medical Group.  
+                    <span class="float-right small">Env:  @RiskAdjustment.Logic.Utilities.ExtensionMethods.GetRuntimeEnvironment() (@DateTime.Now.Date.ToShortDateString())</span></p>
+                    <p>  </p>
+                </div>
+            </div>
+        </div>
+    </footer>*@
+</body>
+</html>

@@ -1,0 +1,61 @@
+                i.FieldName = "Contract";
+                i.FieldName = "FileDate";
+                i.FieldName = "LockId";
+                i.FieldName = "PatientID";
+                i.FieldName = "AppointmentID";
+                i.FieldName = "StartTime";
+                i.FieldName = "PatientName";
+                i.FieldName = "patdob";
+				
+                i.FieldName = "PatientID";
+                i.FieldName = "AppointmentDateTime";
+                i.FieldName = "AppointmentTypeShortName";
+                i.FieldName = "AppointmentProvider";
+                i.FieldName = "AppointmentID";
+                i.FieldName = "FileDate";
+                i.FieldName = "PcpName";
+                i.FieldName = "PcpSiteName";
+                i.FieldName = "PrimaryInsurancePackageName";
+                i.FieldName = "PrimaryInsID";
+                i.FieldName = "Contract";
+				
+				i.Name = "HCC01Code";
+                i.Name = "HCC02Code";
+                i.Name = "HCC03Code";
+                i.Name = "HCC04Code";
+                i.Name = "HCC05Code";
+                i.Name = "HCC06Code";
+                i.Name = "HCC07Code";
+                i.Name = "HCC08Code";
+				
+                i.FieldName = "CPT_99499_ICD";
+                i.FieldName = "CPT_99499_DOS";
+				
+                i.Name = "SuspectHCC01Code";
+                i.Name = "SuspectHCC02Code";
+                i.Name = "SuspectHCC03Code";
+                i.Name = "SuspectHCC04Code";
+                i.Name = "SuspectHCC05Code";
+                i.Name = "SuspectHCC06Code";
+                i.Name = "SuspectHCC07Code";
+                i.Name = "SuspectHCC08Code";
+ 
+                i.FieldName = "ReviewNote";
+                i.FieldName = "ProblemListUpdate";
+                i.FieldName = "PortalReview";
+                i.FieldName = "EmailNotification";
+                i.FieldName = "BannerAlertAdded";
+                i.FieldName = "PVPNoteAdded";
+                i.FieldName = "PatientCaseSent";
+                i.Name = "Hold";
+                i.FieldName = "ReviewDate";
+                i.FieldName = "Reviewer";
+                i.Name = "SendToReviewsPending";
+    
+                i.FieldName = "PatientCaseDate";
+                i.Name = "PCSHCC01";
+                i.Name = "PCSHCC02";
+                i.Name = "PCSHCC03";
+                i.Name = "PCSHCC04";
+                i.Name = "PCSHCC05";
+       

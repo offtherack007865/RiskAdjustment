@@ -1,0 +1,42 @@
+alter table [dbo].[Athena_PVP_WorkList]
+	add [HCC09Code] [varchar](7) NULL
+	    ,[HCC09] [varchar](4) NULL
+        ,[HCC10Code] [varchar](7) NULL
+	    ,[HCC10] [varchar](4) NULL
+		,[OpenGapHCC01Code] [varchar](7) NULL
+	    ,[OpenGapHCC01] [varchar](4) NULL
+        ,[OpenGapHCC02Code] [varchar](7) NULL
+	    ,[OpenGapHCC02] [varchar](4) NULL
+        ,[OpenGapHCC03Code] [varchar](7) NULL
+	    ,[OpenGapHCC03] [varchar](4) NULL
+        ,[OpenGapHCC04Code] [varchar](7) NULL
+	    ,[OpenGapHCC04] [varchar](4) NULL
+        ,[OpenGapHCC05Code] [varchar](7) NULL
+	    ,[OpenGapHCC05] [varchar](4) NULL
+        ,[OpenGapHCC06Code] [varchar](7) NULL
+	    ,[OpenGapHCC06] [varchar](4) NULL
+        ,[OpenGapHCC07Code] [varchar](7) NULL
+	    ,[OpenGapHCC07] [varchar](4) NULL
+        ,[OpenGapHCC08Code] [varchar](7) NULL
+	    ,[OpenGapHCC08] [varchar](4) NULL
+        ,[OpenGapHCC09Code] [varchar](7) NULL
+	    ,[OpenGapHCC09] [varchar](4) NULL
+        ,[OpenGapHCC10Code] [varchar](7) NULL
+	    ,[OpenGapHCC10] [varchar](4) NULL
+		,[Dismissed] [bit] NULL
+		,[DismissedDate] [datetime] NULL
+		,[DismissedHCC01Code] [varchar](7) NULL
+		,[DismissedHCC01] [varchar](4) NULL
+        ,[DismissedHCC02Code] [varchar](7) NULL
+	    ,[DismissedHCC02] [varchar](4) NULL
+        ,[DismissedHCC03Code] [varchar](7) NULL
+	    ,[DismissedHCC03] [varchar](4) NULL
+        ,[DismissedHCC04Code] [varchar](7) NULL
+	    ,[DismissedHCC04] [varchar](4) NULL
+        ,[DismissedHCC05Code] [varchar](7) NULL
+	    ,[DismissedHCC05] [varchar](4) NULL
+		,[CorrectedClaims] [bit] NULL
+		,[CorrectedClaimsNumber] [varchar](10) NULL
+	    ,[CorrectedClaimsComments] [varchar](300)  NULL;
+	
+        

@@ -1,0 +1,108 @@
+﻿@using System.Web.UI.WebControls
+
+@Html.DevExpress().GridView(settings =>
+{
+    settings.Name = "PvpMainWorkList";
+    settings.KeyFieldName = "AppointmentID";
+    settings.CallbackRouteValues = new { Controller = "PvpWorklist", Action = "MainCallBack" };
+    // settings.ClientSideEvents.BeginCallback = "mainWorklistBeginCallback";
+    // settings.ClientSideEvents.EndCallback = "grid_EndCallback";
+    settings.ControlStyle.Border.BorderWidth = 1;
+    settings.SettingsPager.PageSize = 35;
+    settings.SettingsBehavior.EnableRowHotTrack = true;
+    settings.PreRender = (sender, e) =>
+    {
+        ASPxGridView grid = (ASPxGridView)sender;
+
+        // Store which list we are coming from
+        TempData["PVPWhichListLastVisited"] = "Main";
+
+        // Grid FilterExpression.
+        if (TempData["PVPWorkListGoToEntryDetailScreen"] != null && TempData["PVPWorkListGridFilterExpression"] != null)
+        {
+            grid.FilterExpression = TempData["PVPWorkListGridFilterExpression"].ToString();
+        }
+        TempData["PVPWorkListGridFilterExpression"] = null;
+        TempData["PVPWorkListGoToEntryDetailScreen"] = null;
+    };
+
+    // Just before filtering is applied, find out
+    // which columns have a filter on them.
+    settings.SubstituteFilter = (sender, e) =>
+    {
+        ASPxGridView grid = (ASPxGridView)sender;
+
+        // Grid FilterExpression.
+        TempData["PVPWorkListGridFilterExpression"] = grid.FilterExpression;
+    };
+
+    //Filtering
+
+    settings.Settings.ShowHeaderFilterButton = true;
+    settings.Settings.ShowHeaderFilterListBoxSearchUI = true;
+
+    //Editing
+    settings.SettingsBehavior.AllowFocusedRow = true;
+
+
+    //Styling
+    settings.Width = Unit.Percentage(100);
+    settings.Columns.Add(c =>
+    {
+        c.Caption = "Action";
+        c.SetDataItemTemplateContent(tc =>
+        {
+            ViewContext.Writer.Write((Html.ActionLink("Select", "PvpWorkEntry", new { AppointmentID = DataBinder.Eval(tc.DataItem, "AppointmentID") })));
+        });
+    });
+    //settings.Columns.Add("FileDate");
+    settings.Columns.Add(c =>
+    {
+        c.Caption = "Appointment ID";
+        c.FieldName = "AppointmentID";
+    });
+    settings.Columns.Add(c =>
+    {
+        c.Caption = "Patient Name";
+        c.FieldName = "PatientName";
+    });
+    settings.Columns.Add(c =>
+    {
+        c.Caption = "MRN";
+        c.FieldName = "PatientID";
+
+    });
+    settings.Columns.Add("PVPApptDate");
+    settings.CustomColumnDisplayText = (s, e) =>
+    {
+        if (e.Column.FieldName == "PVPApptDate")
+        {
+            e.DisplayText = e.Value.ToString().Split(' ')[0];
+        }
+    };
+    settings.Columns.Add(c =>
+    {
+        c.Caption = "Site Name";
+        c.FieldName = "PcpSiteName";
+    });
+    settings.Columns.Add(c =>
+    {
+        c.Caption = "Provider";
+        c.FieldName = "PcpName";
+    });
+    settings.Columns.Add(c =>
+    {
+        c.Caption = "Apt Type";
+        c.FieldName = "AppointmentTypeShortName";
+    });
+
+    // pwm - 20240525 - Priority
+
+    settings.Columns.Add(c =>
+    {
+        c.Caption = "Priority";
+        c.FieldName = "Priority";
+    });
+
+
+}).Bind(Model.WorklistEntries).GetHtml()

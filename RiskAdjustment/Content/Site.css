@@ -1,0 +1,135 @@
+﻿body {
+    padding-bottom: 20px;
+    font-family: 'Roboto', 'sans-serif' !important;
+}
+
+/* Set padding to keep content from hitting the edges */
+.body-content {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+/* Override the default bootstrap behavior where horizontal description lists 
+   will truncate terms that are too long to fit in the left column 
+*/
+.dl-horizontal dt {
+    white-space: normal;
+}
+
+/* Set width on the form input elements since they're 100% wide by default */
+input,
+select,
+textarea {
+   /* max-width: 280px;*/
+}
+
+p {
+    font-size: 14px;
+}
+
+.btn-dark {
+    background-color: #215b33 !important;
+    width: 200px;
+}
+
+.btn .user-btn {
+    background-color: #215b33 !important;
+}
+
+.highlightTextBox {
+    margin: auto;
+    width: 100%;
+    border-color: gold;
+    border-style: solid;
+    border-width: 5px;
+}
+.dxgvFocusedRow_Aqua {
+    background-color: white;
+    color: black;
+}
+
+.dxgvFocusedRow_Aqua a {
+        color: #0d45b7 !important;
+    }
+
+.dxgvFocusedRow {
+    background-color: white;
+    color: black;
+}
+.dxgvFocusedRow a {
+    color: #0d45b7 !important;
+}
+
+#icd10entries_CapC{
+    color:white;
+    font-weight: 700;
+}
+
+#HccWorklistMenu_2 .dxbButton{   
+    background:  #215b33 !important;
+}
+
+.dxbButton{
+    background: #215b33 !important;
+}
+
+/* Remove the padding from the middle column on the individual worklist entry screen*/
+.groupitem_no_padding{
+    padding-left:0px;
+    padding-right:0px;
+}
+
+.dxeInvalid .dxic {
+    border: 1px solid red !important;
+}
+
+.dxgvCommandColumnItem{
+    background: none !important;
+}
+
+.menu{
+    background-color:#215b33;
+    color:white;
+}
+
+.hcc_diag_add{
+    padding:0px !important;
+}
+
+.hcc_diag_add td {
+    /*padding: 0px !important;*/
+}
+
+a.nav-link{
+    color:white !important;
+}
+
+.dropdown-menu{
+    background-color: #215b33 !important;
+    border: 1px solid #ccc !important;
+}
+
+a.dropdown-item{
+    color:white !important;
+}
+
+a.dropdown-item:hover{
+    color:#333 !important;
+}
+
+.pvpHccCode{
+    display: inline-table !important;
+}
+
+textarea.memobox{
+    max-width: 500px;
+}
+
+.ptcase_sent_txt_align{
+    text-align: right;
+
+}
+
+#ptcasesent_E1 {
+    padding-right: 20px;
+}

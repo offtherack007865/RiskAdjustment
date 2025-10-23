@@ -1,0 +1,126 @@
+﻿@model RiskAdjustment.Data.ViewModels.PVP.PvpWorkEntryViewModel
+@{
+    ViewBag.Title = "Appointment ID:  " + Model.Entry.AppointmentID;
+}
+@{
+    ViewBag.Title = "ReviewInProgress";
+}
+
+@section AddToHead{
+    <script type="text/javascript">
+        var modelJson;
+        var codes = @Html.Raw(Model.ICD10EntriesJsonString);
+
+        $(document).ready(function () {
+            // Change the class of the textbox
+            var highlightProviderName = @Html.Raw(Json.Encode(Model.Entry.HighlightedProvider));
+            if (highlightProviderName === true)
+            {
+                document.getElementById('AppointmentProvider_I').className = 'highlightTextBox';
+            }
+
+            // Change the class of the textbox
+            var highlightPCPName = @Html.Raw(Json.Encode(Model.Entry.HighlightedProvider));
+            if (highlightPCPName === true)
+            {
+                document.getElementById('PcpName_I').className = 'highlightTextBox';
+            }
+
+            modelJson = @Html.Raw(Json.Encode(Model.Entry));
+            var isReadOnly = @Html.Raw(Json.Encode(Model.Entry.IsReadOnly));
+            var role = @Html.Raw(Json.Encode(Model.CurrentUser.Role));
+
+            if (role === "Manager" || role === "Admin") {
+                var item = main.GetItemByName("SendToReviewsPending");
+                item.SetVisible(true);
+            }
+        });
+
+        function ccc_code_change(s, e) {
+            var input_value = s.GetValue();
+            var field = s.name.split("Code");
+            var destination_field = ASPxClientTextBox.GetControlCollection().GetByName(field[0]);
+            if (input_value === null) {
+                destination_field.SetValue("");
+            }
+            else {
+                for (i = 0; i < codes.length; i++) {
+
+                    var split = input_value.split(".");
+                    if (codes[i]["DiagnosisCode"].toLowerCase() === split[0].toLowerCase()) {
+                        destination_field.SetValue(codes[i]["ESRD_Model_V24"]);
+                        return;
+                    }
+                }
+                destination_field.SetValue("");
+                //e.isValid(false);
+            }
+        }
+
+        function pt_case_sent_chckbx_change(s, e) {
+            var checked = PatientCaseSent.GetChecked();
+            if (checked) {
+                PtCaseSent.Show();
+            }
+        }
+        function accept_btn_click(s,e){
+            PtCaseSent.Hide();
+        }
+
+
+        function dismissed_chckbx_change(s, e) {
+            var checked = Dismissed.GetChecked();
+            if (checked) {
+                DismissedHccs.Show();
+            }
+        }
+        function dismissed_accept_btn_click(s, e) {
+            DismissedHccs.Hide();
+        }
+
+        function correctedclaims_chckbx_change(s, e) {
+            var checked = CorrectedClaims.GetChecked();
+            if (checked) {
+                CorrectedClaimsArea.Show();
+            }
+        }
+        function correctedclaims_accept_btn_click(s, e) {
+            CorrectedClaimsArea.Hide();
+        }
+
+
+
+
+    </script>
+}
+
+
+    <div class="row justify-content-center">
+        <div class="col-11">
+            @{
+                if (Model.CurrentUser.Email == Model.Entry.LockedBy.Email)
+                {
+                    <p style="color:green"><i class="fas fa-lock"></i>&nbsp; &nbsp;Record locked by <span class="font-weight-bold">@Model.CurrentUser.LastName, @Model.CurrentUser.FirstName (you)</span></p>
+                }
+                else
+                {
+                    <p style="color:red"><i class="fas fa-lock"></i>&nbsp; &nbsp;Record locked by <span class="font-weight-bold">@Model.Entry.LockedBy.LastName, @Model.Entry.LockedBy.FirstName</span>.  Entry is read-only</p>
+                }
+            }
+            <div class="row" style="background-color:#215b33">
+                <div class="col-3 mt-2">
+                    <p style="color:white">Worklist Entry for Appointment No. @Model.Entry.AppointmentID</p>
+                </div>
+                <div class="col-9 mt-2">
+                    @Html.Action("ICD10ComboBoxPartial")
+                </div>
+            </div>
+            <div class="row">
+
+                <div class="col-12 pb-4 border shadow">
+                    @Html.Partial("partials/_pvpWorklistItemForm")
+                </div>
+            </div>
+        </div>
+    </div>
+

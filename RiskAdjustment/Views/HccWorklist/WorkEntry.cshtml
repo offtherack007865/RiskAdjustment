@@ -1,0 +1,184 @@
+﻿@model RiskAdjustment.Data.ViewModels.HCC.HccWorkEntryViewModel
+@{
+    ViewBag.Title = "Charge Number:  " + Model.Entry.ChargeID;
+}
+@section AddToHead
+{
+    <script type="text/javascript" src="/Scripts/hcc_worklist_callbacks.js"></script>
+
+    @*<script type="text/javascript">
+            $(document).ready(function () {
+                $.get("/HccWorklist/RelockRecord", { lockid:  @Model.Entry.LockId },
+                    function (data) { });
+
+                $(window).on('beforeunload',
+                function (e) {
+                    var username = "@Session["Username"]";
+                    $.get("/HccWorklist/ClearUserLockForCharge", { user: username, lockid: @Model.Entry.LockId },
+                        function (data) {
+                    });
+                }
+                );
+            });
+        </script>*@
+
+
+    @*We put these scripts here so we can access the model data*@
+<script type="text/javascript">
+        var modelJson;
+
+        $(document).ready(function () {
+            modelJson = @Html.Raw(Json.Encode(Model.Entry));
+            var isReadOnly = @Html.Raw(Json.Encode(Model.Entry.IsReadOnly));
+            var role = @Html.Raw(Json.Encode(Model.CurrentUser.Role));
+            if (isReadOnly === true) {
+                if (role === "Admin" || role === "Manager") {
+                    $("#finishBtn").show();
+                }
+                else {
+                    $("#finishBtn").hide();
+                }
+            }
+            $(window).on('beforeunload',
+                function (e) {
+                    if (role === "Manager" || role === "Admin") {
+                        //release lock
+
+                    }
+
+                    @*$.get("/HccWorklist/ClearUserLockForCharge", { user: username, lockid: @Model.Entry.LockId },
+                        function (data) {
+                    });*@
+                }
+                );
+        });
+
+    function ValidateHccAddDiag(s, e) {
+        var fieldname = s.name;
+        var dropdown_fieldname = ASPxClientComboBox.GetControlCollection().GetByName(fieldname + "_Reason");
+        var value = s.GetValue();
+        if (value === null) {
+            dropdown_fieldname.SetEnabled(false);
+            dropdown_fieldname.SetIsValid(true);
+            dropdown_fieldname.SetValue(null);
+            handle_hcc_combo_changed();
+           //Call Combobox ValueChanged event
+        }
+        else {
+            dropdown_fieldname.SetEnabled(true);
+            dropdown_fieldname.SetIsValid(false);
+
+        }
+
+
+        var isValid = true;
+        var value = s.GetValue();
+
+        for (var i = 1; i <= 12; i++) {
+            if (value !== null) {
+                var split = value.split(".");
+                var propertyName;
+                if (i < 10) {
+                    propertyName = "ICD10ClaimDiagCode0" + i;
+                }
+                else {
+                    propertyName = "ICD10ClaimDiagCode" + i;
+                }
+
+                var modelValue = modelJson[propertyName];
+                if (modelValue.toLowerCase() === split[0].toLowerCase()) {
+                    isValid = false;
+                }
+            }
+        e.isValid = isValid;
+        }
+    }
+
+        function ValidateHccRemDiag(s, e) {
+            var isValid = false;
+            var value = s.GetValue();
+            if (value === null) {
+                isValid = true;
+            }
+            else {
+                for (var i = 1; i <= 12; i++) {
+                    var split = value.split(".");
+                    var propertyName;
+
+                    if (i < 10) {
+                        propertyName = "ICD10ClaimDiagCode0" + i;
+                    }
+                    else {
+                        propertyName = "ICD10ClaimDiagCode" + i;
+                    }
+                    var modelValue = modelJson[propertyName];
+                    if (modelValue.toLowerCase() === split[0].toLowerCase()) {
+                        isValid = true;
+                    }
+                }
+            }
+            e.isValid = isValid
+        }
+
+        // PWM - 20240312 - INC0124213
+        // The Json string was getting too long for the Json.Encode method in the cshtml,
+        // so I am doing the encoding on the server placing the JSON string in the model.
+        var codes = @Html.Raw(Model.ICD10EntriesJsonString);
+        function HccValidateIcd10Code(s, e) {
+            var isValid = false;
+
+            var value = s.GetValue();
+            //if the textbox is empty, it's good to go
+            if (value === null) {
+                isValid = true;
+            }
+            else {
+                for (var i = 0; i < codes.length; i++) {
+
+                    var split = value.split(".");
+                    if (codes[i]["DiagnosisCode"].toLowerCase() === split[0].toLowerCase()) {
+                        isValid = true;
+                        break;
+                    }
+                }
+            }
+            e.isValid = isValid;
+    }
+
+</script>
+}
+
+
+<div class="row justify-content-center">
+    <div class="col-11">
+        @{
+            if (Model.CurrentUser.Email == Model.Entry.LockedBy.Email)
+            {
+                <p style="color:green"><i class="fas fa-lock"></i>&nbsp; &nbsp;Record locked by <span class="font-weight-bold">@Model.CurrentUser.LastName, @Model.CurrentUser.FirstName (you)</span></p>
+            }
+            else
+            {
+                <p style="color:red"><i class="fas fa-lock"></i>&nbsp; &nbsp;Record locked by <span class="font-weight-bold">@Model.Entry.LockedBy.LastName, @Model.Entry.LockedBy.FirstName</span>.  Entry is read-only</p>
+            }
+        }
+        <div class="row" style="background-color:#215b33">
+            <div class="col-3 mt-2">
+                <p style="color:white">Worklist Entry for charge# @Model.Entry.ChargeID</p>
+            </div>
+            <div class="col-9 mt-2">
+                @Html.Action("ICD10ComboBoxPartial")
+            </div>
+        </div>
+        <div class="row">
+
+            <div class="col-12 pb-4 border shadow">
+                @Html.Partial("partials/_worklistItemForm")
+                <hr />
+                <p>Additional CPTs for Claim ID @Model.Entry.ClaimID</p>
+                @Html.Partial("partials/_relatedCpts")
+            </div>
+        </div>
+
+
+    </div>
+</div>

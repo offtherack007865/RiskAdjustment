@@ -1,0 +1,32 @@
+AppointmentSite - TextBox 50 in length
+NextApptDate - date
+NextApptTime - TextBox 5 in length
+AppointmentStatus - TextBox 70 in length
+ChiefComplaint - TextBox 3000 in length
+Priority - Number
+ApptsLastUpdate - date
+StartTime - Time
+NoNoteReason - TextBox 50 in length
+PreviousPVPDate - date
+ArrivedApptDate - date and time
+Rework_Reviewer - TextBox 50 in length
+Rework_Date - date and time
+Rework_HCCProblems - True/False
+Rework_HCCAddressed - True/False
+patdecdate - date
+AuditDate - date
+Auditor - TextBox 50 in length
+AuditResult - TextBox 30 in length
+AuditNote - TextBox 255 in length
+ReworkNote - TextBox 255 in length
+Rework99429_ICD - TextBox 7 in length
+Rework99429_Date - date
+DxSubmittedOnClaim - True/False
+PatientCaseHCCReplaced01 - TextBox 4 in length
+PatientCaseHCCReplaced02 - TextBox 4 in length
+PatientCaseHCCReplaced03 - TextBox 4 in length
+PatientCaseHCCReplaced04 - TextBox 4 in length
+PatientCaseHCCReplaced05 - TextBox 4 in length
+
+
+

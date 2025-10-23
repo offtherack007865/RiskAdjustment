@@ -1,0 +1,53 @@
+﻿@model RiskAdjustment.Data.ViewModels.SitesViewModel
+@{
+    ViewBag.Title = "Index";
+}
+
+@section AddToHead{
+    <script type="text/javascript" src="/Scripts/sitescallbacks.js"></script>
+}
+<div class="row justify-content-center">
+    <div class="col-9">
+        @{
+            if (TempData["Success"] != null)
+            {
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    <p>@TempData["Success"].ToString()</p>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            }
+            else if (TempData["Failure"] != null)
+            {
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <p>@TempData["Failure"].ToString()</p>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            }
+        }
+    </div>
+    <div class="col-9">
+        @Html.Partial("_results")
+    </div>
+    <div class="col-9">
+        @Html.DevExpress().HyperLink(h =>
+        {
+            h.Name = "NewSiteModal";
+            h.Properties.Text = "Add Site";
+            h.ControlStyle.Cursor = "pointer";
+            h.Properties.ClientSideEvents.Click = "function(s,e) { newSiteModal.Show(); }";
+        }).GetHtml()
+    </div>
+    <div class="row mt-2">
+        <div class="col-9">
+            @Html.Partial("_addSite")
+        </div>
+    </div>
+</div>
+<div class="row mt-2">
+
+</div>
+

@@ -1,0 +1,165 @@
+IF EXISTS (SELECT * FROM sys.objects WHERE type = 'P' AND OBJECT_ID = OBJECT_ID('dbo.di_FinalizeEthinProviderRosterRaw'))
+   drop proc [dbo].[di_FinalizeEthinProviderRosterRaw]
+GO
+
+CREATE PROCEDURE [dbo].[di_FinalizeEthinProviderRosterRaw]
+AS
+BEGIN
+
+IF OBJECT_ID('tempdb..#tmp_Ethin') IS NOT NULL BEGIN
+    DROP TABLE #tmp_Ethin
+END
+ 
+
+IF OBJECT_ID('dbo.EthinProviderRosterMaster', 'U') IS NOT NULL BEGIN
+  TRUNCATE TABLE dbo.EthinProviderRosterMaster;
+END
+
+ 
+
+SELECT DISTINCT
+  C.[OrganizationName]
+  , C.[FacilityName]
+  , C.NPI
+  , C.[OrganizationProviderID]
+  , C.[ProviderLastName]
+  , C.[ProviderFirstName]
+  , isnull(C.[ProviderMiddleName],'') as [ProviderMiddleName]
+  , isnull(C.[ProviderPrefix], '') as [ProviderPrefix]
+  , isnull(C.[ProviderSuffix], '') as [ProviderSuffix]
+  , C.[Providerdegree]
+  , isnull(C.[ProviderPrivelages], '') as [ProviderPrivelages]
+  , C.[ProviderOrganizationEmail]
+  , C.[ProviderSpecialties]
+  , P.[DirectAddressFacilityLevel]
+  , isnull(C.[ResultsFaxFacilityLevel], '') as [ResultsFaxFacilityLevel]
+  , isnull(C.[OfficeRoutingCode], '') as [OfficeRoutingCode]
+  , C.[OfficeName]
+  , C.[OfficeAddressLine1]
+  , C.[OfficeAddressLine2]
+  , C.[OfficeAddressCity]
+  , C.[OfficeAddressState]
+  , C.[OfficeAddressZip]
+  , C.[OfficePhone]
+  , C. [OfficeFax] 
+  , P.[DirectAddressOfficeLevel]
+  , C.[ResultsFaxOfficeLevel]
+
+into #tmp_etHIN
+from EthinProviderRosterRaw as C
+left join [ps-ods].AHODS.dbo.Provider as P on C.NPI = P.ProviderNPINumber
+
+; with cte_final_select
+
+AS
+
+(
+
+select
+   E.[OrganizationName]
+   , E.[FacilityName]
+   , E.NPI
+   , E.[OrganizationProviderID]
+   , E.[ProviderLastName]
+   , E.[ProviderFirstName] 
+   , E.[ProviderMiddleName]
+   , E.[ProviderPrefix]
+   , E.[ProviderSuffix]
+   , E.[ProviderDegree]
+   , E.[ProviderPrivelages]
+   , E.[ProviderOrganizationEmail]
+   , E.[ProviderSpecialties]
+   , E.[DirectAddressFacilityLevel]
+   , E.[ResultsFaxFacilityLevel]
+   , E.[OfficeRoutingCode]
+   , E.[OfficeName]
+   , E.[OfficeAddressLine1]
+   , E.[OfficeAddressLine2]
+   , E.[OfficeAddressCity]
+   , E.[OfficeAddressState]
+   , E.[OfficeAddressZip]
+   , E.[OfficePhone]
+   , E.[OfficeFax]
+   , E.[DirectAddressOfficeLevel]
+   , E.[ResultsFaxOfficeLevel]
+   --,row_number() over (partition by NPI ORDER BY NPI) as rownum
+   /*Brian was deleting records using this^, changing to Org Prov ID removes duplicates, but still preserves distinct records - EJP*/
+   ,ROW_NUMBER() over (partition by E.[OrganizationProviderID] order by E.[Organization Provider ID]) as rownum
+  from #tmp_etHIN as E
+
+)
+
+ 
+
+insert into EthinProviderRosterMaster
+
+(
+  [OrganizationName]
+  , [FacilityName]
+  , NPI
+  , [OrganizationProviderID]
+  , [ProviderLastName]
+  , [ProviderFirstName]
+  , [ProviderMiddleName]
+  , [ProviderPrefix]
+  , [ProviderSuffix]
+  , [ProviderDegree]
+  , [ProviderPrivelages]
+  , [ProviderOrganizationEmail]
+  , [ProviderSpecialties]
+  , [DirectAddressFacilityLevel]
+  , [ResultsFaxFacilityLevel]
+  , [OfficeRoutingCode]
+  , [OfficeName]
+  , [OfficeAddressLine1]
+  , [OfficeAddressLine2]
+  , [OfficeAddressCity]
+  , [OfficeAddressState]
+  , [OfficeAddressZip]
+  , [OfficePhone]
+  , [OfficeFax]
+  , [DirectAddressOfficeLevel]
+  ,[ResultsFaxOfficeLevel]
+
+)
+
+select
+
+  [OrganizationName]
+  , [FacilityName]
+  , [NPI]
+  , [OrganizationProviderID]
+  , [ProviderLastName]
+  , [ProviderFirstName]
+  , [ProviderMiddleName]
+  , [ProviderPrefix]
+  , [ProviderSuffix]
+  , [ProviderDegree]
+  , [ProviderPrivelages]
+  , [ProviderOrganizationEmail]
+  , [ProviderSpecialties]
+  , [DirectAddressFacilityLevel]
+  , [ResultsFaxFacilityLevel]
+  , [OfficeRoutingCode]
+  , [OfficeName]
+  , [OfficeAddressLine1]
+  , [OfficeAddressLine2]
+  , [OfficeAddressCity]
+  , [OfficeAddressState]
+  , [OfficeAddressZip]
+  , [OfficePhone]
+  , [OfficeFax]
+  , [DirectAddressOfficeLevel]
+  , [ResultsFaxOfficeLevel]
+from cte_final_select
+where rownum = 1
+order by ProviderLastName, ProviderFirstName
+
+ 
+
+END
+
+ 
+
+ 
+

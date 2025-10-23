@@ -1,0 +1,18 @@
+﻿
+@{
+    ViewBag.Title = "Unauthorized";
+}
+
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-12">
+            <h3>You are not authorized to view this.</h3>
+            <p>We show that you are logged into this computer as <span style="font-weight: 800; font-style: italic">@HttpContext.Current.Session["Username"]</span>, which is not a valid user for this system</p>
+            <p>If you feel this is in error, please contact the IS Help Desk at (865) 212-4148, or enter a service ticket <a href="https://summitmed.service-now.com/sp">HERE</a>.</p>
+        </div>
+    </div>
+</div>
+
+
+

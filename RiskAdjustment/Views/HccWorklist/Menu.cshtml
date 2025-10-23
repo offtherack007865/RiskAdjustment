@@ -1,0 +1,53 @@
+﻿
+@{
+    ViewBag.Title = "HCC Worklist Select";
+}
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-4">
+            <div class="row justify-content-center">
+                <div class="card">
+                    <div class="card-header">
+                        Main HCC Menu
+                    </div>
+                    <div class="card-body">
+                        <div class="row mb-3">
+                            <div class="col-12">
+                                @Html.ActionLink("Coding Review Worklist", "HccSelect", "HccWorklist", null, new { @class = "btn btn-dark" })
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-12">
+                                @Html.ActionLink("Reviews in Progress", "ReviewsInProgress", "HccWorklist", null, new { @class = "btn btn-dark" })
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-12">
+                                @Html.ActionLink("On Hold - Pended", "ReviewsOnHoldPended", "HccWorklist", null, new { @class = "btn btn-dark" })
+                            </div>
+
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-12">
+                                @Html.ActionLink("Peer Review", "PeerReview", "HccWorklist", null, new { @class = "btn btn-dark" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        @{
+            string AccessLevel = HttpContext.Current.Session["AccessLevel"].ToString();
+            if (AccessLevel == "Manager" || AccessLevel == "Admin")
+            {
+                @Html.Partial("_managersMenu")
+            }
+        }
+    </div>
+</div>
+
+
+
+
+
+
