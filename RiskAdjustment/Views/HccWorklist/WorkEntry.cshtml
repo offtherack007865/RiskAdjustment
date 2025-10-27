@@ -39,6 +39,9 @@
                     $("#finishBtn").hide();
                 }
             }
+            var naviapanel = col1.GetItemByName("NavinaICDGroup");
+            naviapanel.SetVisible(false);
+
             $(window).on('beforeunload',
                 function (e) {
                     if (role === "Manager" || role === "Admin") {

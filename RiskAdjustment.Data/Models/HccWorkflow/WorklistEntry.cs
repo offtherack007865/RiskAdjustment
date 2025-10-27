@@ -228,6 +228,31 @@ namespace RiskAdjustment.Data.Models
         public DateTime? TaskEscalateDate { get; set; }
         public bool DemandBilled { get; set; }
 
+
+        public bool IsNavinaReview { get; set; }
+        public string NavinaICD10Code01 { get; set; }
+        public bool NavinaICD10Code01ConditionsValidated { get; set; }
+        public string NavinaICD10Code02 { get; set; }
+        public bool NavinaICD10Code02ConditionsValidated { get; set; }
+        public string NavinaICD10Code03 { get; set; }
+        public bool NavinaICD10Code03ConditionsValidated { get; set; }
+        public string NavinaICD10Code04 { get; set; }
+        public bool NavinaICD10Code04ConditionsValidated { get; set; }
+        public string NavinaICD10Code05 { get; set; }
+        public bool NavinaICD10Code05ConditionsValidated { get; set; }
+        public string NavinaICD10Code06 { get; set; }
+        public bool NavinaICD10Code06ConditionsValidated { get; set; }
+        public string NavinaICD10Code07 { get; set; }
+        public bool NavinaICD10Code07ConditionsValidated { get; set; }
+        public string NavinaICD10Code08 { get; set; }
+        public bool NavinaICD10Code08ConditionsValidated { get; set; }
+        public string NavinaICD10Code09 { get; set; }
+        public bool NavinaICD10Code09ConditionsValidated { get; set; }
+        public string NavinaICD10Code10 { get; set; }
+        public bool NavinaICD10Code10ConditionsValidated { get; set; }
+
+
+
         //Non-DB fields for processing
         public int Priority { get; set; }
         public string PatientFullName

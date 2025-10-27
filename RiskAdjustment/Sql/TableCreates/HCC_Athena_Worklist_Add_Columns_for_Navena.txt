@@ -1,0 +1,49 @@
+-- SQL Server Instance:  smg-sql01
+IF (@@SERVERNAME <> 'smg-dsdev05')
+BEGIN
+PRINT 'Invalid SQL Server Connection'
+RETURN
+END
+
+USE [VBC_CSS_Athena_Staging];
+
+-- STEP 001 of 001 Navena panel
+-- Add Columns for 
+SELECT 1;
+-- 1 record 
+
+BEGIN TRANSACTION;
+
+ALTER TABLE [dbo].[HCC_Athena_Worklist]
+ADD [IsNavinaReview] [bit] NULL
+    ,[NavinaICD10Code01] [NVARCHAR] (7) NULL
+    ,[NavinaICD10Code01ConditionsValidated] [bit] NULL 
+    ,[NavinaICD10Code02] [NVARCHAR] (7) NULL
+    ,[NavinaICD10Code02ConditionsValidated] [bit] NULL 
+    ,[NavinaICD10Code03] [NVARCHAR] (7) NULL
+    ,[NavinaICD10Code03ConditionsValidated] [bit] NULL 
+    ,[NavinaICD10Code04] [NVARCHAR] (7) NULL
+    ,[NavinaICD10Code04ConditionsValidated] [bit] NULL 
+    ,[NavinaICD10Code05] [NVARCHAR] (7) NULL
+    ,[NavinaICD10Code05ConditionsValidated] [bit] NULL 
+    ,[NavinaICD10Code06] [NVARCHAR] (7) NULL
+    ,[NavinaICD10Code06ConditionsValidated] [bit] NULL 
+    ,[NavinaICD10Code07] [NVARCHAR] (7) NULL
+    ,[NavinaICD10Code07ConditionsValidated] [bit] NULL 
+    ,[NavinaICD10Code08] [NVARCHAR] (7) NULL
+    ,[NavinaICD10Code08ConditionsValidated] [bit] NULL 
+    ,[NavinaICD10Code09] [NVARCHAR] (7) NULL
+    ,[NavinaICD10Code09ConditionsValidated] [bit] NULL 
+    ,[NavinaICD10Code10] [NVARCHAR] (7) NULL
+    ,[NavinaICD10Code10ConditionsValidated] [bit] NULL; 
+
+
+IF @@ERROR > 0 BEGIN
+  SELECT 0;
+  ROLLBACK TRANSACTION;
+END
+ELSE BEGIN
+  SELECT 1;
+  COMMIT TRANSACTION;
+END
+

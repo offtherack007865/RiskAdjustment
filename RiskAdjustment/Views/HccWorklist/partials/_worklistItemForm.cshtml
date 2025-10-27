@@ -1607,12 +1607,7 @@
                 navinahdggroup.ColumnCount = 1;
                 navinahdggroup.GroupBoxDecoration = GroupBoxDecoration.HeadingLine;
                 navinahdggroup.Caption = "Navina";
-            });
-            rightgrp.Items.AddGroupItem(navinagroup =>
-            {
-                navinagroup.GroupBoxDecoration = GroupBoxDecoration.None;
-                navinagroup.ShowCaption = DefaultBoolean.False;
-                navinagroup.Items.Add(i =>
+                navinahdggroup.Items.Add(i =>
                 {
                     i.Name = "IsNavinaReview";
                     i.FieldName = "IsNavinaReview";
@@ -1626,7 +1621,6 @@
                     });
                 });
             });
-            
             rightgrp.Items.AddGroupItem(NavinaICDGroup =>
             {
                 NavinaICDGroup.Name = "NavinaICDGroup";
@@ -1637,7 +1631,7 @@
                 {
                     i.Name = "NavinaICD10Code01";
                     i.FieldName = "NavinaICD10Code01";
-                    i.Width = Unit.Percentage(50);
+                    i.Width = Unit.Percentage(100);
                     i.Caption = "Navina ICD10 Code 01";
                     i.CaptionSettings.Location = LayoutItemCaptionLocation.Top;
                     i.NestedExtension().TextBox(tb =>
@@ -1658,6 +1652,232 @@
                         cb.Name = "NavinaICD10Code01ConditionsValidated";
                     });
                 });
+                NavinaICDGroup.Items.Add(i =>
+                {
+                    i.Name = "NavinaICD10Code02";
+                    i.FieldName = "NavinaICD10Code02";
+                    i.Width = Unit.Percentage(100);
+                    i.Caption = "Navina ICD10 Code 02";
+                    i.CaptionSettings.Location = LayoutItemCaptionLocation.Top;
+                    i.NestedExtension().TextBox(tb =>
+                    {
+                        tb.Enabled = true;
+                        tb.Width = Unit.Percentage(100);
+                    });
+                });
+                NavinaICDGroup.Items.Add(i =>
+                {
+                    i.Name = "NavinaICD10Code02ConditionsValidated";
+                    i.FieldName = "NavinaICD10Code02ConditionsValidated";
+                    i.Width = Unit.Percentage(100);
+                    i.Caption = "Navina ICD10 Code 02 Conditions Validated?";
+                    i.NestedExtension().CheckBox(cb =>
+                    {
+                        cb.Enabled = true;
+                        cb.Name = "NavinaICD10Code02ConditionsValidated";
+                    });
+                });
+                NavinaICDGroup.Items.Add(i =>
+                {
+                    i.Name = "NavinaICD10Code03";
+                    i.FieldName = "NavinaICD10Code03";
+                    i.Width = Unit.Percentage(100);
+                    i.Caption = "Navina ICD10 Code 03";
+                    i.CaptionSettings.Location = LayoutItemCaptionLocation.Top;
+                    i.NestedExtension().TextBox(tb =>
+                    {
+                        tb.Enabled = true;
+                        tb.Width = Unit.Percentage(100);
+                    });
+                });
+                NavinaICDGroup.Items.Add(i =>
+                {
+                    i.Name = "NavinaICD10Code03ConditionsValidated";
+                    i.FieldName = "NavinaICD10Code03ConditionsValidated";
+                    i.Width = Unit.Percentage(100);
+                    i.Caption = "Navina ICD10 Code 03 Conditions Validated?";
+                    i.NestedExtension().CheckBox(cb =>
+                    {
+                        cb.Enabled = true;
+                        cb.Name = "NavinaICD10Code03ConditionsValidated";
+                    });
+                });
+                NavinaICDGroup.Items.Add(i =>
+                {
+                    i.Name = "NavinaICD10Code04";
+                    i.FieldName = "NavinaICD10Code04";
+                    i.Width = Unit.Percentage(100);
+                    i.Caption = "Navina ICD10 Code 04";
+                    i.CaptionSettings.Location = LayoutItemCaptionLocation.Top;
+                    i.NestedExtension().TextBox(tb =>
+                    {
+                        tb.Enabled = true;
+                        tb.Width = Unit.Percentage(100);
+                    });
+                });
+                NavinaICDGroup.Items.Add(i =>
+                {
+                    i.Name = "NavinaICD10Code04ConditionsValidated";
+                    i.FieldName = "NavinaICD10Code04ConditionsValidated";
+                    i.Width = Unit.Percentage(100);
+                    i.Caption = "Navina ICD10 Code 04 Conditions Validated?";
+                    i.NestedExtension().CheckBox(cb =>
+                    {
+                        cb.Enabled = true;
+                        cb.Name = "NavinaICD10Code04ConditionsValidated";
+                    });
+                });
+                NavinaICDGroup.Items.Add(i =>
+                {
+                    i.Name = "NavinaICD10Code05";
+                    i.FieldName = "NavinaICD10Code05";
+                    i.Width = Unit.Percentage(100);
+                    i.Caption = "Navina ICD10 Code 05";
+                    i.CaptionSettings.Location = LayoutItemCaptionLocation.Top;
+                    i.NestedExtension().TextBox(tb =>
+                    {
+                        tb.Enabled = true;
+                        tb.Width = Unit.Percentage(100);
+                    });
+                });
+                NavinaICDGroup.Items.Add(i =>
+                {
+                    i.Name = "NavinaICD10Code05ConditionsValidated";
+                    i.FieldName = "NavinaICD10Code05ConditionsValidated";
+                    i.Width = Unit.Percentage(100);
+                    i.Caption = "Navina ICD10 Code 05 Conditions Validated?";
+                    i.NestedExtension().CheckBox(cb =>
+                    {
+                        cb.Enabled = true;
+                        cb.Name = "NavinaICD10Code05ConditionsValidated";
+                    });
+                });
+                NavinaICDGroup.Items.Add(i =>
+                {
+                    i.Name = "NavinaICD10Code06";
+                    i.FieldName = "NavinaICD10Code06";
+                    i.Width = Unit.Percentage(100);
+                    i.Caption = "Navina ICD10 Code 06";
+                    i.CaptionSettings.Location = LayoutItemCaptionLocation.Top;
+                    i.NestedExtension().TextBox(tb =>
+                    {
+                        tb.Enabled = true;
+                        tb.Width = Unit.Percentage(100);
+                    });
+                });
+                NavinaICDGroup.Items.Add(i =>
+                {
+                    i.Name = "NavinaICD10Code06ConditionsValidated";
+                    i.FieldName = "NavinaICD10Code06ConditionsValidated";
+                    i.Width = Unit.Percentage(100);
+                    i.Caption = "Navina ICD10 Code 06 Conditions Validated?";
+                    i.NestedExtension().CheckBox(cb =>
+                    {
+                        cb.Enabled = true;
+                        cb.Name = "NavinaICD10Code06ConditionsValidated";
+                    });
+                });
+                NavinaICDGroup.Items.Add(i =>
+                {
+                    i.Name = "NavinaICD10Code07";
+                    i.FieldName = "NavinaICD10Code07";
+                    i.Width = Unit.Percentage(100);
+                    i.Caption = "Navina ICD10 Code 07";
+                    i.CaptionSettings.Location = LayoutItemCaptionLocation.Top;
+                    i.NestedExtension().TextBox(tb =>
+                    {
+                        tb.Enabled = true;
+                        tb.Width = Unit.Percentage(100);
+                    });
+                });
+                NavinaICDGroup.Items.Add(i =>
+                {
+                    i.Name = "NavinaICD10Code07ConditionsValidated";
+                    i.FieldName = "NavinaICD10Code07ConditionsValidated";
+                    i.Width = Unit.Percentage(100);
+                    i.Caption = "Navina ICD10 Code 07 Conditions Validated?";
+                    i.NestedExtension().CheckBox(cb =>
+                    {
+                        cb.Enabled = true;
+                        cb.Name = "NavinaICD10Code07ConditionsValidated";
+                    });
+                });
+                NavinaICDGroup.Items.Add(i =>
+                {
+                    i.Name = "NavinaICD10Code08";
+                    i.FieldName = "NavinaICD10Code08";
+                    i.Width = Unit.Percentage(100);
+                    i.Caption = "Navina ICD10 Code 08";
+                    i.CaptionSettings.Location = LayoutItemCaptionLocation.Top;
+                    i.NestedExtension().TextBox(tb =>
+                    {
+                        tb.Enabled = true;
+                        tb.Width = Unit.Percentage(100);
+                    });
+                });
+                NavinaICDGroup.Items.Add(i =>
+                {
+                    i.Name = "NavinaICD10Code08ConditionsValidated";
+                    i.FieldName = "NavinaICD10Code08ConditionsValidated";
+                    i.Width = Unit.Percentage(100);
+                    i.Caption = "Navina ICD10 Code 08 Conditions Validated?";
+                    i.NestedExtension().CheckBox(cb =>
+                    {
+                        cb.Enabled = true;
+                        cb.Name = "NavinaICD10Code08ConditionsValidated";
+                    });
+                });
+                NavinaICDGroup.Items.Add(i =>
+                {
+                    i.Name = "NavinaICD10Code09";
+                    i.FieldName = "NavinaICD10Code09";
+                    i.Width = Unit.Percentage(100);
+                    i.Caption = "Navina ICD10 Code 09";
+                    i.CaptionSettings.Location = LayoutItemCaptionLocation.Top;
+                    i.NestedExtension().TextBox(tb =>
+                    {
+                        tb.Enabled = true;
+                        tb.Width = Unit.Percentage(100);
+                    });
+                });
+                NavinaICDGroup.Items.Add(i =>
+                {
+                    i.Name = "NavinaICD10Code09ConditionsValidated";
+                    i.FieldName = "NavinaICD10Code09ConditionsValidated";
+                    i.Width = Unit.Percentage(100);
+                    i.Caption = "Navina ICD10 Code 09 Conditions Validated?";
+                    i.NestedExtension().CheckBox(cb =>
+                    {
+                        cb.Enabled = true;
+                        cb.Name = "NavinaICD10Code09ConditionsValidated";
+                    });
+                });
+                NavinaICDGroup.Items.Add(i =>
+                {
+                    i.Name = "NavinaICD10Code10";
+                    i.FieldName = "NavinaICD10Code10";
+                    i.Width = Unit.Percentage(100);
+                    i.Caption = "Navina ICD10 Code 10";
+                    i.CaptionSettings.Location = LayoutItemCaptionLocation.Top;
+                    i.NestedExtension().TextBox(tb =>
+                    {
+                        tb.Enabled = true;
+                        tb.Width = Unit.Percentage(100);
+                    });
+                });
+                NavinaICDGroup.Items.Add(i =>
+                {
+                    i.Name = "NavinaICD10Code10ConditionsValidated";
+                    i.FieldName = "NavinaICD10Code10ConditionsValidated";
+                    i.Width = Unit.Percentage(100);
+                    i.Caption = "Navina ICD10 Code 10 Conditions Validated?";
+                    i.NestedExtension().CheckBox(cb =>
+                    {
+                        cb.Enabled = true;
+                        cb.Name = "NavinaICD10Code10ConditionsValidated";
+                    });
+                });
+
             });
 
             
