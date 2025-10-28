@@ -326,15 +326,25 @@ function ValidateNavina(s, e) {
     var panel = col1.GetItemByName("NavinaICDGroup");
 
     var icd10Code01 = ASPxClientControl.GetControlCollection().GetByName("NavinaICD10Code01");
+    var icd10Code01ConditionsValidated = ASPxClientControl.GetControlCollection().GetByName("NavinaICD10Code01ConditionsValidated");
     var icd10Code02 = ASPxClientControl.GetControlCollection().GetByName("NavinaICD10Code02");
+    var icd10Code02ConditionsValidated = ASPxClientControl.GetControlCollection().GetByName("NavinaICD10Code02ConditionsValidated");
     var icd10Code03 = ASPxClientControl.GetControlCollection().GetByName("NavinaICD10Code03");
+    var icd10Code03ConditionsValidated = ASPxClientControl.GetControlCollection().GetByName("NavinaICD10Code03ConditionsValidated");
     var icd10Code04 = ASPxClientControl.GetControlCollection().GetByName("NavinaICD10Code04");
+    var icd10Code04ConditionsValidated = ASPxClientControl.GetControlCollection().GetByName("NavinaICD10Code04ConditionsValidated");
     var icd10Code05 = ASPxClientControl.GetControlCollection().GetByName("NavinaICD10Code05");
+    var icd10Code05ConditionsValidated = ASPxClientControl.GetControlCollection().GetByName("NavinaICD10Code05ConditionsValidated");
     var icd10Code06 = ASPxClientControl.GetControlCollection().GetByName("NavinaICD10Code06");
+    var icd10Code06ConditionsValidated = ASPxClientControl.GetControlCollection().GetByName("NavinaICD10Code06ConditionsValidated");
     var icd10Code07 = ASPxClientControl.GetControlCollection().GetByName("NavinaICD10Code07");
+    var icd10Code07ConditionsValidated = ASPxClientControl.GetControlCollection().GetByName("NavinaICD10Code07ConditionsValidated");
     var icd10Code08 = ASPxClientControl.GetControlCollection().GetByName("NavinaICD10Code08");
+    var icd10Code08ConditionsValidated = ASPxClientControl.GetControlCollection().GetByName("NavinaICD10Code08ConditionsValidated");
     var icd10Code09 = ASPxClientControl.GetControlCollection().GetByName("NavinaICD10Code09");
+    var icd10Code09ConditionsValidated = ASPxClientControl.GetControlCollection().GetByName("NavinaICD10Code09ConditionsValidated");
     var icd10Code10 = ASPxClientControl.GetControlCollection().GetByName("NavinaICD10Code10");
+    var icd10Code10ConditionsValidated = ASPxClientControl.GetControlCollection().GetByName("NavinaICD10Code10ConditionsValidated");
 
     if (checkbox === true) {
     
@@ -362,10 +372,103 @@ function ValidateNavina(s, e) {
 
             IsNavinaReview.SetChecked(false);
             panel.SetVisible(false);    
+            icd10Code01ConditionsValidated.SetValue(false);
+            icd10Code02ConditionsValidated.SetValue(false);
+            icd10Code03ConditionsValidated.SetValue(false);
+            icd10Code04ConditionsValidated.SetValue(false);
+            icd10Code05ConditionsValidated.SetValue(false);
+            icd10Code06ConditionsValidated.SetValue(false);
+            icd10Code07ConditionsValidated.SetValue(false);
+            icd10Code08ConditionsValidated.SetValue(false);
+            icd10Code09ConditionsValidated.SetValue(false);
+            icd10Code10ConditionsValidated.SetValue(false);
         } 
     }
 }
+function ValidateNavinaConditionsValidated(s, e) {
+    var icd10Code01 = ASPxClientControl.GetControlCollection().GetByName("NavinaICD10Code01");
+    var icd10Code01ConditionsValidated = ASPxClientControl.GetControlCollection().GetByName("NavinaICD10Code01ConditionsValidated");
+    var icd10Code02 = ASPxClientControl.GetControlCollection().GetByName("NavinaICD10Code02");
+    var icd10Code02ConditionsValidated = ASPxClientControl.GetControlCollection().GetByName("NavinaICD10Code02ConditionsValidated");
+    var icd10Code03 = ASPxClientControl.GetControlCollection().GetByName("NavinaICD10Code03");
+    var icd10Code03ConditionsValidated = ASPxClientControl.GetControlCollection().GetByName("NavinaICD10Code03ConditionsValidated");
+    var icd10Code04 = ASPxClientControl.GetControlCollection().GetByName("NavinaICD10Code04");
+    var icd10Code04ConditionsValidated = ASPxClientControl.GetControlCollection().GetByName("NavinaICD10Code04ConditionsValidated");
+    var icd10Code05 = ASPxClientControl.GetControlCollection().GetByName("NavinaICD10Code05");
+    var icd10Code05ConditionsValidated = ASPxClientControl.GetControlCollection().GetByName("NavinaICD10Code05ConditionsValidated");
+    var icd10Code06 = ASPxClientControl.GetControlCollection().GetByName("NavinaICD10Code06");
+    var icd10Code06ConditionsValidated = ASPxClientControl.GetControlCollection().GetByName("NavinaICD10Code06ConditionsValidated");
+    var icd10Code07 = ASPxClientControl.GetControlCollection().GetByName("NavinaICD10Code07");
+    var icd10Code07ConditionsValidated = ASPxClientControl.GetControlCollection().GetByName("NavinaICD10Code07ConditionsValidated");
+    var icd10Code08 = ASPxClientControl.GetControlCollection().GetByName("NavinaICD10Code08");
+    var icd10Code08ConditionsValidated = ASPxClientControl.GetControlCollection().GetByName("NavinaICD10Code08ConditionsValidated");
+    var icd10Code09 = ASPxClientControl.GetControlCollection().GetByName("NavinaICD10Code09");
+    var icd10Code09ConditionsValidated = ASPxClientControl.GetControlCollection().GetByName("NavinaICD10Code09ConditionsValidated");
+    var icd10Code10 = ASPxClientControl.GetControlCollection().GetByName("NavinaICD10Code10");
+    var icd10Code10ConditionsValidated = ASPxClientControl.GetControlCollection().GetByName("NavinaICD10Code10ConditionsValidated");
 
+    var icd10Code01Value = icd10Code01.GetValue();
+    var icd10Code01ConditionsValidatedValue = icd10Code01ConditionsValidated.GetValue();
+    var icd10Code02Value = icd10Code02.GetValue();
+    var icd10Code02ConditionsValidatedValue = icd10Code02ConditionsValidated.GetValue();
+    var icd10Code03Value = icd10Code03.GetValue();
+    var icd10Code03ConditionsValidatedValue = icd10Code03ConditionsValidated.GetValue();
+    var icd10Code04Value = icd10Code04.GetValue();
+    var icd10Code04ConditionsValidatedValue = icd10Code04ConditionsValidated.GetValue();
+    var icd10Code05Value = icd10Code05.GetValue();
+    var icd10Code05ConditionsValidatedValue = icd10Code05ConditionsValidated.GetValue();
+    var icd10Code06Value = icd10Code06.GetValue();
+    var icd10Code06ConditionsValidatedValue = icd10Code06ConditionsValidated.GetValue();
+    var icd10Code07Value = icd10Code07.GetValue();
+    var icd10Code07ConditionsValidatedValue = icd10Code07ConditionsValidated.GetValue();
+    var icd10Code08Value = icd10Code08.GetValue();
+    var icd10Code08ConditionsValidatedValue = icd10Code08ConditionsValidated.GetValue();
+    var icd10Code09Value = icd10Code09.GetValue();
+    var icd10Code09ConditionsValidatedValue = icd10Code09ConditionsValidated.GetValue();
+    var icd10Code10Value = icd10Code10.GetValue();
+    var icd10Code10ConditionsValidatedValue = icd10Code10ConditionsValidated.GetValue();
+
+    if (icd10Code01ConditionsValidatedValue === true && (icd10Code01Value === null || icd10Code01Value.trim().length === 0)) {
+        icd10Code01.SetValue("");
+        icd10Code01ConditionsValidated.SetValue(false);
+    }
+    if (icd10Code02ConditionsValidatedValue === true && (icd10Code02Value === null || icd10Code02Value.trim().length === 0)) {
+        icd10Code02.SetValue("");
+        icd10Code02ConditionsValidated.SetValue(false);
+    }
+    if (icd10Code03ConditionsValidatedValue === true && (icd10Code03Value === null || icd10Code03Value.trim().length === 0)) {
+        icd10Code03.SetValue("");
+        icd10Code03ConditionsValidated.SetValue(false);
+    }
+    if (icd10Code04ConditionsValidatedValue === true && (icd10Code04Value === null || icd10Code04Value.trim().length === 0)) {
+        icd10Code04.SetValue("");
+        icd10Code04ConditionsValidated.SetValue(false);
+    }
+    if (icd10Code05ConditionsValidatedValue === true && (icd10Code05Value === null || icd10Code05Value.trim().length === 0)) {
+        icd10Code05.SetValue("");
+        icd10Code05ConditionsValidated.SetValue(false);
+    }
+    if (icd10Code06ConditionsValidatedValue === true && (icd10Code06Value === null || icd10Code06Value.trim().length === 0)) {
+        icd10Code06.SetValue("");
+        icd10Code06ConditionsValidated.SetValue(false);
+    }
+    if (icd10Code07ConditionsValidatedValue === true && (icd10Code07Value === null || icd10Code07Value.trim().length === 0)) {
+        icd10Code07.SetValue("");
+        icd10Code07ConditionsValidated.SetValue(false);
+    }
+    if (icd10Code08ConditionsValidatedValue === true && (icd10Code08Value === null || icd10Code08Value.trim().length === 0)) {
+        icd10Code08.SetValue("");
+        icd10Code08ConditionsValidated.SetValue(false);
+    }
+    if (icd10Code09ConditionsValidatedValue === true && (icd10Code09Value === null || icd10Code09Value.trim().length === 0)) {
+        icd10Code09.SetValue("");
+        icd10Code09ConditionsValidated.SetValue(false);
+    }
+    if (icd10Code10ConditionsValidatedValue === true && (icd10Code10Value === null || icd10Code10Value.trim().length === 0)) {
+        icd10Code10.SetValue("");
+        icd10Code10ConditionsValidated.SetValue(false);
+    }
+}
 function SetDefaultDate(s, e) {
     ReviewDate.SetValue(new Date());
 }
