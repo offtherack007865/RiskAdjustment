@@ -356,11 +356,17 @@ function IsNavinaReview_chckbx_change(s, e) {
 }
 function NavinaIcd10CodeLengthLe7(s, e) {
     var value = s.GetValue();
+    if (value === null) {
+        value = "";
+    }
+    value = value.trim();
     if (value !== null && value.length > 7) {
         value = value.substring(0, 7);
-        s.SetValue(value);
     }
+    s.SetValue(value);
+
     ValidateNavina(s, e);
+    ValidateNavinaConditionsValidatedRbl(s, e);
 }
 function ValidateNavina(s, e) {
     var checkbox = IsNavinaReview.GetValue();
@@ -369,12 +375,15 @@ function ValidateNavina(s, e) {
     var icd10Code01 = ASPxClientControl.GetControlCollection().GetByName("NavinaICD10Code01");
     var icd10Code01ConditionsValidatedRbl = ASPxClientControl.GetControlCollection().GetByName("NavinaICD10Code01ConditionsValidatedRbl");
     var icd10Code01ConditionsValidated = ASPxClientControl.GetControlCollection().GetByName("NavinaICD10Code01ConditionsValidated");
+
     var icd10Code02 = ASPxClientControl.GetControlCollection().GetByName("NavinaICD10Code02");
     var icd10Code02ConditionsValidatedRbl = ASPxClientControl.GetControlCollection().GetByName("NavinaICD10Code02ConditionsValidatedRbl");
     var icd10Code02ConditionsValidated = ASPxClientControl.GetControlCollection().GetByName("NavinaICD10Code02ConditionsValidated");
+
     var icd10Code03 = ASPxClientControl.GetControlCollection().GetByName("NavinaICD10Code03");
     var icd10Code03ConditionsValidatedRbl = ASPxClientControl.GetControlCollection().GetByName("NavinaICD10Code03ConditionsValidatedRbl");
     var icd10Code03ConditionsValidated = ASPxClientControl.GetControlCollection().GetByName("NavinaICD10Code03ConditionsValidated");
+
     var icd10Code04 = ASPxClientControl.GetControlCollection().GetByName("NavinaICD10Code04");
     var icd10Code04ConditionsValidatedRbl = ASPxClientControl.GetControlCollection().GetByName("NavinaICD10Code04ConditionsValidatedRbl");
     var icd10Code04ConditionsValidated = ASPxClientControl.GetControlCollection().GetByName("NavinaICD10Code04ConditionsValidated");
@@ -504,146 +513,177 @@ function ValidateNavinaConditionsValidatedRbl(s, e) {
     var icd10Code10ConditionsValidated = ASPxClientControl.GetControlCollection().GetByName("NavinaICD10Code10ConditionsValidated");
 
     var icd10Code01Value = icd10Code01.GetValue();
+    if (icd10Code01Value === null) {
+        icd10Code01Value = "";
+    }
+    else {
+        icd10Code01Value = icd10Code01Value.trim();
+    }
+    icd10Code01.SetValue(icd10Code01Value);
     var icd10Code01ConditionsValidatedRblValue = icd10Code01ConditionsValidatedRbl.GetValue();
-    if (icd10Code01ConditionsValidatedRblValue === "Yes") {
-        icd10Code01ConditionsValidated.SetValue(true);
-    }
-    else {
-        icd10Code01ConditionsValidated.SetValue(false);
-    }
-
-    var icd10Code02Value = icd10Code02.GetValue();
-    var icd10Code02ConditionsValidatedRblValue = icd10Code02ConditionsValidatedRbl.GetValue();
-    if (icd10Code02ConditionsValidatedRblValue === "Yes") {
-        icd10Code02ConditionsValidated.SetValue(true);
-    }
-    else {
-        icd10Code02ConditionsValidated.SetValue(false);
-    }
-
-    var icd10Code03Value = icd10Code03.GetValue();
-    var icd10Code03ConditionsValidatedRblValue = icd10Code03ConditionsValidatedRbl.GetValue();
-    if (icd10Code03ConditionsValidatedRblValue === "Yes") {
-        icd10Code03ConditionsValidated.SetValue(true);
-    }
-    else {
-        icd10Code03ConditionsValidated.SetValue(false);
-    }
-
-
-    var icd10Code04Value = icd10Code04.GetValue();
-    var icd10Code04ConditionsValidatedRblValue = icd10Code04ConditionsValidatedRbl.GetValue();
-    if (icd10Code04ConditionsValidatedRblValue === "Yes") {
-        icd10Code04ConditionsValidated.SetValue(true);
-    }
-    else {
-        icd10Code04ConditionsValidated.SetValue(false);
-    }
-
-    var icd10Code05Value = icd10Code05.GetValue();
-    var icd10Code05ConditionsValidatedRblValue = icd10Code05ConditionsValidatedRbl.GetValue();
-    if (icd10Code05ConditionsValidatedRblValue === "Yes") {
-        icd10Code05ConditionsValidated.SetValue(true);
-    }
-    else {
-        icd10Code05ConditionsValidated.SetValue(false);
-    }
-
-    var icd10Code06Value = icd10Code06.GetValue();
-    var icd10Code06ConditionsValidatedRblValue = icd10Code06ConditionsValidatedRbl.GetValue();
-    if (icd10Code06ConditionsValidatedRblValue === "Yes") {
-        icd10Code06ConditionsValidated.SetValue(true);
-    }
-    else {
-        icd10Code06ConditionsValidated.SetValue(false);
-    }
-
-    var icd10Code07Value = icd10Code07.GetValue();
-    var icd10Code07ConditionsValidatedRblValue = icd10Code07ConditionsValidatedRbl.GetValue();
-    if (icd10Code07ConditionsValidatedRblValue === "Yes") {
-        icd10Code07ConditionsValidated.SetValue(true);
-    }
-    else {
-        icd10Code07ConditionsValidated.SetValue(false);
-    }
-
-    var icd10Code08Value = icd10Code08.GetValue();
-    var icd10Code08ConditionsValidatedRblValue = icd10Code08ConditionsValidatedRbl.GetValue();
-    if (icd10Code08ConditionsValidatedRblValue === "Yes") {
-        icd10Code08ConditionsValidated.SetValue(true);
-    }
-    else {
-        icd10Code08ConditionsValidated.SetValue(false);
-    }
-
-    var icd10Code09Value = icd10Code09.GetValue();
-    var icd10Code09ConditionsValidatedRblValue = icd10Code09ConditionsValidatedRbl.GetValue();
-    if (icd10Code09ConditionsValidatedRblValue === "Yes") {
-        icd10Code09ConditionsValidated.SetValue(true);
-    }
-    else {
-        icd10Code09ConditionsValidated.SetValue(false);
-    }
-
-    var icd10Code10Value = icd10Code10.GetValue();
-    var icd10Code10ConditionsValidatedRblValue = icd10Code10ConditionsValidatedRbl.GetValue();
-    if (icd10Code10ConditionsValidatedRblValue === "Yes") {
-        icd10Code10ConditionsValidated.SetValue(true);
-    }
-    else {
-        icd10Code10ConditionsValidated.SetValue(false);
-    }
-
-
-    if (icd10Code01ConditionsValidatedRblValue === "Yes" && (icd10Code01Value === null || icd10Code01Value.trim().length === 0)) {
-        icd10Code01.SetValue("");
+    if (icd10Code01Value === null || icd10Code01Value.trim().length === 0 || icd10Code01ConditionsValidatedRblValue === "No") {
         icd10Code01ConditionsValidatedRbl.SetValue("No");
         icd10Code01ConditionsValidated.SetValue(false);
     }
-    if (icd10Code02ConditionsValidatedRblValue === "Yes" && (icd10Code02Value === null || icd10Code02Value.trim().length === 0)) {
-        icd10Code02.SetValue("");
+    else {
+        icd10Code01ConditionsValidated.SetValue(true);
+    }
+
+    var icd10Code02Value = icd10Code02.GetValue();
+    if (icd10Code02Value === null) {
+        icd10Code02Value = "";
+    }
+    else {
+        icd10Code02Value = icd10Code02Value.trim();
+    }
+    icd10Code02.SetValue(icd10Code02Value);
+    var icd10Code02ConditionsValidatedRblValue = icd10Code02ConditionsValidatedRbl.GetValue();
+    if (icd10Code02Value === null || icd10Code02Value.trim().length === 0 || icd10Code02ConditionsValidatedRblValue === "No") {
         icd10Code02ConditionsValidatedRbl.SetValue("No");
         icd10Code02ConditionsValidated.SetValue(false);
     }
-    if (icd10Code03ConditionsValidatedRblValue === "Yes" && (icd10Code03Value === null || icd10Code03Value.trim().length === 0)) {
-        icd10Code03.SetValue("");
+    else {
+        icd10Code02ConditionsValidated.SetValue(true);
+    }
+
+    var icd10Code03Value = icd10Code03.GetValue();
+    if (icd10Code03Value === null) {
+        icd10Code03Value = "";
+    }
+    else {
+        icd10Code03Value = icd10Code03Value.trim();
+    }
+    icd10Code03.SetValue(icd10Code03Value);
+    var icd10Code03ConditionsValidatedRblValue = icd10Code03ConditionsValidatedRbl.GetValue();
+    if (icd10Code03Value === null || icd10Code03Value.trim().length === 0 || icd10Code03ConditionsValidatedRblValue === "No") {
         icd10Code03ConditionsValidatedRbl.SetValue("No");
         icd10Code03ConditionsValidated.SetValue(false);
     }
-    if (icd10Code04ConditionsValidatedRblValue === "Yes" && (icd10Code04Value === null || icd10Code04Value.trim().length === 0)) {
-        icd10Code04.SetValue("");
+    else {
+        icd10Code03ConditionsValidated.SetValue(true);
+    }
+    
+    var icd10Code04Value = icd10Code04.GetValue();
+    if (icd10Code04Value === null) {
+        icd10Code04Value = "";
+    }
+    else {
+        icd10Code04Value = icd10Code04Value.toString().Trim();
+    }
+    icd10Code04.SetValue(icd10Code04Value);
+    var icd10Code04ConditionsValidatedRblValue = icd10Code04ConditionsValidatedRbl.GetValue();
+    if (icd10Code04Value === null || icd10Code04Value.trim().length === 0 || icd10Code04ConditionsValidatedRblValue === "No") {
         icd10Code04ConditionsValidatedRbl.SetValue("No");
         icd10Code04ConditionsValidated.SetValue(false);
     }
-    if (icd10Code05ConditionsValidatedRblValue === "Yes" && (icd10Code05Value === null || icd10Code05Value.trim().length === 0)) {
-        icd10Code05.SetValue("");
+    else {
+        icd10Code04ConditionsValidated.SetValue(true);
+    }
+
+    var icd10Code05Value = icd10Code05.GetValue();
+    if (icd10Code05Value === null) {
+        icd10Code05Value = "";
+    }
+    else {
+        icd10Code05Value = icd10Code05Value.trim();
+    }
+    icd10Code05.SetValue(icd10Code05Value);
+    var icd10Code05ConditionsValidatedRblValue = icd10Code05ConditionsValidatedRbl.GetValue();
+    if (icd10Code05Value === null || icd10Code05Value.trim().length === 0 || icd10Code05ConditionsValidatedRblValue === "No") {
         icd10Code05ConditionsValidatedRbl.SetValue("No");
         icd10Code05ConditionsValidated.SetValue(false);
     }
-    if (icd10Code06ConditionsValidatedRblValue === "Yes" && (icd10Code06Value === null || icd10Code06Value.trim().length === 0)) {
-        icd10Code06.SetValue("");
+    else {
+        icd10Code05ConditionsValidated.SetValue(true);
+    }
+
+    var icd10Code06Value = icd10Code06.GetValue();
+    if (icd10Code06Value === null) {
+        icd10Code06Value = "";
+    }
+    else {
+        icd10Code06Value = icd10Code06Value.trim();
+    }
+    icd10Code06.SetValue(icd10Code06Value);
+    var icd10Code06ConditionsValidatedRblValue = icd10Code06ConditionsValidatedRbl.GetValue();
+    if (icd10Code06Value === null || icd10Code06Value.trim().length === 0 || icd10Code06ConditionsValidatedRblValue === "No") {
         icd10Code06ConditionsValidatedRbl.SetValue("No");
         icd10Code06ConditionsValidated.SetValue(false);
     }
-    if (icd10Code07ConditionsValidatedRblValue === "Yes" && (icd10Code07Value === null || icd10Code07Value.trim().length === 0)) {
-        icd10Code07.SetValue("");
+    else {
+        icd10Code06ConditionsValidated.SetValue(true);
+    }
+
+
+    var icd10Code07Value = icd10Code07.GetValue();
+    if (icd10Code07Value === null) {
+        icd10Code07Value = "";
+    }
+    else {
+        icd10Code07Value = icd10Code07Value.trim();
+    }
+    icd10Code07.SetValue(icd10Code07Value);
+    var icd10Code07ConditionsValidatedRblValue = icd10Code07ConditionsValidatedRbl.GetValue();
+    if (icd10Code07Value === null || icd10Code07Value.trim().length === 0 || icd10Code07ConditionsValidatedRblValue === "No") {
         icd10Code07ConditionsValidatedRbl.SetValue("No");
         icd10Code07ConditionsValidated.SetValue(false);
     }
-    if (icd10Code08ConditionsValidatedRblValue === "Yes" && (icd10Code08Value === null || icd10Code08Value.trim().length === 0)) {
-        icd10Code08.SetValue("");
+    else {
+        icd10Code07ConditionsValidated.SetValue(true);
+    }
+
+
+    var icd10Code08Value = icd10Code08.GetValue();
+    if (icd10Code08Value === null) {
+        icd10Code08Value = "";
+    }
+    else {
+        icd10Code08Value = icd10Code08Value.trim();
+    }
+    icd10Code08.SetValue(icd10Code08Value);
+    var icd10Code08ConditionsValidatedRblValue = icd10Code08ConditionsValidatedRbl.GetValue();
+    if (icd10Code08Value === null || icd10Code08Value.trim().length === 0 || icd10Code08ConditionsValidatedRblValue === "No") {
         icd10Code08ConditionsValidatedRbl.SetValue("No");
         icd10Code08ConditionsValidated.SetValue(false);
     }
-    if (icd10Code09ConditionsValidatedRblValue === "Yes" && (icd10Code09Value === null || icd10Code09Value.trim().length === 0)) {
-        icd10Code09.SetValue("");
+    else {
+        icd10Code08ConditionsValidated.SetValue(true);
+    }
+
+
+    var icd10Code09Value = icd10Code09.GetValue();
+    if (icd10Code09Value === null) {
+        icd10Code09Value = "";
+    }
+    else {
+        icd10Code09Value = icd10Code09Value.trim();
+    }
+    icd10Code09.SetValue(icd10Code09Value);
+    var icd10Code09ConditionsValidatedRblValue = icd10Code09ConditionsValidatedRbl.GetValue();
+    if (icd10Code09Value === null || icd10Code09Value.trim().length === 0 || icd10Code09ConditionsValidatedRblValue === "No") {
         icd10Code09ConditionsValidatedRbl.SetValue("No");
         icd10Code09ConditionsValidated.SetValue(false);
     }
-    if (icd10Code10ConditionsValidatedRblValue === "Yes" && (icd10Code10Value === null || icd10Code10Value.trim().length === 0)) {
-        icd10Code10.SetValue("");
+    else {
+        icd10Code09ConditionsValidated.SetValue(true);
+    }
+
+
+    var icd10Code10Value = icd10Code10.GetValue();
+    if (icd10Code10Value === null) {
+        icd10Code10Value = "";
+    }
+    else {
+        icd10Code10Value = icd10Code10Value.trim();
+    }
+    icd10Code10.SetValue(icd10Code10Value);
+    var icd10Code10ConditionsValidatedRblValue = icd10Code10ConditionsValidatedRbl.GetValue();
+    if (icd10Code10Value === null || icd10Code10Value.trim().length === 0 || icd10Code10ConditionsValidatedRblValue === "No") {
         icd10Code10ConditionsValidatedRbl.SetValue("No");
         icd10Code10ConditionsValidated.SetValue(false);
+    }
+    else {
+        icd10Code10ConditionsValidated.SetValue(true);
     }
 }
 function SetDefaultDate(s, e) {
