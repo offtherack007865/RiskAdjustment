@@ -568,7 +568,7 @@ function ValidateNavinaConditionsValidatedRbl(s, e) {
         icd10Code04Value = "";
     }
     else {
-        icd10Code04Value = icd10Code04Value.toString().Trim();
+        icd10Code04Value = icd10Code04Value.trim();
     }
     icd10Code04.SetValue(icd10Code04Value);
     var icd10Code04ConditionsValidatedRblValue = icd10Code04ConditionsValidatedRbl.GetValue();
